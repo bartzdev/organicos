@@ -133,9 +133,13 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
           onPressed: () {
             _controle.objetoCadastroEmEdicao = PontoVenda();
             Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => TelaCadastroPontoVenda(_controle)),
-            );
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TelaCadastroPontoVenda(_controle, onSaved: () {
+                          setState(() {
+                            _controle.atualizarPesquisa(filtros: {'filtro': _controladorCampoPesquisa.text});
+                          });
+                        })));
           },
           label: const Text('Adicionar')),
       body: FutureBuilder(
