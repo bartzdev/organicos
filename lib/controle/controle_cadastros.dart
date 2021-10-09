@@ -1,5 +1,6 @@
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/dao_factory.dart';
+import 'package:async/async.dart';
 
 class ControleCadastros<T> {
   late DAO<T>? dao;
@@ -24,8 +25,15 @@ class ControleCadastros<T> {
     return Future.value(futuraListaObjetosPesquisados);
   }
 
+  AsyncMemoizer<List<T>> _listMemoizer = AsyncMemoizer<List<T>>();
   Future<List<T>> listar({Map<String, dynamic>? filtros}) async {
-    futuraListaObjetosPesquisados = dao!.listar(filtros: filtros);
+    if (listaObjetosPesquisados == null || listaObjetosPesquisados!.length == 0) {
+      _listMemoizer = AsyncMemoizer<List<T>>();
+    }
+    futuraListaObjetosPesquisados = this._listMemoizer.runOnce(() async {
+      listaObjetosPesquisados = await dao!.listar(filtros: filtros);
+      return listaObjetosPesquisados!;
+    });
     return Future.value(futuraListaObjetosPesquisados);
   }
 }

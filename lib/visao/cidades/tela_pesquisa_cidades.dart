@@ -3,7 +3,8 @@ import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/cidade.dart';
 
 class TelaPesquisaCidades extends StatefulWidget {
-  TelaPesquisaCidades({Key? key}) : super(key: key);
+  Function(Cidade cidade)? onItemSelected;
+  TelaPesquisaCidades({Key? key, this.onItemSelected}) : super(key: key);
 
   @override
   _TelaPesquisaCidadesState createState() => _TelaPesquisaCidadesState();
@@ -70,17 +71,20 @@ class _TelaPesquisaCidadesState extends State<TelaPesquisaCidades> {
     return Container(
         decoration: BoxDecoration(color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
         child: ListTile(
+            onTap: () {
+              if (widget.onItemSelected != null) widget.onItemSelected!(cidade);
+            },
             title: Row(
-          children: [
-            Expanded(
-                child: Text(
-                    cidade.nome == null
-                        ? ''
-                        : cidade.nome! + (cidade.estado?.nome == null ? '' : ' - ' + cidade.estado!.nome!),
-                    style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
-                    textAlign: TextAlign.left))
-          ],
-        )));
+              children: [
+                Expanded(
+                    child: Text(
+                        cidade.nome == null
+                            ? ''
+                            : cidade.nome! + (cidade.estado?.nome == null ? '' : ' - ' + cidade.estado!.nome!),
+                        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                        textAlign: TextAlign.left))
+              ],
+            )));
   }
 
   @override
