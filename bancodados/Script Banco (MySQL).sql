@@ -37,7 +37,8 @@ insert into estado (id, nome, sigla) VALUES (27, 'Tocantins', 'TO');
 create table cidade(
   id integer primary key AUTO_INCREMENT,
   nome varchar(50),
-  estado_id integer references estado(id)
+  estado_id integer,
+  foreign key (estado_id) references estado(id)
 );
 
 insert into cidade (id, nome, estado_id) values (1, 'Acrelândia', 1);
@@ -5618,12 +5619,13 @@ insert into tipoproduto (nome) values ('Agroecológico');
 
 create table produto(
   id integer primary key AUTO_INCREMENT,
-  tipoproduto_id integer references tipoproduto(id),
+  tipoproduto_id integer,
   nome varchar(50),
   descricao varchar(150),
   preco_unitario numeric(14,5),
   unidade varchar(3),
-  registro_ativo boolean default true
+  registro_ativo boolean default true,
+  foreign key (tipoproduto_id) references tipoproduto(id)
 );
 
 create table certificadora(
@@ -5638,11 +5640,12 @@ create table grupoprodutores(
   endereco varchar(80),
   numero integer,
   bairro varchar(50),
-  cidade_id integer references cidade(id),
+  cidade_id integer,
   cnpj varchar(14),
   inscricao_estadual varchar(20),
   distribuidor_produtos boolean default false,
-  registro_ativo boolean default true
+  registro_ativo boolean default true,
+  foreign key (cidade_id) references cidade(id)
 );
 
 create table pontovenda(
@@ -5651,14 +5654,15 @@ create table pontovenda(
   endereco varchar(80),
   numero integer,
   bairro varchar(50),
-  cidade_id integer references cidade(id),
-  registro_ativo boolean default true
+  cidade_id integer,
+  registro_ativo boolean default true,
+  foreign key (cidade_id) references cidade(id)
 );
 
 create table produtor(
   id integer primary key AUTO_INCREMENT,
-  certificadora_id integer references certificadora(id),
-  grupoprodutores_id integer references grupoprodutores(id),
+  certificadora_id integer,
+  grupoprodutores_id integer,
   nome varchar(80),
   nome_propriedade varchar(80),
   cpf_cnpj varchar(14),
@@ -5671,17 +5675,22 @@ create table produtor(
   longitude numeric(14,7),
   certificacao_organicos varchar(1),
   venda_consumidorfinal boolean default false,
-  registro_ativo boolean default true
+  registro_ativo boolean default true,
+  foreign key (certificadora_id) references certificadora(id),
+  foreign key (grupoprodutores_id) references grupoprodutores(id)
 );
 
 create table produtor_produto(
   id integer primary key AUTO_INCREMENT,
-  produtor_id integer references produtor(id),
-  produto_id integer references produto(id),
-  pontovenda_id integer references pontovenda(id),
+  produtor_id integer,
+  produto_id integer,
+  pontovenda_id integer,
   dia_semana integer,
   horario time,
-  pausado boolean default false
+  pausado boolean default false,
+  foreign key (produtor_id) references produtor(id),
+  foreign key (produto_id) references produto(id),
+  foreign key (pontovenda_id) references pontovenda(id)
 );
 
 create table permissao(
@@ -5697,25 +5706,30 @@ create table grupousuario(
 
 create table usuario(
   id integer primary key AUTO_INCREMENT,
-  grupousuario_id integer references grupousuario(id),
+  grupousuario_id integer,
   nome varchar(50),
   login varchar(50),
   senha text,
-  registro_ativo boolean default true  
+  registro_ativo boolean default true,
+  foreign key (grupousuario_id) references grupousuario(id)  
 );
 
 create table permissao_usuario(
-  permissao_id integer references permissao(id),
-  usuario_id integer references usuario(id),
+  permissao_id integer not null,
+  usuario_id integer not null,
   permitido boolean default true,
-  primary key (permissao_id, usuario_id)
+  primary key (permissao_id, usuario_id),
+  foreign key (permissao_id) references permissao(id),
+  foreign key (usuario_id) references usuario(id)
 );
 
 create table permissao_grupousuario(
-  permissao_id integer references permissao(id),
-  grupousuario_id integer references grupousuario(id),  
+  permissao_id integer not null,
+  grupousuario_id integer not null,  
   permitido boolean default true,
-  primary key (permissao_id, grupousuario_id)
+  primary key (permissao_id, grupousuario_id),
+  foreign key (permissao_id) references permissao(id),
+  foreign key (grupousuario_id) references grupousuario(id)
 );
 
 
