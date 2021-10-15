@@ -82,8 +82,20 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
                   style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
                   textAlign: TextAlign.left)),
           IconButton(
-              onPressed: () {
+              onPressed: () async {
                 //Ação do botão Editar
+                //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
+                _controle.carregarDados(pontoVenda).then((value) {
+                  _controle.objetoCadastroEmEdicao = value;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaCadastroPontoVenda(_controle, onSaved: () {
+                                setState(() {
+                                  _controle.atualizarPesquisa(filtros: {'filtro': _controladorCampoPesquisa.text});
+                                });
+                              })));
+                });
               },
               icon: const Icon(Icons.edit),
               color: Colors.orange.shade600),
@@ -101,7 +113,15 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
                           TextButton(
                               onPressed: () {
                                 //Ação do botão SIM
-                                Navigator.of(context).pop();
+                                _controle.carregarDados(pontoVenda).then((value) {
+                                  _controle.objetoCadastroEmEdicao = value;
+                                  _controle.excluirObjetoCadastroEmEdicao().then((_) {
+                                    Navigator.of(context).pop();
+                                    setState(() {
+                                      _controle.listaObjetosPesquisados?.remove(pontoVenda);
+                                    });
+                                  });
+                                });
                               },
                               child: const Text("SIM")),
                           const SizedBox(
