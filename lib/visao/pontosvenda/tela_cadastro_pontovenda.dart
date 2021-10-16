@@ -13,7 +13,8 @@ class TelaCadastroPontoVenda extends StatefulWidget {
   ControleCadastros<PontoVenda> controle;
   Function()? onSaved;
 
-  TelaCadastroPontoVenda(this.controle, {Key? key, this.onSaved}) : super(key: key);
+  TelaCadastroPontoVenda(this.controle, {Key? key, this.onSaved})
+      : super(key: key);
 
   @override
   _TelaCadastroPontoVendaState createState() => _TelaCadastroPontoVendaState();
@@ -26,7 +27,8 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
   Estado? _estadoSelecionado;
 
   Future<void> salvar(BuildContext context) async {
-    if (_chaveFormulario.currentState != null && _chaveFormulario.currentState!.validate()) {
+    if (_chaveFormulario.currentState != null &&
+        _chaveFormulario.currentState!.validate()) {
       _chaveFormulario.currentState!.save();
       widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
         if (widget.onSaved != null) widget.onSaved!();
@@ -57,9 +59,11 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                 child: Column(
                   children: <Widget>[
                     TextFormField(
-                        decoration: decorationCampoTexto(hintText: "Nome", labelText: "Nome"),
+                        decoration: decorationCampoTexto(
+                            hintText: "Nome", labelText: "Nome"),
                         keyboardType: TextInputType.text,
-                        initialValue: widget.controle.objetoCadastroEmEdicao?.nome,
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao?.nome,
                         onSaved: (String? value) {
                           widget.controle.objetoCadastroEmEdicao?.nome = value;
                         },
@@ -71,11 +75,14 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                         }),
                     espacoEntreCampos,
                     TextFormField(
-                        decoration: decorationCampoTexto(hintText: "Endereço", labelText: "Endereço"),
+                        decoration: decorationCampoTexto(
+                            hintText: "Endereço", labelText: "Endereço"),
                         keyboardType: TextInputType.text,
-                        initialValue: widget.controle.objetoCadastroEmEdicao?.endereco?.logradouro,
+                        initialValue: widget.controle.objetoCadastroEmEdicao
+                            ?.endereco?.logradouro,
                         onSaved: (String? value) {
-                          widget.controle.objetoCadastroEmEdicao?.endereco?.logradouro = value;
+                          widget.controle.objetoCadastroEmEdicao?.endereco
+                              ?.logradouro = value;
                         },
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -86,13 +93,21 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                     espacoEntreCampos,
                     TextFormField(
                         // maxLength: 50,
-                        inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-                        decoration: decorationCampoTexto(hintText: "Número", labelText: "Número"),
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly
+                        ],
+                        decoration: decorationCampoTexto(
+                            hintText: "Número", labelText: "Número"),
                         keyboardType: TextInputType.number,
-                        initialValue: widget.controle.objetoCadastroEmEdicao?.endereco?.numero?.toString(),
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao?.endereco?.numero
+                            ?.toString(),
                         onSaved: (String? value) {
-                          widget.controle.objetoCadastroEmEdicao?.endereco?.numero =
-                              value != null && value.length > 0 ? int.parse(value) : null;
+                          widget.controle.objetoCadastroEmEdicao?.endereco
+                                  ?.numero =
+                              value != null && value.length > 0
+                                  ? int.parse(value)
+                                  : null;
                         },
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -102,11 +117,14 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                         }),
                     espacoEntreCampos,
                     TextFormField(
-                        decoration: decorationCampoTexto(hintText: "Bairro", labelText: "Bairro"),
+                        decoration: decorationCampoTexto(
+                            hintText: "Bairro", labelText: "Bairro"),
                         keyboardType: TextInputType.text,
-                        initialValue: widget.controle.objetoCadastroEmEdicao?.endereco?.bairro,
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao?.endereco?.bairro,
                         onSaved: (String? value) {
-                          widget.controle.objetoCadastroEmEdicao?.endereco?.bairro = value;
+                          widget.controle.objetoCadastroEmEdicao?.endereco
+                              ?.bairro = value;
                         },
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -124,20 +142,33 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                                         onItemSelected: (Cidade cidade) {
                                           Navigator.of(context).pop();
                                           setState(() {
-                                            widget.controle.objetoCadastroEmEdicao?.endereco?.cidade = cidade;
+                                            widget
+                                                .controle
+                                                .objetoCadastroEmEdicao
+                                                ?.endereco
+                                                ?.cidade = cidade;
                                           });
                                         },
                                       )));
                         },
                         child: AbsorbPointer(
                             child: TextFormField(
-                                key: Key((widget.controle.objetoCadastroEmEdicao?.endereco?.cidade?.nome == null
+                                key: Key((widget.controle.objetoCadastroEmEdicao
+                                            ?.endereco?.cidade?.nome ==
+                                        null
                                     ? ' '
-                                    : widget.controle.objetoCadastroEmEdicao!.endereco!.cidade!.nome!)),
+                                    : widget.controle.objetoCadastroEmEdicao!
+                                        .endereco!.cidade!.nome!)),
                                 readOnly: true,
-                                decoration: decorationCampoTexto(hintText: "Cidade", labelText: "Cidade"),
+                                decoration: decorationCampoTexto(
+                                    hintText: "Cidade", labelText: "Cidade"),
                                 keyboardType: TextInputType.text,
-                                initialValue: widget.controle.objetoCadastroEmEdicao?.endereco?.cidade?.nome,
+                                initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao
+                                    ?.endereco
+                                    ?.cidade
+                                    ?.nome,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
                                     return "Este campo é obrigatório!";
