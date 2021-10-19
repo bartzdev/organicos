@@ -5,7 +5,7 @@ import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
 
-class GrupoProdutorDao extends DAO<GrupoProdutor> {
+class GrupoProdutorDAO extends DAO<GrupoProdutor> {
   @override
   Future<void> gravar(GrupoProdutor grupo) async {
     // TODO: implement gravar
