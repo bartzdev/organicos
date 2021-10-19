@@ -1,6 +1,7 @@
 import 'package:organicos/dao/cidade_dao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/estado_dao.dart';
+import 'package:organicos/dao/grupoprodutor_dao.dart';
 import 'package:organicos/dao/pontovenda_dao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/estado.dart';
@@ -12,7 +13,7 @@ class DAOFactory<T> {
     if (objectInstance is PontoVenda) return PontoVendaDAO() as DAO<T>;
     if (objectInstance is Estado) return EstadoDAO() as DAO<T>;
     if (objectInstance is Cidade) return CidadeDAO() as DAO<T>;
-    if (objectInstance is GrupoProdutor) return GrupoProdutor() as DAO<T>;
+    if (objectInstance is GrupoProdutor) return GrupoProdutorDAO() as DAO<T>;
     return null;
   }
 }

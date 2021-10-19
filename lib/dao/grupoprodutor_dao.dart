@@ -106,7 +106,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
     List<GrupoProdutor> grupos = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    p.id, p.nome from pontovenda p where p.registro_ativo = 1 and lower(p.nome) like ?
+    p.id, p.nome from grupoprodutores p where p.registro_ativo = 1 and lower(p.nome) like ?
     order by lower(p.nome)''', ['%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var grupo = GrupoProdutor();
