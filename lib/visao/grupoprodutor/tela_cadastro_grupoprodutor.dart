@@ -1,11 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/styles/styles.dart';
+import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
+import 'package:brasil_fields/brasil_fields.dart';
 
 class TelaCadastroGrupoProdutor extends StatefulWidget {
   ControleCadastros<GrupoProdutor> controle;
@@ -27,7 +30,9 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
       widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
         if (widget.onSaved != null) widget.onSaved!();
         Navigator.of(context).pop();
-      });
+      }).catchError((error){
+              mensagemConexao(context);
+            });
     }
   }
 
@@ -73,7 +78,11 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
                     TextFormField(
                         decoration: decorationCampoTexto(
                             hintText: "Cnpj", labelText: "Cnpj"),
-                        keyboardType: TextInputType.text,
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CnpjInputFormatter()
+                        ],
                         initialValue:
                             widget.controle.objetoCadastroEmEdicao?.cnpj,
                         onSaved: (String? value) {
@@ -82,6 +91,8 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
                             return "Este campo é obrigatório!";
+                          } else if(UtilBrasilFields.isCNPJValido(value) == false ){
+                            return "Insira um cnpj valido";
                           }
                           return null;
                         }),
@@ -126,6 +137,7 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
                             hintText: "Numero", labelText: "Numero"),
                         keyboardType: TextInputType.number,
                         initialValue: widget
+                            .controle.objetoCadastroEmEdicao?.endereco?.numero == null ? '' : widget
                             .controle.objetoCadastroEmEdicao?.endereco?.numero
                             .toString(),
                         onSaved: (String? value) {
@@ -147,7 +159,9 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
                         decoration: decorationCampoTexto(
                             hintText: "Bairro", labelText: "Bairro"),
                         keyboardType: TextInputType.text,
-                        initialValue: widget
+                        initialValue:
+                        widget.controle.objetoCadastroEmEdicao?.endereco?.bairro == null ? '':
+                        widget
                             .controle.objetoCadastroEmEdicao?.endereco?.bairro
                             .toString(),
                         onSaved: (String? value) {
