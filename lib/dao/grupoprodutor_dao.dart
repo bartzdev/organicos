@@ -69,7 +69,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
       grupo.nome = linhaConsulta[1];
       grupo.cnpj = linhaConsulta[2];
       grupo.inscricaoEstadual = linhaConsulta[3];
-      grupo.distribuidor= linhaConsulta[4];
+      grupo.distribuidor= linhaConsulta[4] == 1;
       grupo.endereco = Endereco()..logradouro = linhaConsulta[5];
       grupo.endereco?.numero = linhaConsulta[6];
       grupo.endereco?.bairro = linhaConsulta[7];

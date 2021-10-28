@@ -102,6 +102,9 @@ class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
                             hintText: "Inscrição Estadual",
                             labelText: "Inscrição Estadual"),
                         keyboardType: TextInputType.text,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20)
+                        ],
                         initialValue: widget
                             .controle.objetoCadastroEmEdicao?.inscricaoEstadual,
                         onSaved: (String? value) {
