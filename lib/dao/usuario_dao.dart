@@ -1,5 +1,7 @@
 import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/dao/dao.dart';
+import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
 
 class UsuarioDAO extends DAO<Usuario>{
@@ -52,6 +54,20 @@ class UsuarioDAO extends DAO<Usuario>{
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
       usuario.ativo = linhaConsulta[5];
+    });
+    var resultadoPermissaoGrupo = await conexao.prepared('''select grupousuario.id, grupousuario.nome, 
+permissao_grupousuario.permitido, permissao_grupousuario.permissao_id from usuario 
+	inner join grupousuario on grupousuario.id = usuario.grupousuario_id
+	inner join permissao_grupousuario 	
+		on grupousuario.id = permissao_grupousuario.grupousuario_id  
+	
+	where usuario.id = ?''', [usuario.id]);
+    await resultadoConsulta.forEach((linhaConsulta) {
+      usuario.grupo = GrupoUsuario()..id = linhaConsulta[0];
+      usuario.grupo?.nome = linhaConsulta[1];
+    //  usuario.permissoes = Permissao()..id linhaConsulta[2];
+     // usuario.login = linhaConsulta[3];
+      //todo voltar aqui!!
     });
     return usuario;
 
