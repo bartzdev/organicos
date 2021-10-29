@@ -1,9 +1,13 @@
 import 'package:organicos/dao/cidade_dao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/estado_dao.dart';
+import 'package:organicos/dao/permissao_grupousuario.dart';
+import 'package:organicos/dao/permissao_usuario.dart';
 import 'package:organicos/dao/pontovenda_dao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/estado.dart';
+import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/ponto_venda.dart';
 
 class DAOFactory<T> {
@@ -11,6 +15,8 @@ class DAOFactory<T> {
     if (objectInstance is PontoVenda) return PontoVendaDAO() as DAO<T>;
     if (objectInstance is Estado) return EstadoDAO() as DAO<T>;
     if (objectInstance is Cidade) return CidadeDAO() as DAO<T>;
+    if (objectInstance is PermissaoUsuario) return PermissaoUsuarioDAO() as DAO<T>;
+    if (objectInstance is PermissaoGrupo) return PermissaoGrupoDAO() as DAO<T>;
     return null;
   }
 }
