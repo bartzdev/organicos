@@ -1,6 +1,7 @@
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/dao_factory.dart';
 import 'package:async/async.dart';
+import 'package:organicos/modelo/ponto_venda.dart';
 
 class ControleCadastros<T> {
   late DAO<T>? dao;
@@ -18,6 +19,10 @@ class ControleCadastros<T> {
 
   Future<void> excluirObjetoCadastroEmEdicao() async {
     await dao!.excluir(objetoCadastroEmEdicao!);
+  }
+
+  Future<T> carregarDados(T objeto) async {
+    return await dao!.carregarDados(objeto);
   }
 
   Future<List<T>> atualizarPesquisa({Map<String, dynamic>? filtros}) async {
