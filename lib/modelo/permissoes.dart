@@ -16,7 +16,7 @@ class Permissao {
 class PermissaoUsuario {
   Permissao? permissao;
   Usuario? usuario;
-  bool permitido = true;
+  bool? permitido = true;
 
   bool operator ==(other) {
     return (other is PermissaoUsuario && other.permissao == this.permissao);
