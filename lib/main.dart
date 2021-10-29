@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/modelo/cidade.dart';
+import 'package:organicos/modelo/endereco.dart';
+import 'package:organicos/modelo/grupo_produtor.dart';
+import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
 import 'package:organicos/visao/pontosvenda/tela_cadastro_produto.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/tela_principal.dart';
@@ -9,15 +14,6 @@ import 'modelo/tipo_produto.dart';
 
 void main() {
   runApp(MyApp());
-  Produto produto = new Produto();
-  produto.tipo = new TipoProduto();
-  produto.tipo?.id = 2;
-  produto.nome = 'Alface';
-  produto.descricao = 'Alface organico';
-  produto.preco = 3.00;
-  produto.unidade = '1';
-  ProdutoDAO prodDAO = new ProdutoDAO();
-  prodDAO.gravar(produto);
 }
 
 class MyApp extends StatelessWidget {
@@ -28,7 +24,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: TelaCadastroProduto(),
+      home: TelaPesquisaGrupoProdutor(),
     );
   }
 }
