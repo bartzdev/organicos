@@ -3,7 +3,7 @@ import 'package:organicos/modelo/endereco.dart';
 class GrupoProdutor {
   int? id;
   String? nome;
-  Endereco? endereco;
+  Endereco? endereco = Endereco();
   String? cnpj;
   String? inscricaoEstadual;
   bool distribuidor = false;

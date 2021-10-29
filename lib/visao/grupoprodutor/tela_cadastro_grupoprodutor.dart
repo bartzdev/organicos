@@ -1,60 +1,61 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/cidade.dart';
-import 'package:organicos/modelo/estado.dart';
-import 'package:organicos/modelo/ponto_venda.dart';
+import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/styles/styles.dart';
+import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 import 'package:brasil_fields/brasil_fields.dart';
-import 'package:flutter/services.dart';
 
-class TelaCadastroPontoVenda extends StatefulWidget {
-  ControleCadastros<PontoVenda> controle;
+class TelaCadastroGrupoProdutor extends StatefulWidget {
+  ControleCadastros<GrupoProdutor> controle;
   Function()? onSaved;
 
-  TelaCadastroPontoVenda(this.controle, {Key? key, this.onSaved})
+  TelaCadastroGrupoProdutor(this.controle, {Key? key, this.onSaved})
       : super(key: key);
-
-  @override
-  _TelaCadastroPontoVendaState createState() => _TelaCadastroPontoVendaState();
+  _TelaCadastroGrupoProdutorState createState() =>
+      _TelaCadastroGrupoProdutorState();
 }
 
-class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
-  ControleCadastros<Estado> controleEstados = ControleCadastros(Estado());
-  ControleCadastros<Cidade> controleCidade = ControleCadastros(Cidade());
+class _TelaCadastroGrupoProdutorState extends State<TelaCadastroGrupoProdutor> {
   var _chaveFormulario = GlobalKey<FormState>();
-  Estado? _estadoSelecionado;
 
-  Future<void> salvar(BuildContext context) async {
+  Future<void> Salvar(BuildContext context) async {
     if (_chaveFormulario.currentState != null &&
         _chaveFormulario.currentState!.validate()) {
       _chaveFormulario.currentState!.save();
       widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
         if (widget.onSaved != null) widget.onSaved!();
         Navigator.of(context).pop();
-      });
+      }).catchError((error){
+              mensagemConexao(context);
+            });
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    // TODO: implement build
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text('Cadastro de Ponto de Venda'),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: FloatingActionButton.extended(
-            icon: const Icon(Icons.check),
-            onPressed: () {
-              salvar(context);
-            },
-            label: const Text('Salvar')),
-        body: ListView(children: [
+      appBar: AppBar(
+        title: Text('Cadastro de Grupo de Produtores'),
+        centerTitle: true,
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+          icon: Icon(Icons.check),
+          onPressed: () {
+            Salvar(context);
+          },
+          label: Text('Salvar')),
+      body: ListView(
+        children: [
           Padding(
-              padding: EdgeInsets.all(20),
-              child: Form(
+            padding: EdgeInsets.all(20),
+            child: Form(
                 key: _chaveFormulario,
                 child: Column(
                   children: <Widget>[
@@ -66,6 +67,49 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                             widget.controle.objetoCadastroEmEdicao?.nome,
                         onSaved: (String? value) {
                           widget.controle.objetoCadastroEmEdicao?.nome = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Este campo é obrigatório!";
+                          }
+                          return null;
+                        }),
+                    espacoEntreCampos,
+                    TextFormField(
+                        decoration: decorationCampoTexto(
+                            hintText: "Cnpj", labelText: "Cnpj"),
+                        keyboardType: TextInputType.number,
+                        inputFormatters: [
+                          FilteringTextInputFormatter.digitsOnly,
+                          CnpjInputFormatter()
+                        ],
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao?.cnpj,
+                        onSaved: (String? value) {
+                          widget.controle.objetoCadastroEmEdicao?.cnpj = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Este campo é obrigatório!";
+                          } else if(UtilBrasilFields.isCNPJValido(value) == false ){
+                            return "Insira um cnpj valido";
+                          }
+                          return null;
+                        }),
+                    espacoEntreCampos,
+                    TextFormField(
+                        decoration: decorationCampoTexto(
+                            hintText: "Inscrição Estadual",
+                            labelText: "Inscrição Estadual"),
+                        keyboardType: TextInputType.text,
+                        inputFormatters: [
+                          LengthLimitingTextInputFormatter(20)
+                        ],
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao?.inscricaoEstadual,
+                        onSaved: (String? value) {
+                          widget.controle.objetoCadastroEmEdicao
+                              ?.inscricaoEstadual = value;
                         },
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -92,22 +136,20 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                         }),
                     espacoEntreCampos,
                     TextFormField(
-                        // maxLength: 50,
-                        inputFormatters: [
-                          FilteringTextInputFormatter.digitsOnly
-                        ],
                         decoration: decorationCampoTexto(
-                            hintText: "Número", labelText: "Número"),
+                            hintText: "Numero", labelText: "Numero"),
                         keyboardType: TextInputType.number,
                         initialValue: widget
+                            .controle.objetoCadastroEmEdicao?.endereco?.numero == null ? '' : widget
                             .controle.objetoCadastroEmEdicao?.endereco?.numero
-                            ?.toString(),
+                            .toString(),
                         onSaved: (String? value) {
                           widget.controle.objetoCadastroEmEdicao?.endereco
                                   ?.numero =
                               value != null && value.length > 0
                                   ? int.parse(value)
                                   : null;
+                          ;
                         },
                         validator: (value) {
                           if (value == null || value.trim().isEmpty) {
@@ -120,8 +162,11 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                         decoration: decorationCampoTexto(
                             hintText: "Bairro", labelText: "Bairro"),
                         keyboardType: TextInputType.text,
-                        initialValue: widget
-                            .controle.objetoCadastroEmEdicao?.endereco?.bairro,
+                        initialValue:
+                        widget.controle.objetoCadastroEmEdicao?.endereco?.bairro == null ? '':
+                        widget
+                            .controle.objetoCadastroEmEdicao?.endereco?.bairro
+                            .toString(),
                         onSaved: (String? value) {
                           widget.controle.objetoCadastroEmEdicao?.endereco
                               ?.bairro = value;
@@ -175,96 +220,25 @@ class _TelaCadastroPontoVendaState extends State<TelaCadastroPontoVenda> {
                                   }
                                   return null;
                                 }))),
-
-                    /*FutureBuilder(
-                      future: controleEstados.listar(),
-                      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                        String labelCampo = "Estado";
-                        if (!snapshot.hasData) {
-                          labelCampo = "Carregando estados...";
-                        } else {
-                          controleEstados.listaObjetosPesquisados = snapshot.data as List<Estado>;
-                        }
-
-                        return DropdownButtonFormField<Estado>(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
-                              filled: true,
-                              isDense: true,
-                              hintText: labelCampo,
-                              labelText: labelCampo),
-                          isExpanded: true,
-                          items: controleEstados.listaObjetosPesquisados == null
-                              ? []
-                              : controleEstados.listaObjetosPesquisados!.map<DropdownMenuItem<Estado>>((Estado estado) {
-                                  return DropdownMenuItem<Estado>(
-                                    value: estado,
-                                    child: Text(estado.nome!, textAlign: TextAlign.center),
-                                  );
-                                }).toList(),
-                          value: _estadoSelecionado,
-                          validator: (value) {
-                            if (value == null) {
-                              return "Campo Obrigatório!";
-                            }
-                            return null;
-                          },
-                          onChanged: (Estado? value) {
-                            setState(() {
-                              _estadoSelecionado = value;
-                              widget.controle.objetoCadastroEmEdicao?.endereco?.cidade = null;
-                              controleCidade.listaObjetosPesquisados = null;
-                            });
-                          },
-                        );
-                      }),
-                  espacoEntreCampos,
-                  FutureBuilder(
-                      future: controleCidade.listar(filtros: {'estado': _estadoSelecionado}),
-                      builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-                        String labelCampo = "Cidade";
-                        if (!snapshot.hasData) {
-                          labelCampo = "Carregando cidades...";
-                        } else {
-                          controleCidade.listaObjetosPesquisados = snapshot.data as List<Cidade>;
-                        }
-
-                        return DropdownButtonFormField<Cidade>(
-                          decoration: InputDecoration(
-                              border: OutlineInputBorder(borderSide: BorderSide(color: Colors.teal)),
-                              filled: true,
-                              isDense: true,
-                              hintText: labelCampo,
-                              labelText: labelCampo),
-                          isExpanded: true,
-                          items: controleCidade.listaObjetosPesquisados == null
-                              ? []
-                              : controleCidade.listaObjetosPesquisados!.map<DropdownMenuItem<Cidade>>((Cidade cidade) {
-                                  return DropdownMenuItem<Cidade>(
-                                    value: cidade,
-                                    child: Text(cidade.nome!, textAlign: TextAlign.center),
-                                  );
-                                }).toList(),
-                          value: widget.controle.objetoCadastroEmEdicao?.endereco?.cidade,
-                          validator: (value) {
-                            if (value == null) {
-                              return "Campo Obrigatório!";
-                            }
-                            return null;
-                          },
-                          onChanged: (Cidade? value) {
-                            setState(() {
-                              widget.controle.objetoCadastroEmEdicao?.endereco?.cidade = value;
-                            });
-                          },
-                        );
-                      })*/
+                    CheckboxListTile(
+                      value: widget.controle.objetoCadastroEmEdicao?.distribuidor,
+                      onChanged: (value){
+                        setState(() {
+                          widget.controle.objetoCadastroEmEdicao?.distribuidor = widget.controle.objetoCadastroEmEdicao?.distribuidor == null ? false : !widget.controle.objetoCadastroEmEdicao!.distribuidor;
+                        });
+                      },
+                      title: Text('Distribui produtos'),
+                      controlAffinity: ListTileControlAffinity.leading,
+                      activeColor: Colors.blue,
+                    ),
                     SizedBox(
                       height: 60,
                     )
                   ],
-                ),
-              ))
-        ]));
+                )),
+          ),
+        ],
+      ),
+    );
   }
 }
