@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/visao/pontosvenda/tela_cadastro_produto.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/tela_principal.dart';
@@ -28,7 +29,9 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-    
+
+      home: TelaCadastroProduto(ControleCadastros(Produto()))
+
     );
   }
 }
