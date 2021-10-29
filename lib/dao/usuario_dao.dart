@@ -47,7 +47,7 @@ class UsuarioDAO extends DAO<Usuario>{
     where usuario.id = ?''', [usuario.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       usuario.id = linhaConsulta[0];
-      usuario.grupo = linhaConsulta[1]
+      usuario.grupo = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
@@ -75,7 +75,7 @@ class UsuarioDAO extends DAO<Usuario>{
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo = linhaConsulta[1]
+      usuario.grupo = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
@@ -96,7 +96,7 @@ class UsuarioDAO extends DAO<Usuario>{
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo = linhaConsulta[1]
+      usuario.grupo = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
