@@ -49,6 +49,7 @@ class UsuarioDAO extends DAO<Usuario>{
     where usuario.id = ?''', [usuario.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       usuario.id = linhaConsulta[0];
+
       usuario.grupo?.id = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
@@ -96,6 +97,7 @@ class UsuarioDAO extends DAO<Usuario>{
       grupoUsuario.permissoes.add(permissaoGrupo);
     });
     usuario.grupo= grupoUsuario;
+
     return usuario;
 
 
