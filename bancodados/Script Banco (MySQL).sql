@@ -5732,6 +5732,8 @@ create table permissao_grupousuario(
   foreign key (grupousuario_id) references grupousuario(id)
 );
 
+ALTER TABLE Usuario
+MODIFY COLUMN Senha Varchar(300);
 
 
 
