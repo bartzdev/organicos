@@ -1,4 +1,4 @@
-import 'package:organicos/dao/certificadora.dart';
+import 'package:organicos/dao/certificadora_dao.dart';
 import 'package:organicos/dao/cidade_dao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/estado_dao.dart';

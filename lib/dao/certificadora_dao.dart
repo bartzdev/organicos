@@ -10,7 +10,7 @@ class CertificadoraDAO extends DAO<Certificadora>{
     await conexao.transaction((transaction) async{
       if(certificadora.id == null || certificadora.id == 0){
         var resultInsert = await transaction.prepared(
-          '''insert into certificadora (nome, ativo) values (?, ?)''',
+          '''insert into certificadora (nome, registro_ativo) values (?, ?)''',
           [
               certificadora.nome,
               certificadora.ativo
@@ -38,11 +38,11 @@ class CertificadoraDAO extends DAO<Certificadora>{
     // TODO: implement carregarDados 
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared(
-      '''select id, nome, ativo from certificadora where id = ?''', [certificadora.id]);
+      '''select id, nome, registro_ativo from certificadora where id = ?''', [certificadora.id]);
       await resultadoConsulta.forEach((linhaConsulta) {
         certificadora.id = linhaConsulta[0];
         certificadora.nome = linhaConsulta[1];
-        certificadora.ativo = linhaConsulta[2];
+        certificadora.ativo = linhaConsulta[2] == 1;
       });
       return certificadora;
   }

@@ -40,7 +40,7 @@ Widget build(BuildContext context) {
     floatingActionButton: FloatingActionButton.extended(
       icon: Icon(Icons.check),
       onPressed: (){
-        salvar(context);
+        Salvar(context);
       }, label: Text('Salvar')),
       body: ListView(
         children: [
