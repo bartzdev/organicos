@@ -10,7 +10,7 @@ class TipoProdutoDAO extends DAO<TipoProduto>{
     await conexao.transaction((transaction) async{
       if(tipo.id == null || tipo.id == 0){
         var resultInsert = await transaction.prepared(
-          '''insert into tipoproduto (nome, ativo) values (?, ?)''',
+          '''insert into tipoproduto (nome, registro_ativo) values (?, ?)''',
           [
               tipo.nome,
               tipo.ativo
@@ -38,11 +38,11 @@ class TipoProdutoDAO extends DAO<TipoProduto>{
     // TODO: implement carregarDados 
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared(
-      '''select id, nome, ativo from tipoproduto where id = ?''', [tipo.id]);
+      '''select id, nome, registro_ativo from tipoproduto where id = ?''', [tipo.id]);
       await resultadoConsulta.forEach((linhaConsulta) {
         tipo.id = linhaConsulta[0];
         tipo.nome = linhaConsulta[1];
-        tipo.ativo = linhaConsulta[2];
+        tipo.ativo = linhaConsulta[2] == 1;
       });
       return tipo;
   }

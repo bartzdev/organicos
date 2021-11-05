@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/certificadora.dart';
-import 'package:organicos/visao/pontosvenda/tela_cadastro_produto.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
@@ -21,6 +20,7 @@ var _chaveFormulario = GlobalKey<FormState>();
 Future<void> Salvar(BuildContext context) async{
   if(_chaveFormulario.currentState != null &&
   _chaveFormulario.currentState!.validate()){
+    _chaveFormulario.currentState!.save();
     widget.controle.salvarObjetoCadastroEmEdicao().then((value){
       if(widget.onSaved != null) widget.onSaved!();
       Navigator.of(context).pop();
