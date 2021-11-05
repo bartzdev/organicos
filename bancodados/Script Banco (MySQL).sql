@@ -5620,12 +5620,15 @@ insert into tipoproduto (nome) values ('Agroecológico');
 create table produto(
   id integer primary key AUTO_INCREMENT,
   tipoproduto_id integer,
+  unidade_id integer,
   nome varchar(50),
   descricao varchar(150),
   preco_unitario numeric(14,5),
   unidade varchar(3),
   registro_ativo boolean default true,
-  foreign key (tipoproduto_id) references tipoproduto(id)
+  foreign key (tipoproduto_id) references tipoproduto(id),
+  foreign key (unidade_id) references unidade(id)
+
 );
 
 create table certificadora(
@@ -5734,6 +5737,17 @@ create table permissao_grupousuario(
 
 ALTER TABLE Usuario
 MODIFY COLUMN Senha Varchar(300);
+
+create table unidade(
+id integer primary key auto_increment,
+nome varchar(20),
+registro_ativo  boolean default true
+);
+insert into unidade ( nome, registro_ativo) values ('Kilograma', true);
+insert into unidade (nome, registro_ativo) values ( 'Caixa', true);
+insert into unidade ( nome, registro_ativo) values ('Grama', true);
+insert into unidade (nome, registro_ativo) values ('Unidade', true);
+
 
 
 
