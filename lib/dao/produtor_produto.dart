@@ -5,7 +5,7 @@ import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
 
-class GrupoProdutorDAO extends DAO<GrupoProdutor> {
+class GrupoProdutorDao extends DAO<GrupoProdutor> {
   @override
   Future<void> gravar(GrupoProdutor grupo) async {
     // TODO: implement gravar
@@ -69,7 +69,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
       grupo.nome = linhaConsulta[1];
       grupo.cnpj = linhaConsulta[2];
       grupo.inscricaoEstadual = linhaConsulta[3];
-      grupo.distribuidor= linhaConsulta[4] == 1;
+      grupo.distribuidor= linhaConsulta[4];
       grupo.endereco = Endereco()..logradouro = linhaConsulta[5];
       grupo.endereco?.numero = linhaConsulta[6];
       grupo.endereco?.bairro = linhaConsulta[7];
@@ -106,7 +106,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
     List<GrupoProdutor> grupos = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    p.id, p.nome from grupoprodutores p where p.registro_ativo = 1 and lower(p.nome) like ?
+    p.id, p.nome from pontovenda p where p.registro_ativo = 1 and lower(p.nome) like ?
     order by lower(p.nome)''', ['%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var grupo = GrupoProdutor();

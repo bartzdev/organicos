@@ -80,23 +80,24 @@ class _TelaPesquisaGrupoProdutorState extends State<TelaPesquisaGrupoProdutor> {
                   style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
                   textAlign: TextAlign.left
                   ,)),
-                IconButton(
-                  onPressed: () async{
-                    _controle.carregarDados(grupo).then((value) {
-                      _controle.objetoCadastroEmEdicao = value;
-                      Navigator.push(
-                        context, MaterialPageRoute(
-                    builder: (context) =>
-                        TelaCadastroGrupoProdutor(_controle, onSaved: () {
-                          setState(() {
-                            _controle.atualizarPesquisa(filtros: {
-                              'filtro': _controladorCampoPesquisa.text
-                            });
-                          });
-                        })));
-                    });
-                  }, icon: Icon(Icons.edit),
-                  color: Colors.orange.shade600),
+               IconButton(
+              onPressed: () async {
+                //Ação do botão Editar
+                //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
+                _controle.carregarDados(grupo).then((value) {
+                  _controle.objetoCadastroEmEdicao = value;
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaCadastroGrupoProdutor(_controle, onSaved: () {
+                                setState(() {
+                                  _controle.atualizarPesquisa(filtros: {'filtro': _controladorCampoPesquisa.text});
+                                });
+                              })));
+                });
+              },
+              icon: const Icon(Icons.edit),
+              color: Colors.orange.shade600),
           IconButton(
               onPressed: () {
                 showDialog(
