@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/produto.dart';
+import 'package:organicos/modelo/unidade.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
@@ -20,6 +21,7 @@ Future<void> salvar(BuildContext context) async {
 }
 
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
+  ControleCadastros<Unidade> controleUnidade = ControleCadastros(Unidade());
   final _formKey = GlobalKey<FormState>();
 
   Future<void> salvar(BuildContext context) async {
@@ -92,12 +94,15 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                               hintText: "Preço", labelText: "Preço"),
                           keyboardType: TextInputType.number,
                           initialValue: widget
-                              .controle.objetoCadastroEmEdicao?.preco
-                              .toString(),
+                                      .controle.objetoCadastroEmEdicao?.preco ==
+                                  null
+                              ? ""
+                              : widget.controle.objetoCadastroEmEdicao?.preco
+                                  .toString(),
                           onSaved: (String? value) {
                             if (value != null && value.length > 0) {
                               widget.controle.objetoCadastroEmEdicao?.preco =
-                                  double.parse(value);
+                                  double.parse(value.replaceAll(',', '.'));
                             } else {
                               widget.controle.objetoCadastroEmEdicao?.preco =
                                   null;
@@ -110,39 +115,6 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                             return null;
                           }),
                       espacoEntreCampos,
-                      DropdownButton<String>(
-                          focusColor: Colors.blue,
-                          value: null,
-                          style: TextStyle(color: Colors.white),
-                          iconEnabledColor: Colors.black,
-                          items: <String>[
-                            'Kilo',
-                            'Caixa',
-                            'Unidade',
-                          ].map<DropdownMenuItem<String>>((String value) {
-                            return DropdownMenuItem<String>(
-                              value: value,
-                              child: Text(
-                                value,
-                                style: TextStyle(color: Colors.black),
-                              ),
-                            );
-                          }).toList(),
-                          hint: Text(
-                            _msgPadrao,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 14,
-                            ),
-                          ),
-                          // aqui vai Onchange
-                          onChanged: (String? value) {
-                            setState(() {
-                              widget.controle.objetoCadastroEmEdicao?.unidade =
-                                  value;
-                              _msgPadrao = value!;
-                            });
-                          }),
                     ],
                   )))
         ]));

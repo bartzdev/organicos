@@ -1,6 +1,7 @@
 import 'package:organicos/modelo/produto.dart';
 import 'package:galileo_sqljocky5/sqljocky.dart';
 import 'package:organicos/modelo/tipo_produto.dart';
+import 'package:organicos/modelo/unidade.dart';
 import 'conexao.dart';
 import 'dao.dart';
 
@@ -12,13 +13,13 @@ class ProdutoDAO extends DAO<Produto> {
     await conexao.transaction((transacao) async {
       if (produto.id == null || produto.id == 0) {
         var resultadoInsert = await transacao.prepared(
-            '''insert into produto (tipoproduto_id, nome, descricao, preco_unitario, unidade) values (?, ?, ?, ?, ?)''',
+            '''insert into produto (tipoproduto_id, nome, descricao, preco_unitario, unidade_id) values (?, ?, ?, ?, ?)''',
             [
               produto.tipo?.id,
               produto.nome,
               produto.descricao,
               produto.preco,
-              produto.unidade
+              produto.unidade?.id
             ]);
         produto.id = resultadoInsert.insertId;
       } else {
@@ -28,7 +29,7 @@ class ProdutoDAO extends DAO<Produto> {
               produto.nome,
               produto.descricao,
               produto.preco,
-              produto.unidade,
+              produto.unidade?.id,
               produto.id
             ]);
       }
@@ -49,7 +50,7 @@ class ProdutoDAO extends DAO<Produto> {
     List<Produto> produtos = [];
     MySqlConnection conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared(
-        'select id, nome, descricao, preco_unitario, unidade from produto order by lower(nome) where registro_ativo = 1',
+        'select id, nome, descricao, preco_unitario, unidade_id from produto where registro_ativo = 1  order by lower(nome)',
         []);
 
     await resultadoConsulta.forEach((linhaConsulta) {
@@ -58,7 +59,10 @@ class ProdutoDAO extends DAO<Produto> {
       produto.nome = linhaConsulta[1];
       produto.descricao = linhaConsulta[2];
       produto.preco = linhaConsulta[3];
-      produto.unidade = linhaConsulta[4];
+      if (linhaConsulta[4] != null) {
+        produto.unidade = new Unidade()..id = linhaConsulta[4];
+      }
+
       produtos.add(produto);
     });
     return produtos;

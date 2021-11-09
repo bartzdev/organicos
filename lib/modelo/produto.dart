@@ -1,4 +1,5 @@
 import 'package:organicos/modelo/tipo_produto.dart';
+import 'package:organicos/modelo/unidade.dart';
 
 class Produto {
   int? id;
@@ -6,7 +7,7 @@ class Produto {
   String? nome;
   String? descricao;
   double? preco;
-  String? unidade;
+  Unidade? unidade;
   bool ativo = true;
 
   bool operator ==(other) {
