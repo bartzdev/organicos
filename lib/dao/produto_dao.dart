@@ -24,12 +24,13 @@ class ProdutoDAO extends DAO<Produto> {
         produto.id = resultadoInsert.insertId;
       } else {
         await transacao.prepared(
-            ''' update produto set nome = ?, preco_unitario = ?, unidade = ?, registro_ativo = ? where id = ?''',
+            ''' update produto set nome = ?, descricao = ?, preco_unitario = ?, unidade_id = ?, registro_ativo = ? where id = ?''',
             [
               produto.nome,
               produto.descricao,
               produto.preco,
               produto.unidade?.id,
+              produto.ativo,
               produto.id
             ]);
       }
@@ -37,11 +38,26 @@ class ProdutoDAO extends DAO<Produto> {
   }
 
   @override
-  Future<void> excluir(Produto produto) async {}
+  Future<void> excluir(Produto produto) async {
+    produto.ativo = false;
+    await gravar(produto);
+  }
 
   @override
   Future<Produto> carregarDados(Produto produto,
+      //realizar o join com a tabela unidade depois
       {Map<String, dynamic>? filtros}) async {
+    var conexao = await Conexao.getConexao();
+    var resultadoConsulta = await conexao.prepared('''select 
+    produto.id, produto.nome, produto.descricao, produto.preco_unitario, produto.registro_ativo 
+    from produto where  produto.id = ? ''', [produto.id]);
+    await resultadoConsulta.forEach((linhaConsulta) {
+      produto.id = linhaConsulta[0];
+      produto.nome = linhaConsulta[1];
+      produto.descricao = linhaConsulta[2];
+      produto.preco = linhaConsulta[3];
+      produto.ativo = linhaConsulta[4] == 1;
+    });
     return produto;
   }
 
@@ -69,7 +85,22 @@ class ProdutoDAO extends DAO<Produto> {
   }
 
   @override
-  Future<List<Produto>> pesquisar({Map<String, dynamic>? filtros}) {
-    return listar(filtros: filtros);
+  Future<List<Produto>> pesquisar({Map<String, dynamic>? filtros}) async {
+    String filtro = filtros != null && filtros.containsKey('filtro')
+        ? filtros['filtro']
+        : '';
+
+    List<Produto> pontos = [];
+    var conexao = await Conexao.getConexao();
+    var resultadoConsulta = await conexao.prepared('''select 
+    p.id, p.nome from produto p where p.registro_ativo = 1 and lower(p.nome) like ?
+    order by lower(p.nome)''', ['%${filtro.toLowerCase()}%']);
+    await resultadoConsulta.forEach((linhaConsulta) {
+      var produto = Produto();
+      produto.id = linhaConsulta[0];
+      produto.nome = linhaConsulta[1];
+      pontos.add(produto);
+    });
+    return pontos;
   }
 }

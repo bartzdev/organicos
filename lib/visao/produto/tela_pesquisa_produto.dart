@@ -4,8 +4,7 @@ import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/visao/produto/tela_cadastro_produto.dart';
 
 class TelaPesquisaProduto extends StatefulWidget {
-  TelaPesquisaProduto({Key? key, Null Function(Produto produto) onItemSelected})
-      : super(key: key);
+  TelaPesquisaProduto({Key? key}) : super(key: key);
 
   @override
   _TelaPesquisaProdutoState createState() => _TelaPesquisaProdutoState();
@@ -26,6 +25,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
         onPressed: () {
           setState(() {
             _pesquisaAtiva = true;
+            _controle.atualizarPesquisa();
           });
         },
         icon: Icon(Icons.search));
@@ -89,7 +89,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
           IconButton(
               onPressed: () async {
                 //Ação do botão Editar
-                //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
+                //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(produto);
                 _controle.carregarDados(produto).then((value) {
                   _controle.objetoCadastroEmEdicao = value;
                   Navigator.push(
