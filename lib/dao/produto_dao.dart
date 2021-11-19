@@ -49,14 +49,16 @@ class ProdutoDAO extends DAO<Produto> {
       {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    produto.id, produto.nome, produto.descricao, produto.preco_unitario, produto.registro_ativo 
+    produto.id, tipoproduto_id, unidade_id, produto.nome, produto.descricao, produto.preco_unitario, produto.registro_ativo 
     from produto where  produto.id = ? ''', [produto.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       produto.id = linhaConsulta[0];
-      produto.nome = linhaConsulta[1];
-      produto.descricao = linhaConsulta[2];
-      produto.preco = linhaConsulta[3];
-      produto.ativo = linhaConsulta[4] == 1;
+      produto.tipo = TipoProduto()..id = linhaConsulta[1];
+      produto.unidade = Unidade()..id = linhaConsulta[2];
+      produto.nome = linhaConsulta[3];
+      produto.descricao = linhaConsulta[4];
+      produto.preco = linhaConsulta[5];
+      produto.ativo = linhaConsulta[6] == 1;
     });
     return produto;
   }

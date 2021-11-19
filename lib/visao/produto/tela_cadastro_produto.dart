@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/modelo/unidade.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
@@ -90,15 +92,20 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                           }),
                       espacoEntreCampos,
                       TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+[\,\.]?\d{0,2}')),
+                          ],
                           decoration: decorationCampoTexto(
                               hintText: "Preço", labelText: "Preço"),
-                          keyboardType: TextInputType.number,
-                          initialValue: widget
-                                      .controle.objetoCadastroEmEdicao?.preco ==
-                                  null
-                              ? ""
-                              : widget.controle.objetoCadastroEmEdicao?.preco
-                                  .toString(),
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: true),
+                          initialValue:
+                              widget.controle.objetoCadastroEmEdicao?.preco ==
+                                      null
+                                  ? ""
+                                  : formatDouble(widget
+                                      .controle.objetoCadastroEmEdicao?.preco),
                           onSaved: (String? value) {
                             if (value != null && value.length > 0) {
                               widget.controle.objetoCadastroEmEdicao?.preco =
@@ -115,6 +122,56 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                             return null;
                           }),
                       espacoEntreCampos,
+                      FutureBuilder(
+                          future: controleUnidade.listar(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List> snapshot) {
+                            String labelCampo = "Unidade";
+                            if (!snapshot.hasData) {
+                              labelCampo = "Carregando unidades...";
+                            } else {
+                              controleUnidade.listaObjetosPesquisados =
+                                  snapshot.data as List<Unidade>;
+                            }
+
+                            return DropdownButtonFormField<Unidade>(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal)),
+                                  filled: true,
+                                  isDense: true,
+                                  hintText: labelCampo,
+                                  labelText: labelCampo),
+                              isExpanded: true,
+                              items: controleUnidade.listaObjetosPesquisados ==
+                                      null
+                                  ? []
+                                  : controleUnidade.listaObjetosPesquisados!
+                                      .map<DropdownMenuItem<Unidade>>(
+                                          (Unidade unidade) {
+                                      return DropdownMenuItem<Unidade>(
+                                        value: unidade,
+                                        child: Text(unidade.nome!,
+                                            textAlign: TextAlign.center),
+                                      );
+                                    }).toList(),
+                              value: widget
+                                  .controle.objetoCadastroEmEdicao?.unidade,
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Campo Obrigatório!";
+                                }
+                                return null;
+                              },
+                              onChanged: (Unidade? value) {
+                                setState(() {
+                                  widget.controle.objetoCadastroEmEdicao
+                                      ?.unidade = value;
+                                });
+                              },
+                            );
+                          }),
                     ],
                   )))
         ]));

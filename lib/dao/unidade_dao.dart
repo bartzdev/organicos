@@ -40,7 +40,7 @@ class UnidadeDAO extends DAO<Unidade> {
     List<Unidade> unidades = [];
     MySqlConnection conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared(
-        'select id, nome from unidade order by lower(nome) where registro_ativo = 1',
+        'select id, nome from unidade  where registro_ativo = 1 order by lower(nome)',
         []);
 
     await resultadoConsulta.forEach((linhaConsulta) {

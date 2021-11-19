@@ -11,7 +11,8 @@ class TelaPesquisaPontoVenda extends StatefulWidget {
 }
 
 class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
-  ControleCadastros<PontoVenda> _controle = ControleCadastros<PontoVenda>(PontoVenda());
+  ControleCadastros<PontoVenda> _controle =
+      ControleCadastros<PontoVenda>(PontoVenda());
   bool _pesquisaAtiva = false;
   late IconButton _botaoPesquisar;
   late IconButton _botaoCancelarPesquisa;
@@ -79,7 +80,10 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
             title: Row(children: [
           Expanded(
               child: Text(pontoVenda.nome == null ? '' : pontoVenda.nome!,
-                  style: const TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                  style: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 18,
+                      fontWeight: FontWeight.normal),
                   textAlign: TextAlign.left)),
           IconButton(
               onPressed: () async {
@@ -90,9 +94,12 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => TelaCadastroPontoVenda(_controle, onSaved: () {
+                          builder: (context) =>
+                              TelaCadastroPontoVenda(_controle, onSaved: () {
                                 setState(() {
-                                  _controle.atualizarPesquisa(filtros: {'filtro': _controladorCampoPesquisa.text});
+                                  _controle.atualizarPesquisa(filtros: {
+                                    'filtro': _controladorCampoPesquisa.text
+                                  });
                                 });
                               })));
                 });
@@ -105,20 +112,29 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
                     context: context,
                     builder: (BuildContext builder) {
                       return AlertDialog(
-                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                        shape: const RoundedRectangleBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0))),
                         title: const Text('ATENÇÃO'),
-                        content: const Text('Deseja realmente excluir este registro?', textAlign: TextAlign.center),
+                        content: const Text(
+                            'Deseja realmente excluir este registro?',
+                            textAlign: TextAlign.center),
                         actionsAlignment: MainAxisAlignment.center,
                         actions: <Widget>[
                           TextButton(
                               onPressed: () {
                                 //Ação do botão SIM
-                                _controle.carregarDados(pontoVenda).then((value) {
+                                _controle
+                                    .carregarDados(pontoVenda)
+                                    .then((value) {
                                   _controle.objetoCadastroEmEdicao = value;
-                                  _controle.excluirObjetoCadastroEmEdicao().then((_) {
+                                  _controle
+                                      .excluirObjetoCadastroEmEdicao()
+                                      .then((_) {
                                     Navigator.of(context).pop();
                                     setState(() {
-                                      _controle.listaObjetosPesquisados?.remove(pontoVenda);
+                                      _controle.listaObjetosPesquisados
+                                          ?.remove(pontoVenda);
                                     });
                                   });
                                 });
@@ -155,9 +171,12 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => TelaCadastroPontoVenda(_controle, onSaved: () {
+                    builder: (context) =>
+                        TelaCadastroPontoVenda(_controle, onSaved: () {
                           setState(() {
-                            _controle.atualizarPesquisa(filtros: {'filtro': _controladorCampoPesquisa.text});
+                            _controle.atualizarPesquisa(filtros: {
+                              'filtro': _controladorCampoPesquisa.text
+                            });
                           });
                         })));
           },
@@ -179,7 +198,8 @@ class _TelaPesquisaPontoVendaState extends State<TelaPesquisaPontoVenda> {
             return ListView.builder(
               itemCount: _controle.listaObjetosPesquisados!.length,
               itemBuilder: (BuildContext context, int index) {
-                return _linhaListaZebrada(_controle.listaObjetosPesquisados![index], index);
+                return _linhaListaZebrada(
+                    _controle.listaObjetosPesquisados![index], index);
               },
             );
           }),
