@@ -4,7 +4,7 @@ import 'package:organicos/modelo/grupo_usuario.dart';
 import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
 
-class UsuarioDAO extends DAO<Usuario>{
+class UsuarioDAO extends DAO<Usuario> {
   @override
   Future<void> gravar(Usuario usuario) async {
     var conexao = await Conexao.getConexao();
@@ -24,23 +24,24 @@ class UsuarioDAO extends DAO<Usuario>{
         ]);
         usuario.id = resultadoInsert.insertId;
       } else {
-        await transacao.prepared('''update usuario set
-          grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''', [
-          usuario.id,
-          usuario.grupo,
-          usuario.nome,
-          usuario.login,
-          usuario.senha,
-          usuario.ativo
-        ]);
+        await transacao.prepared(
+            '''update usuario set
+          grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
+            [
+              usuario.id,
+              usuario.grupo,
+              usuario.nome,
+              usuario.login,
+              usuario.senha,
+              usuario.ativo
+            ]);
       }
     });
-
   }
 
-
   @override
-  Future<Usuario> carregarDados(Usuario usuario, {Map<String, dynamic>? filtros})async {
+  Future<Usuario> carregarDados(Usuario usuario,
+      {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
@@ -70,7 +71,8 @@ class UsuarioDAO extends DAO<Usuario>{
       permissaoUsuario.permissao = new Permissao();
       permissaoUsuario.permissao?.id = linhaConsulta[0];
       permissaoUsuario.permissao?.nome = linhaConsulta[1];
-      permissaoUsuario.permitido = linhaConsulta[2] == null? null : linhaConsulta[2] == 1;
+      permissaoUsuario.permitido =
+          linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
       usuario.permissoes.add(permissaoUsuario);
     });
     GrupoUsuario grupoUsuario = GrupoUsuario();
@@ -92,32 +94,31 @@ class UsuarioDAO extends DAO<Usuario>{
 
       permissaoGrupo.permissao?.id = linhaConsulta[0];
       permissaoGrupo.permissao?.nome = linhaConsulta[1];
-      permissaoGrupo.permitido = linhaConsulta[2] == null? false : linhaConsulta[2] == 1;
+      permissaoGrupo.permitido =
+          linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
 
       grupoUsuario.permissoes.add(permissaoGrupo);
     });
-    usuario.grupo= grupoUsuario;
+    usuario.grupo = grupoUsuario;
 
     return usuario;
-
-
   }
 
   @override
-  Future<void> excluir(Usuario usuario) async{
+  Future<void> excluir(Usuario usuario) async {
     usuario.ativo = false;
     await gravar(usuario);
   }
 
   @override
-  Future<List<Usuario>> listar({Map<String, dynamic>? filtros}) async{
+  Future<List<Usuario>> listar({Map<String, dynamic>? filtros}) async {
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     id, grupousuario_id, nome, login, senha
     from usuario 
     where usuario.registro_ativo = 1
-    order by lower(p.nome)''', []);
+    order by lower(nome)''', []);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
@@ -131,10 +132,16 @@ class UsuarioDAO extends DAO<Usuario>{
   }
 
   @override
-  Future<List<Usuario>> pesquisar({Map<String, dynamic>? filtros}) async{
-    String filtro = filtros != null && filtros.containsKey('filtro') ? filtros['filtro'] : '';
-     String filtroLogin = filtros != null && filtros.containsKey('login') ? filtros['login'] : '';
-      String filtroSenha = filtros != null && filtros.containsKey('senha') ? filtros['senha'] : '';
+  Future<List<Usuario>> pesquisar({Map<String, dynamic>? filtros}) async {
+    String filtro = filtros != null && filtros.containsKey('filtro')
+        ? filtros['filtro']
+        : '';
+    String? filtroLogin = filtros != null && filtros.containsKey('login')
+        ? filtros['login']
+        : null;
+    String? filtroSenha = filtros != null && filtros.containsKey('senha')
+        ? filtros['senha']
+        : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
@@ -143,7 +150,8 @@ class UsuarioDAO extends DAO<Usuario>{
     where usuario.registro_ativo = 1 and
       case when ? is not null then usuario.login = ? and usuario.senha = ? else  
      lower(nome) like ? end
-    order by lower(nome)''', [filtroLogin,filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
+    order by lower(nome)''',
+        [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
