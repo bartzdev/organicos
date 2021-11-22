@@ -25,7 +25,7 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
   ControleCadastros<GrupoUsuario> controlegrupos =
       ControleCadastros(GrupoUsuario());
   var _chaveFormulario = GlobalKey<FormState>();
-  GrupoUsuario? _grupoSelecionado;
+
   bool _obscureText = true;
 
   Future<void> salvar(BuildContext context) async {
@@ -142,7 +142,8 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                                               textAlign: TextAlign.center),
                                         );
                                       }).toList(),
-                            value: _grupoSelecionado,
+                            value:
+                                widget.controle.objetoCadastroEmEdicao?.grupo,
                             validator: (value) {
                               if (value == null) {
                                 return "Campo Obrigatório!";
@@ -151,7 +152,8 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                             },
                             onChanged: (GrupoUsuario? value) {
                               setState(() {
-                                _grupoSelecionado = value;
+                                widget.controle.objetoCadastroEmEdicao?.grupo =
+                                    value;
                               });
                             },
                           );

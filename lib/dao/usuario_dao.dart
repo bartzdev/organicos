@@ -16,7 +16,7 @@ class UsuarioDAO extends DAO<Usuario> {
           values 
           (?, ?, ?, ?, ?, ?)''', [
           usuario.id,
-          usuario.grupo,
+          usuario.grupo?.id,
           usuario.nome,
           usuario.login,
           usuario.senha,
@@ -29,7 +29,7 @@ class UsuarioDAO extends DAO<Usuario> {
           grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
             [
               usuario.id,
-              usuario.grupo,
+              usuario.grupo?.id,
               usuario.nome,
               usuario.login,
               usuario.senha,
