@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/produto.dart';
+import 'package:organicos/modelo/tipo_produto.dart';
 import 'package:organicos/modelo/unidade.dart';
 import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/styles/styles.dart';
@@ -24,6 +25,8 @@ Future<void> salvar(BuildContext context) async {
 
 class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
   ControleCadastros<Unidade> controleUnidade = ControleCadastros(Unidade());
+  ControleCadastros<TipoProduto> controleTipoProduto =
+      ControleCadastros(TipoProduto());
   final _formKey = GlobalKey<FormState>();
 
   Future<void> salvar(BuildContext context) async {
@@ -72,54 +75,56 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                             return null;
                           }),
                       espacoEntreCampos,
-                      TextFormField(
-                          maxLines: null,
-                          maxLength: 150,
-                          decoration: decorationCampoTexto(
-                              hintText: "Descrição", labelText: "Descrição"),
-                          keyboardType: TextInputType.multiline,
-                          initialValue:
-                              widget.controle.objetoCadastroEmEdicao?.descricao,
-                          onSaved: (String? value) {
-                            widget.controle.objetoCadastroEmEdicao?.descricao =
-                                value;
-                          },
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Este campo é obrigatório!";
-                            }
-                            return null;
-                          }),
-                      espacoEntreCampos,
-                      TextFormField(
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp(r'^\d+[\,\.]?\d{0,2}')),
-                          ],
-                          decoration: decorationCampoTexto(
-                              hintText: "Preço", labelText: "Preço"),
-                          keyboardType: TextInputType.numberWithOptions(
-                              signed: false, decimal: true),
-                          initialValue:
-                              widget.controle.objetoCadastroEmEdicao?.preco ==
-                                      null
-                                  ? ""
-                                  : formatDouble(widget
-                                      .controle.objetoCadastroEmEdicao?.preco),
-                          onSaved: (String? value) {
-                            if (value != null && value.length > 0) {
-                              widget.controle.objetoCadastroEmEdicao?.preco =
-                                  double.parse(value.replaceAll(',', '.'));
+                      FutureBuilder(
+                          future: controleTipoProduto.listar(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List> snapshot) {
+                            String labelCampo = "Tipo";
+                            if (!snapshot.hasData) {
+                              labelCampo = "Carregando tipo do produto...";
                             } else {
-                              widget.controle.objetoCadastroEmEdicao?.preco =
-                                  null;
+                              controleTipoProduto.listaObjetosPesquisados =
+                                  snapshot.data as List<TipoProduto>;
                             }
-                          },
-                          validator: (value) {
-                            if (value == null || value.trim().isEmpty) {
-                              return "Este campo é obrigatório!";
-                            }
-                            return null;
+
+                            return DropdownButtonFormField<TipoProduto>(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal)),
+                                  filled: true,
+                                  isDense: true,
+                                  hintText: labelCampo,
+                                  labelText: labelCampo),
+                              isExpanded: true,
+                              items: controleTipoProduto
+                                          .listaObjetosPesquisados ==
+                                      null
+                                  ? []
+                                  : controleTipoProduto.listaObjetosPesquisados!
+                                      .map<DropdownMenuItem<TipoProduto>>(
+                                          (TipoProduto tipoProduto) {
+                                      return DropdownMenuItem<TipoProduto>(
+                                        value: tipoProduto,
+                                        child: Text(tipoProduto.nome!,
+                                            textAlign: TextAlign.center),
+                                      );
+                                    }).toList(),
+                              value:
+                                  widget.controle.objetoCadastroEmEdicao?.tipo,
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Campo Obrigatório!";
+                                }
+                                return null;
+                              },
+                              onChanged: (TipoProduto? value) {
+                                setState(() {
+                                  widget.controle.objetoCadastroEmEdicao?.tipo =
+                                      value;
+                                });
+                              },
+                            );
                           }),
                       espacoEntreCampos,
                       FutureBuilder(
@@ -171,6 +176,58 @@ class _TelaCadastroProdutoState extends State<TelaCadastroProduto> {
                                 });
                               },
                             );
+                          }),
+                      espacoEntreCampos,
+                      TextFormField(
+                          maxLines: null,
+                          maxLength: 150,
+                          decoration: decorationCampoTexto(
+                              hintText: "Descrição", labelText: "Descrição"),
+                          keyboardType: TextInputType.multiline,
+                          initialValue:
+                              widget.controle.objetoCadastroEmEdicao?.descricao,
+                          onSaved: (String? value) {
+                            if (value == null || value.trim().isEmpty) {
+                              widget.controle.objetoCadastroEmEdicao
+                                  ?.descricao = null;
+                            } else {
+                              widget.controle.objetoCadastroEmEdicao
+                                  ?.descricao = value;
+                            }
+                          },
+                          validator: (value) {
+                            return null;
+                          }),
+                      espacoEntreCampos,
+                      TextFormField(
+                          inputFormatters: [
+                            FilteringTextInputFormatter.allow(
+                                RegExp(r'^\d+[\,\.]?\d{0,2}')),
+                          ],
+                          decoration: decorationCampoTexto(
+                              hintText: "Preço", labelText: "Preço"),
+                          keyboardType: TextInputType.numberWithOptions(
+                              signed: false, decimal: true),
+                          initialValue:
+                              widget.controle.objetoCadastroEmEdicao?.preco ==
+                                      null
+                                  ? ""
+                                  : formatDouble(widget
+                                      .controle.objetoCadastroEmEdicao?.preco),
+                          onSaved: (String? value) {
+                            if (value != null && value.length > 0) {
+                              widget.controle.objetoCadastroEmEdicao?.preco =
+                                  double.parse(value.replaceAll(',', '.'));
+                            } else {
+                              widget.controle.objetoCadastroEmEdicao?.preco =
+                                  null;
+                            }
+                          },
+                          validator: (value) {
+                            if (value == null || value.trim().isEmpty) {
+                              return "Este campo é obrigatório!";
+                            }
+                            return null;
                           }),
                     ],
                   )))

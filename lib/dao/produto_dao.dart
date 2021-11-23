@@ -24,8 +24,9 @@ class ProdutoDAO extends DAO<Produto> {
         produto.id = resultadoInsert.insertId;
       } else {
         await transacao.prepared(
-            ''' update produto set nome = ?, descricao = ?, preco_unitario = ?, unidade_id = ?, registro_ativo = ? where id = ?''',
+            ''' update produto  set tipoproduto_id = ?, nome = ?, descricao = ?, preco_unitario = ?, unidade_id = ?, registro_ativo = ? where id = ?''',
             [
+              produto.tipo?.id,
               produto.nome,
               produto.descricao,
               produto.preco,
@@ -53,8 +54,13 @@ class ProdutoDAO extends DAO<Produto> {
     from produto where  produto.id = ? ''', [produto.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       produto.id = linhaConsulta[0];
-      produto.tipo = TipoProduto()..id = linhaConsulta[1];
-      produto.unidade = Unidade()..id = linhaConsulta[2];
+      if (linhaConsulta[1] != null) {
+        produto.tipo = TipoProduto()..id = linhaConsulta[1];
+      }
+      if (linhaConsulta[2] != null) {
+        produto.unidade = Unidade()..id = linhaConsulta[2];
+      }
+
       produto.nome = linhaConsulta[3];
       produto.descricao = linhaConsulta[4];
       produto.preco = linhaConsulta[5];

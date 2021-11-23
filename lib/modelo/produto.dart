@@ -9,6 +9,7 @@ class Produto {
   double? preco;
   Unidade? unidade;
   bool ativo = true;
+
   @override
   bool operator ==(other) {
     return (other is Produto && other.id == this.id);
