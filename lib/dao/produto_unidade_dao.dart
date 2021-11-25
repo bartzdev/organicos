@@ -20,7 +20,10 @@ class Produto_unidade_DAO extends DAO<Produto> {
             ''' update produto set nome = ?, registro_ativo = ? where id = ?''',
             [
               produto.nome,
-              // produto.registro_ativo
+              // produto.registro
+              produto.descricao,
+              produto.preco,
+              produto.unidade,
               produto.id
             ]);
       }

@@ -2,37 +2,31 @@ import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
 
-class GrupoUsuarioDAO extends DAO<GrupoUsuario>{
+class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
   @override
   Future<void> gravar(GrupoUsuario grupoUsuario) async {
     var conexao = await Conexao.getConexao();
 
     await conexao.transaction((transacao) async {
       if (grupoUsuario.id == null || grupoUsuario.id == 0) {
-        var resultadoInsert = await transacao.prepared('''insert into grupousuario 
+        var resultadoInsert = await transacao.prepared(
+            '''insert into grupousuario 
           (id, nome, registro_ativo) 
           values 
-          (?, ?, ?)''', [
-          grupoUsuario.id,
-          grupoUsuario.nome,
-          grupoUsuario.ativo
-        ]);
+          (?, ?, ?)''',
+            [grupoUsuario.id, grupoUsuario.nome, grupoUsuario.ativo]);
         grupoUsuario.id = resultadoInsert.insertId;
       } else {
         await transacao.prepared('''update grupousuario set
-          nome = ?, registro_ativo = ? where id = ?''', [
-          grupoUsuario.id,
-          grupoUsuario.nome,
-          grupoUsuario.ativo
-        ]);
+          nome = ?, registro_ativo = ? where id = ?''',
+            [grupoUsuario.id, grupoUsuario.nome, grupoUsuario.ativo]);
       }
     });
-
   }
 
-
   @override
-  Future<GrupoUsuario> carregarDados(GrupoUsuario grupoUsuario, {Map<String, dynamic>? filtros})async {
+  Future<GrupoUsuario> carregarDados(GrupoUsuario grupoUsuario,
+      {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     id, nome, registro_ativo
@@ -44,24 +38,23 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario>{
       grupoUsuario.ativo = linhaConsulta[2];
     });
     return grupoUsuario;
-
   }
 
   @override
-  Future<void> excluir(GrupoUsuario grupoUsuario) async{
+  Future<void> excluir(GrupoUsuario grupoUsuario) async {
     grupoUsuario.ativo = false;
     await gravar(grupoUsuario);
   }
 
   @override
-  Future<List<GrupoUsuario>> listar({Map<String, dynamic>? filtros}) async{
+  Future<List<GrupoUsuario>> listar({Map<String, dynamic>? filtros}) async {
     List<GrupoUsuario> grupos = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     id, nome
     from grupousuario 
     where grupousuario.registro_ativo = 1
-    order by lower(p.nome)''', []);
+    ''', []);
     await resultadoConsulta.forEach((linhaConsulta) {
       var grupoUsuario = GrupoUsuario();
       grupoUsuario.id = linhaConsulta[0];
@@ -72,14 +65,16 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario>{
   }
 
   @override
-  Future<List<GrupoUsuario>> pesquisar({Map<String, dynamic>? filtros}) async{
-    String filtro = filtros != null && filtros.containsKey('filtro') ? filtros['filtro'] : '';
+  Future<List<GrupoUsuario>> pesquisar({Map<String, dynamic>? filtros}) async {
+    String filtro = filtros != null && filtros.containsKey('filtro')
+        ? filtros['filtro']
+        : '';
     List<GrupoUsuario> grupos = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     id, nome
-    from grupousuario where grupousuario.registro_ativo = 1 and lower(p.nome) like ?
-    order by lower(p.nome)''', ['%${filtro.toLowerCase()}%']);
+    from grupousuario where grupousuario.registro_ativo = 1 and lower(nome) like ?
+    order by lower(nome)''', ['%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var grupoUsuario = GrupoUsuario();
       grupoUsuario.id = linhaConsulta[0];
@@ -88,4 +83,4 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario>{
     });
     return grupos;
   }
-  }
+}
