@@ -5,6 +5,7 @@ import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
+import 'package:organicos/visao/login/login.dart';
 import 'package:organicos/visao/pontosvenda/tela_cadastro_produto.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/tela_principal.dart';
@@ -20,12 +21,8 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TelaPesquisaCertificadora(),
+    return MaterialApp(      
+      home: Login(),
     );
   }
 }
