@@ -13,7 +13,7 @@ class UnidadeDAO extends DAO<Unidade> {
     await conexao.transaction((transacao) async {
       if (unidade.id == null || unidade.id == 0) {
         var resultadoInsert = await transacao.prepared(
-            '''insert into produto (id, nome) values (?, ?)''',
+            '''insert into unidade (nome) values (?)''',
             [unidade.id, unidade.nome]);
         unidade.id = resultadoInsert.insertId!;
       } else {

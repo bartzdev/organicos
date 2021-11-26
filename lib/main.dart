@@ -13,6 +13,7 @@ import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
 import 'dao/produto_dao.dart';
 import 'modelo/produto.dart';
 import 'modelo/tipo_produto.dart';
+import 'package:organicos/visao/login/login.dart';
 
 void main() {
   runApp(MyApp());
