@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
  ThemeData temaGeralApp = ThemeData(
         primarySwatch: Colors.green,
         primaryColor: Colors.lightGreen[900],
+           
+        
      // brightness: Brightness.dark,
     );
 

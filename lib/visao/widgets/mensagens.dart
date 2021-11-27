@@ -25,14 +25,14 @@ mensagemConexao(context) {
             ]);
       });
 }
-mensagemAutenticacao(context, String messagem) {
+mensagemAutenticacao(context, String messagem, String acao) {
   showDialog(
       context: context,
       builder: (BuildContext builder) {
         return AlertDialog(
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
-            title: const Text('ALERTA'),
+            title: Text(acao),
             content: Text(messagem,
                 textAlign: TextAlign.center),
             actionsAlignment: MainAxisAlignment.center,

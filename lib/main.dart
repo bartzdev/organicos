@@ -23,14 +23,17 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
    
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Orgânicos',
       theme: temaGeralApp,
       // theme: ThemeData(
       //   primarySwatch: Colors.green,
-      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)
-      home: TelaPrincipal(),
+      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
+      home: Login(), 
+   
+
     );
   }
 }

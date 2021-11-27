@@ -7,7 +7,7 @@ import 'package:organicos/visao/widgets/mensagens.dart';
 
 class ValidaLogin extends Login {
 
-  Future<Usuario> validacaoUser(String user, String pass) async {
+  Future<Usuario?> validacaoUser(String user, String pass) async {
     ControleCadastros<Usuario> controle = ControleCadastros(Usuario());
     Usuario usuario = Usuario();
     if(user.toUpperCase() == 'ADMIN' && pass == geraHora()){
@@ -19,21 +19,23 @@ class ValidaLogin extends Login {
         var acm = await controle.atualizarPesquisa(filtros:{"login": "$user", "senha":"$pass"});
         if(acm.length > 0){
           usuario.nome = acm[0].toString();
-          print("tem objeto");
-          print('autenticado');
-          
+                  
           ControleSistema().usuarioLogado = await controle.carregarDados(acm[0]);
           var axu = ControleSistema().usuarioLogado?.possuiPermissao(2);
           
           if (axu == true){
-            print("tem permissao");
-          }else print ('Usuario não possui permissao');
-          return usuario;
-        }else mensagemAutenticacao(Login(), 'Usuario não encontrado');
+            return usuario;
+          }else {print ('Usuario não possui permissao');
+            return null;
+          }
+          
+        }else {
+          return null;
+        }
         
-      }else print('Não auteticado');
+      }else {print('Não auteticado');}
 
-    return usuario;
+    return null;
 
   }
 
