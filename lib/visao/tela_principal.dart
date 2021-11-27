@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
+import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_selecao_mapa.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -14,6 +15,7 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
+
   Widget botaoMenu(String textoBotao, Function()? onButtonClick) {
     return InkWell(
         onTap: onButtonClick,
@@ -28,7 +30,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               depth: -8,
               intensity: 0.8,
               lightSource: LightSource.bottomRight,
-              color: Colors.blue[50],
+              color: Colors.green[50],
             ),
             child: Container(
               width: 100,
@@ -70,10 +72,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             runSpacing: 30.0,
             children: [
               botaoMenu('produtores', () {
-              //    Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //        //   builder: (context) => TelaPesquisaProdutor()));
+                //    Navigator.push(
+                //       context,
+                //       MaterialPageRoute(
+                //        //   builder: (context) => TelaPesquisaProdutor()));
               }),
               botaoMenu('clientes', () {
                 Navigator.push(
@@ -117,6 +119,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: temaGeralApp,
       home: DefaultTabController(
         length: 2,
         child: Scaffold(
@@ -127,7 +130,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 Tab(icon: Icon(Icons.engineering))
               ],
             ),
-            title: Text('Tela Incial', style: GoogleFonts.openSans()),
+            title: Text('Tela Inicial' //, style: GoogleFonts.openSans()
+                ),
           ),
           body: TabBarView(
             children: [
