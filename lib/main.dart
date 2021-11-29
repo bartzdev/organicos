@@ -22,21 +22,11 @@ void main() {
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-<<<<<<< HEAD
 
     return MaterialApp(      
-      home: Login(), 
+      home: TelaGerarRelatorio(), 
       theme: ThemeData(
-        primarySwatch: Colors.green),
-       
-=======
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TelaGerarRelatorio(),
->>>>>>> 04359634de6bcea8512132f458095c8c11a2c00b
+        primarySwatch: Colors.green)
     );
   }
 }
