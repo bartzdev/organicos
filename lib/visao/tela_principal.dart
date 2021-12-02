@@ -67,7 +67,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Wrap(
             direction: Axis.horizontal,
-            alignment: WrapAlignment.end,
+            alignment: WrapAlignment.start,
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
@@ -94,6 +94,12 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProduto()));
+              }),
+              botaoMenu('cadastro de \nunidades', () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => TelaPesquisaUnidade()));
               }),
             ],
           )),
