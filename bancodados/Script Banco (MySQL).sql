@@ -1,4 +1,6 @@
-﻿use u678618326_quitanda_org;
+﻿drop schema if exists organicos_local;
+create schema organicos_local;
+use organicos_local;
 
 create table estado (
   id integer primary key,
