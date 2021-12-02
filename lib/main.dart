@@ -6,6 +6,7 @@ import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
+import 'package:organicos/visao/produtor_teste/tela_produtor.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_principal.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
       // theme: ThemeData(
       //   primarySwatch: Colors.green,
       //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
-      home: Login(), 
+      home: TelaProdutor(), 
    
 
     );
