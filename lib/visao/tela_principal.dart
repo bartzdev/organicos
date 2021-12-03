@@ -67,33 +67,39 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Wrap(
             direction: Axis.horizontal,
-            alignment: WrapAlignment.end,
+            alignment: WrapAlignment.start,
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              botaoMenu('produtores', () {
+              botaoMenu('Produtores', () {
                 //    Navigator.push(
                 //       context,
                 //       MaterialPageRoute(
                 //        //   builder: (context) => TelaPesquisaProdutor()));
               }),
-              botaoMenu('clientes', () {
+              botaoMenu('Clientes', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUsuario()));
               }),
-              botaoMenu('pontos\nvendas', () {
+              botaoMenu('Pontos\nVendas', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaPontoVenda()));
               }),
-              botaoMenu('produtos', () {
+              botaoMenu('Produtos', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProduto()));
+              }),
+              botaoMenu('Cadastro de \nUnidades', () {
+                // Navigator.push(
+                //     context,
+                //     MaterialPageRoute(
+                //         builder: (context) => TelaPesquisaUnidade()));
               }),
             ],
           )),
