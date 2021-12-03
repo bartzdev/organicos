@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
       // theme: ThemeData(
       //   primarySwatch: Colors.green,
       //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
-      home: Login(), 
+      home: TelaGerarRelatorio(), 
    
 
     );
