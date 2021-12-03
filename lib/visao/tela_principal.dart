@@ -8,6 +8,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 class TelaPrincipal extends StatefulWidget {
+  TelaPrincipal({Key? key}) : super(key: key);
+
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
@@ -33,6 +35,23 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             child: Container(
               width: 100,
               height: 130,
+              // child: Card(
+              //   shape: RoundedRectangleBorder(
+              //     borderRadius: BorderRadius.circular(20.0),
+              //   ),
+              //   elevation: 8,
+              //   decoration: BoxDecoration(
+              //     borderRadius: BorderRadius.only(
+              //         bottomLeft: Radius.circular(40),
+              //         bottomRight: Radius.circular(50),
+              //         topLeft: Radius.circular(50),
+              //         topRight: Radius.circular(50)),
+              //     //gradient: LinearGradient(
+              //       // begin: Alignment.topLeft,
+              //       // end: Alignment.bottomRight,
+              //       // colors: <Color>[Colors.green.shade800, Colors.lightBlue.shade300],
+              //     // ),
+              //   ),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [Text(textoBotao)],
@@ -111,13 +130,6 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         length: 2,
         child: Scaffold(
           appBar: AppBar(
-            actions: [
-              IconButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                  icon: Icon(Icons.logout)),
-            ],
             bottom: TabBar(
               tabs: [
                 Tab(icon: Icon(Icons.search)),

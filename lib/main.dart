@@ -30,7 +30,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Orgânicos',
       theme: temaGeralApp,
-      home: Login(),
+      // theme: ThemeData(
+      //   primarySwatch: Colors.green,
+      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)
+      home: TelaPesquisaUnidade(),
     );
     //TelaCadastroUnidade(ControleCadastros<Unidade>(Unidade()))
   }
