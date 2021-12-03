@@ -13,7 +13,6 @@ class TelaPrincipal extends StatefulWidget {
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  late IconButton botaoSair;
 
   Widget botaoMenu(String textoBotao, Function()? onButtonClick) {
     return InkWell(
@@ -53,31 +52,31 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              botaoMenu('produtores', () {
+              botaoMenu('Produtores', () {
                 //    Navigator.push(
                 //       context,
                 //       MaterialPageRoute(
                 //        //   builder: (context) => TelaPesquisaProdutor()));
               }),
-              botaoMenu('clientes', () {
+              botaoMenu('Clientes', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUsuario()));
               }),
-              botaoMenu('pontos\nvendas', () {
+              botaoMenu('Pontos\nVendas', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaPontoVenda()));
               }),
-              botaoMenu('produtos', () {
+              botaoMenu('Produtos', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProduto()));
               }),
-              botaoMenu('cadastro de \nunidades', () {
+              botaoMenu('Cadastro de \nUnidades', () {
                 // Navigator.push(
                 //     context,
                 //     MaterialPageRoute(
