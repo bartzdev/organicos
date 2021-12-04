@@ -9,6 +9,7 @@ import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 import 'package:flutter/services.dart';
+import 'package:crypto/crypto.dart';
 
 class TelaCadastroUsuario extends StatefulWidget {
   ControleCadastros<Usuario> controle;
