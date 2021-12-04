@@ -1,8 +1,13 @@
+import 'dart:convert';
+
+import 'package:flutter/semantics.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
 import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
+import 'package:crypto/crypto.dart';
 
 class UsuarioDAO extends DAO<Usuario> {
   @override
@@ -19,7 +24,7 @@ class UsuarioDAO extends DAO<Usuario> {
           usuario.grupo?.id,
           usuario.nome,
           usuario.login,
-          usuario.senha,
+          generateSignature(usuario.senha),
           usuario.ativo
         ]);
         usuario.id = resultadoInsert.insertId;
@@ -162,5 +167,18 @@ class UsuarioDAO extends DAO<Usuario> {
       usuarios.add(usuario);
     });
     return usuarios;
+  }
+
+  String? generateSignature(String? senha) {
+    if (senha != null) {
+      var encodedKey = utf8.encode(ControleSistema().chaveCrypto);
+      var hmacSha512 = new Hmac(sha512, encodedKey);
+      var bytesDataIn = utf8.encode(senha);
+      var digest = sha512.convert(bytesDataIn);
+      String singedValue = digest.toString();
+      return singedValue;
+    } else {
+      return null;
+    }
   }
 }
