@@ -95,10 +95,8 @@ flutter:
   #         weight: 700
   
   fonts:
-  - family: Architects Daughter
+  - family: Open Sans
     fonts:
-      - asset: assets/fontes/FuzzyBubbles-Bold.ttf
-      - asset: assets/fontes/Montserrat-Medium.ttf
-      - asset: assets/fontes/ArchitectsDaughter-Regular.ttf
+      - asset: assets/fontes/OpenSans-SemiBold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

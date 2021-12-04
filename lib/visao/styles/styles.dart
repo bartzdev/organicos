@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 ThemeData temaGeralApp = ThemeData(
-  fontFamily: 'Architects Daughter',
+  fontFamily: 'Open Sans',
   primarySwatch: Colors.green,
   primaryColor: Colors.lightGreen[900],
 
