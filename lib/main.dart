@@ -3,15 +3,22 @@ import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
+import 'package:organicos/modelo/unidade.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
-import 'package:organicos/visao/pontosvenda/tela_cadastro_produto.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
+import 'package:organicos/visao/produtor_teste/tela_produtor.dart';
+import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
+import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_principal.dart';
+import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
+import 'package:organicos/visao/unidade/tela_cadastro_unidade.dart';
+import 'package:organicos/visao/unidade/tela_pesquisa_unidade.dart';
 
 import 'dao/produto_dao.dart';
 import 'modelo/produto.dart';
 import 'modelo/tipo_produto.dart';
+import 'package:organicos/visao/login/login.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,11 +28,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: TelaPesquisaCertificadora(),
+      title: 'Orgânicos',
+      theme: temaGeralApp,
+      // theme: ThemeData(
+      //   primarySwatch: Colors.green,
+      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
+      home: TelaGerarRelatorio(), 
+   
+
     );
+    //TelaCadastroUnidade(ControleCadastros<Unidade>(Unidade()))
   }
 }
