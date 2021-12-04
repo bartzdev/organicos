@@ -43,7 +43,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   galileo_sqljocky5: ^3.0.0
-  google_maps_flutter: ^2.0.6
+  google_maps_flutter: ^2.0.6 
   uuid: ^3.0.4
   location: ^4.3.0
   brasil_fields: ^1.2.0
@@ -93,6 +93,10 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  #
+  
+  fonts:
+  - family: Open Sans
+    fonts:
+      - asset: assets/fontes/OpenSans-SemiBold.ttf
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

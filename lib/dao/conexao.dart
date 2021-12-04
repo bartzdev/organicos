@@ -10,7 +10,7 @@ class Conexao {
         host: 'localhost',
         port: 3306,
         user: 'root',
-        password: 'ifpr',
+        password: 'mysqlserverabc123*',
         db: databaseName);
 
     if (_conexao == null) {

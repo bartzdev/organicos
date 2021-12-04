@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 
- ThemeData temaGeralApp = ThemeData(
-        primarySwatch: Colors.green,
-        primaryColor: Colors.lightGreen[900],
-           
-        
-     // brightness: Brightness.dark,
-    );
+ThemeData temaGeralApp = ThemeData(
+  fontFamily: 'Open Sans',
+  primarySwatch: Colors.green,
+  primaryColor: Colors.lightGreen[900],
+
+  // brightness: Brightness.dark,
+);
 
 var espacoEntreCampos = SizedBox(
   width: 10,
