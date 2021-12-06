@@ -5,6 +5,7 @@ import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
+import 'package:organicos/visao/permissao/chekbox_permissao.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
 import 'package:organicos/visao/styles/styles.dart';
@@ -32,8 +33,21 @@ class MyApp extends StatelessWidget {
       //   primarySwatch: Colors.green,
       //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
       home: Login(), 
+     //home: CheckboxWidget(),
+/*
+      home: Scaffold(
+        appBar: AppBar(
+        title: Text("Permissão Usuario"),
+        ),
+        body: SafeArea(
+          child : Center(
+ 
+          child:CheckboxWidget(),
    
 
+    )
+        )
+      )*/
     );
   }
 }

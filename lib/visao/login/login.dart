@@ -76,16 +76,21 @@ class _LoginState extends State<Login> {
                       child: InkWell(
                         onTap:  () async
                             {
-                              Usuario ?usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
-                              if(usuario != null){
-                                Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        TelaPrincipal()
-                              ));
-                              }else{
-                                mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                              if (loginEnt.trim().isEmpty || senhaEnt.trim().isEmpty){
+                                mensagemAutenticacao(context, 'PREENCHA TODOS OS DADOS CORRETAMENTE', 'ATENÇÃO');
+
+                              }else{                              
+                                Usuario ?usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
+                                  if(usuario != null){
+                                    Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            TelaPrincipal()
+                                  ));
+                                  }else{
+                                    mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                                  }
                               }
                             },
                       child: Container(height: 50,

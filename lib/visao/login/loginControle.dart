@@ -14,7 +14,7 @@ class ValidaLogin extends Login {
       print('autenticado');
       usuario.nome = user;
       return usuario;
-    }else if(user != ''){
+    }else if(user != '' ){
         ControleCadastros<Usuario> controle = ControleCadastros(Usuario());
         var acm = await controle.atualizarPesquisa(filtros:{"login": "$user", "senha":"$pass"});
         if(acm.length > 0){
@@ -41,8 +41,17 @@ class ValidaLogin extends Login {
 
  String geraHora(){
   final time = DateTime.now();
-  String hor = time.hour.toString();
-  hor = hor + time.minute.toString();
+  String hor='';
+  String minute='';
+
+  if (time.hour <10){
+    hor= "0"+ time.hour.toString();
+  }
+  if (time.minute <10){
+    minute= "0"+ time.minute.toString();
+    hor = hor + minute;
+  }   
+  hor = time.hour.toString() + time.minute.toString();
   return hor;
 }
 }

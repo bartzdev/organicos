@@ -42,7 +42,7 @@ class DAOFactory<T> {
     if (objectInstance is PontoVenda) return PontoVendaDAO() as DAO<T>;
     if (objectInstance is Estado) return EstadoDAO() as DAO<T>;
     if (objectInstance is Cidade) return CidadeDAO() as DAO<T>;
-
+    if (objectInstance is Permissao) return PermissaoUsuarioDAO() as DAO<T>;
     if (objectInstance is PermissaoUsuario) return PermissaoUsuarioDAO() as DAO<T>;
     if (objectInstance is PermissaoGrupo) return PermissaoGrupoDAO() as DAO<T>;
     if (objectInstance is GrupoProdutor) return GrupoProdutorDAO() as DAO<T>;
