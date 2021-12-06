@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
-import 'package:organicos/visao/produtor_teste/tela_produtor.dart';
+import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_selecao_mapa.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -76,7 +76,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             children: [
               botaoMenu("assets/imagens/imgProdutores.png", 'Produtores', () {
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TelaProdutor()));
+                    MaterialPageRoute(builder: (context) => TelaCadastroProdutor()));
               }),
               botaoMenu("assets/imagens/imgCliente.png", 'Clientes', () {
                 Navigator.push(
