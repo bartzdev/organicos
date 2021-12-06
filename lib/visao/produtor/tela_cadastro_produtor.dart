@@ -4,14 +4,14 @@ import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
-class TelaProdutor extends StatefulWidget {
-  const TelaProdutor({Key? key}) : super(key: key);
+class TelaCadastroProdutor extends StatefulWidget {
+  const TelaCadastroProdutor({Key? key}) : super(key: key);
 
   @override
-  _TelaProdutorState createState() => _TelaProdutorState();
+  _TelaCadastroProdutor createState() => _TelaCadastroProdutor();
 }
 
-class _TelaProdutorState extends State<TelaProdutor> {
+class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   BuildContext? _context;
   @override
   Widget build(BuildContext context) {
