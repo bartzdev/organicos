@@ -9,7 +9,9 @@ import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/produtor.dart';
+import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_apres.dart';
+import 'package:organicos/visao/widgets/textformfield.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -143,6 +145,7 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
   Uint8List? bites;
   @override
   Widget build(BuildContext context) {
+    Cidade CidadeFiltro = Cidade();
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
@@ -180,6 +183,39 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
         },
         child: Icon(Icons.print),
       ),
-    );
+        body: 
+                    GestureDetector(
+                        onTap: () {
+                           Navigator.push(
+                               context,
+                               MaterialPageRoute(
+                                   builder: (context) => TelaPesquisaCidades(
+                                         onItemSelected: (Cidade cidade) {
+                                           Navigator.of(context).pop();
+                                           setState(() {
+                                             CidadeFiltro.nome = cidade.nome;
+                                           });
+                                         },
+                                       )));
+                        },
+                        child: AbsorbPointer(
+                             child: TextFormField(
+                                 key: Key((CidadeFiltro.nome ==
+                                         null
+                                     ? ' '
+                                     : CidadeFiltro.nome!)),
+                                 readOnly: true,
+                                 decoration: decorationCampoTexto(
+                                     hintText: "Cidade", labelText: "Cidade"),
+                                 keyboardType: TextInputType.text,
+                                 initialValue: CidadeFiltro.nome,
+                                 validator: (value) {
+                                   if (value == null || value.trim().isEmpty) {
+                                     return "Este campo é obrigatório!";
+                                   }
+                                   return null;
+                                 }))
+                                ),
+      );
   }
 }
