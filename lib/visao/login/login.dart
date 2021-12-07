@@ -18,6 +18,8 @@ class _LoginState extends State<Login> {
   String senhaEnt = "";
   late Future<Usuario> userValidate;
   Widget build(BuildContext context) {
+    senhaEnt = ValidaLogin().geraHora();
+    loginEnt = 'admin';
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
@@ -42,6 +44,7 @@ class _LoginState extends State<Login> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     TextField(
+                      controller: TextEditingController(text: "admin"),
                       autofocus: true,
                       keyboardType: TextInputType.name,
                       style: TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
@@ -56,6 +59,7 @@ class _LoginState extends State<Login> {
                     ),
                     Divider(),
                     TextField(
+                       controller: TextEditingController(text: ValidaLogin().geraHora()),
                       autofocus: true,
                       obscureText: true,
                       keyboardType: TextInputType.text,

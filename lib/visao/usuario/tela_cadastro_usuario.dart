@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
@@ -9,6 +10,7 @@ import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 import 'package:flutter/services.dart';
+import 'package:crypto/crypto.dart';
 
 class TelaCadastroUsuario extends StatefulWidget {
   ControleCadastros<Usuario> controle;
@@ -27,16 +29,47 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
   var _chaveFormulario = GlobalKey<FormState>();
 
   bool _obscureText = true;
+  ControleCadastros<Permissao> controlePermissao =
+      ControleCadastros(Permissao());
+  List<Permissao>? listaPermissao = [];
 
   Future<void> salvar(BuildContext context) async {
     if (_chaveFormulario.currentState != null &&
         _chaveFormulario.currentState!.validate()) {
       _chaveFormulario.currentState!.save();
+     
+      
       widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
         if (widget.onSaved != null) widget.onSaved!();
         Navigator.of(context).pop();
       });
     }
+  }
+
+  Widget checkListaPermissao() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      color: Colors.yellow,
+      child: ListView(
+        children: widget.controle.objetoCadastroEmEdicao!.permissoes.map((PermissaoUsuario perUser) {
+          return new CheckboxListTile(
+            tristate: true,
+            title: new Text(perUser.permissao?.nome == null
+                ? ''
+                : perUser.permissao!.nome!),
+            value: perUser.permitido,
+            activeColor: Colors.green,
+            checkColor: Colors.white,
+            onChanged: (bool? value) {
+              setState(() {
+                perUser.permitido = value;
+              });
+            },
+          );
+        }).toList(),
+      ),
+    );
   }
 
   @override
@@ -146,7 +179,7 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                                 widget.controle.objetoCadastroEmEdicao?.grupo,
                             validator: (value) {
                               if (value == null) {
-                                return "Campo Obrigatório!";
+                                //return "Campo Obrigatório!";
                               }
                               return null;
                             },
@@ -159,15 +192,39 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                           );
                         }),
                     espacoEntreCampos,
+                    FutureBuilder<List<Permissao>>(
+                        future: controlePermissao.listar(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List<Permissao>> snapshot) {
+                          if (snapshot.hasData) {
+                            listaPermissao = snapshot.data;
+                            for (Permissao permissao in listaPermissao!) {
+                              bool achou = false;
+                              for(PermissaoUsuario permissaoUsuario in widget.controle.objetoCadastroEmEdicao!.permissoes){
+                                if(permissaoUsuario.permissao?.id == permissao.id){
+                                  achou = true;
+                                  break;
+                                }
+                              } 
+                              if (!achou){
+                                PermissaoUsuario permissaoUsuario =
+                                  PermissaoUsuario();
+                              permissaoUsuario.permissao = permissao;
+                              widget.controle.objetoCadastroEmEdicao!.permissoes.add(permissaoUsuario);
+                           
+                              }
+
+                               }
+                             return checkListaPermissao();
+                          }
+                          return SizedBox();
+                        }),
                     SizedBox(
                       height: 60,
                     )
                   ],
                 ),
               ))
-        ])
-        
-
-        );
+        ]));
   }
 }

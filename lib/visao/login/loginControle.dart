@@ -46,12 +46,15 @@ class ValidaLogin extends Login {
 
   if (time.hour <10){
     hor= "0"+ time.hour.toString();
-  }
-  if (time.minute <10){
+    
+  }else if (time.minute <10){
     minute= "0"+ time.minute.toString();
     hor = hor + minute;
+  }
+  else{
+    hor = time.hour.toString() + time.minute.toString();
   }   
-  hor = time.hour.toString() + time.minute.toString();
+  
   return hor;
 }
 }
