@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
 import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
+import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_selecao_mapa.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -75,8 +76,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             runSpacing: 30.0,
             children: [
               botaoMenu("assets/imagens/imgProdutores.png", 'Produtores', () {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TelaCadastroProdutor()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPesquisaProdutor()));
               }),
               botaoMenu("assets/imagens/imgCliente.png", 'Clientes', () {
                 Navigator.push(
@@ -84,8 +87,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUsuario()));
               }),
-              botaoMenu("assets/imagens/imgSacola.png", 'Pontos\nVendas',
-                  () {
+              botaoMenu("assets/imagens/imgSacola.png", 'Pontos\nVendas', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
