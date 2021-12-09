@@ -33,10 +33,6 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Neumorphic(
                 style: NeumorphicStyle(
                   shape: NeumorphicShape.convex,
-                  border: NeumorphicBorder(
-                    color: Color(0x10000000),
-                    width: 0.1,
-                  ),
                   boxShape:
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
                   depth: -8,

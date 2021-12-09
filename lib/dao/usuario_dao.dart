@@ -1,13 +1,9 @@
-import 'dart:convert';
-
-import 'package:flutter/semantics.dart';
-import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
 import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
-import 'package:crypto/crypto.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 
 class UsuarioDAO extends DAO<Usuario> {
   @override
@@ -29,8 +25,7 @@ class UsuarioDAO extends DAO<Usuario> {
         ]);
         usuario.id = resultadoInsert.insertId;
       } else {
-        await transacao.prepared(
-            '''update usuario set
+        await transacao.prepared('''update usuario set
           grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
             [             
               usuario.grupo?.id,
@@ -53,8 +48,7 @@ class UsuarioDAO extends DAO<Usuario> {
   }
 
   @override
-  Future<Usuario> carregarDados(Usuario usuario,
-      {Map<String, dynamic>? filtros}) async {
+  Future<Usuario> carregarDados(Usuario usuario, {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
@@ -84,8 +78,7 @@ class UsuarioDAO extends DAO<Usuario> {
       permissaoUsuario.permissao = new Permissao();
       permissaoUsuario.permissao?.id = linhaConsulta[0];
       permissaoUsuario.permissao?.nome = linhaConsulta[1];
-      permissaoUsuario.permitido =
-          linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
+      permissaoUsuario.permitido = linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
       usuario.permissoes.add(permissaoUsuario);
     });
     GrupoUsuario grupoUsuario = GrupoUsuario();
@@ -107,8 +100,7 @@ class UsuarioDAO extends DAO<Usuario> {
 
       permissaoGrupo.permissao?.id = linhaConsulta[0];
       permissaoGrupo.permissao?.nome = linhaConsulta[1];
-      permissaoGrupo.permitido =
-          linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
+      permissaoGrupo.permitido = linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
 
       grupoUsuario.permissoes.add(permissaoGrupo);
     });
@@ -146,15 +138,9 @@ class UsuarioDAO extends DAO<Usuario> {
 
   @override
   Future<List<Usuario>> pesquisar({Map<String, dynamic>? filtros}) async {
-    String filtro = filtros != null && filtros.containsKey('filtro')
-        ? filtros['filtro']
-        : '';
-    String? filtroLogin = filtros != null && filtros.containsKey('login')
-        ? filtros['login']
-        : null;
-    String? filtroSenha = filtros != null && filtros.containsKey('senha')
-        ? filtros['senha']
-        : null;
+    String filtro = filtros != null && filtros.containsKey('filtro') ? filtros['filtro'] : '';
+    String? filtroLogin = filtros != null && filtros.containsKey('login') ? filtros['login'] : null;
+    String? filtroSenha = filtros != null && filtros.containsKey('senha') ? filtros['senha'] : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
@@ -163,8 +149,7 @@ class UsuarioDAO extends DAO<Usuario> {
     where usuario.registro_ativo = 1 and
       case when ? is not null then usuario.login = ? and usuario.senha = ? else  
      lower(nome) like ? end
-    order by lower(nome)''',
-        [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
+    order by lower(nome)''', [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
@@ -175,18 +160,5 @@ class UsuarioDAO extends DAO<Usuario> {
       usuarios.add(usuario);
     });
     return usuarios;
-  }
-
-  String? generateSignature(String? senha) {
-    if (senha != null) {
-      var encodedKey = utf8.encode(ControleSistema().chaveCrypto);
-      var hmacSha512 = new Hmac(sha512, encodedKey);
-      var bytesDataIn = utf8.encode(senha);
-      var digest = sha512.convert(bytesDataIn);
-      String singedValue = digest.toString();
-      return singedValue;
-    } else {
-      return null;
-    }
   }
 }
