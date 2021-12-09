@@ -9,5 +9,4 @@ class ControleSistema {
   ControleSistema._internal();
 
   Usuario? usuarioLogado;
-  String chaveCrypto = "12345";
 }

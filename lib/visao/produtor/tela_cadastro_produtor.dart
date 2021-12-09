@@ -1,18 +1,39 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/cidade.dart';
+import 'package:organicos/modelo/estado.dart';
+import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
-class TelaProdutor extends StatefulWidget {
-  const TelaProdutor({Key? key}) : super(key: key);
+class TelaCadastroProdutor extends StatefulWidget {
+  ControleCadastros<Produtor> controle;
+  Function()? onSaved;
 
+  TelaCadastroProdutor(this.controle, {Key? key, this.onSaved})
+      : super(key: key);
   @override
-  _TelaProdutorState createState() => _TelaProdutorState();
+  _TelaCadastroProdutor createState() => _TelaCadastroProdutor();
 }
 
-class _TelaProdutorState extends State<TelaProdutor> {
+class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   BuildContext? _context;
+  ControleCadastros<Cidade> controleCidade = ControleCadastros(Cidade());
+  var _chaveFormulario = GlobalKey<FormState>();
+  Estado? _estadoSelecionado;
+
+  Future<void> salvar(BuildContext context) async {
+    if (_chaveFormulario.currentState != null &&
+        _chaveFormulario.currentState!.validate()) {
+      _chaveFormulario.currentState!.save();
+      widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
+        if (widget.onSaved != null) widget.onSaved!();
+        Navigator.of(context).pop();
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     _context = context;
@@ -146,18 +167,33 @@ class _TelaProdutorState extends State<TelaProdutor> {
                                         onItemSelected: (Cidade cidade) {
                                           Navigator.of(context).pop();
                                           setState(() {
-                                            Text('Texto teste');
+                                            widget
+                                                .controle
+                                                .objetoCadastroEmEdicao
+                                                ?.endereco
+                                                ?.cidade = cidade;
                                           });
                                         },
                                       )));
                         },
                         child: AbsorbPointer(
                             child: TextFormField(
+                                key: Key((widget.controle.objetoCadastroEmEdicao
+                                            ?.endereco?.cidade?.nome ==
+                                        null
+                                    ? ' '
+                                    : widget.controle.objetoCadastroEmEdicao!
+                                        .endereco!.cidade!.nome!)),
                                 readOnly: true,
                                 decoration: decorationCampoTexto(
                                     hintText: "Cidade", labelText: "Cidade"),
                                 keyboardType: TextInputType.text,
-                                initialValue: '',
+                                initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao
+                                    ?.endereco
+                                    ?.cidade
+                                    ?.nome,
                                 validator: (value) {
                                   if (value == null || value.trim().isEmpty) {
                                     return "Este campo é obrigatório!";
