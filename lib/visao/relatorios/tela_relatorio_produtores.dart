@@ -183,39 +183,5 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
 
     );
 
-        body: 
-                    GestureDetector(
-                        onTap: () {
-                           Navigator.push(
-                               context,
-                               MaterialPageRoute(
-                                   builder: (context) => TelaPesquisaCidades(
-                                         onItemSelected: (Cidade cidade) {
-                                           Navigator.of(context).pop();
-                                           setState(() {
-                                             CidadeFiltro.nome = cidade.nome;
-                                           });
-                                         },
-                                       )));
-                        },
-                        child: AbsorbPointer(
-                             child: TextFormField(
-                                 key: Key((CidadeFiltro.nome ==
-                                         null
-                                     ? ' '
-                                     : CidadeFiltro.nome!)),
-                                 readOnly: true,
-                                 decoration: decorationCampoTexto(
-                                     hintText: "Cidade", labelText: "Cidade"),
-                                 keyboardType: TextInputType.text,
-                                 initialValue: CidadeFiltro.nome,
-                                 validator: (value) {
-                                   if (value == null || value.trim().isEmpty) {
-                                     return "Este campo é obrigatório!";
-                                   }
-                                   return null;
-                                 }))
-                                ),
-      );
   }
 }
