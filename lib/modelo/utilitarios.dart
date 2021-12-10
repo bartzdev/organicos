@@ -4,6 +4,7 @@ import 'package:organicos/controle/controle_sistema.dart';
 import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'chaves.dart';
+import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 
 String? formatDate(DateTime? dateTime, {mask = "dd/MM/yyyy"}) {
   if (dateTime != null) return DateFormat(mask).format(dateTime);
@@ -40,4 +41,14 @@ String? generateSignature(String? senha) {
   } else {
     return null;
   }
+
+}
+
+String? formataTelefone(String? telefone){
+  if(telefone == null){
+    return null;
+  }
+  MaskedInputFormatter mascara =  MaskedInputFormatter(telefone.length == 10 ?'(##) ####-####' : '(##) ##### ####');
+  FormattedValue retorno = mascara.applyMask(telefone);
+  return retorno.text;
 }
