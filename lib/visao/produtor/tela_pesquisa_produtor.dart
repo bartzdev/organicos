@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/modelo/ponto_venda.dart';
+import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/visao/pontosvenda/tela_cadastro_pontovenda.dart';
+import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
 
-class TelaPesquisProdutor extends StatefulWidget {
-  TelaPesquisProdutor({Key? key}) : super(key: key);
-
+class TelaPesquisaProdutor extends StatefulWidget {
   @override
   _TelaPesquisProdutor createState() => _TelaPesquisProdutor();
 }
 
-class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
-  ControleCadastros<PontoVenda> _controle =
-      ControleCadastros<PontoVenda>(PontoVenda());
+class _TelaPesquisProdutor extends State<TelaPesquisaProdutor> {
+  ControleCadastros<Produtor> _controle =
+      ControleCadastros<Produtor>(Produtor());
   bool _pesquisaAtiva = false;
   late IconButton _botaoPesquisar;
   late IconButton _botaoCancelarPesquisa;
@@ -62,12 +62,12 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
                   hintText: "Pesquisar...",
                   hintStyle: new TextStyle(color: Colors.white)),
               autofocus: true)
-          : Text('Pontos de venda'),
+          : Text('Produtores'),
       actions: [_pesquisaAtiva ? _botaoCancelarPesquisa : _botaoPesquisar],
     );
   }
 
-  Widget _linhaListaZebrada(PontoVenda pontoVenda, int indice) {
+  Widget _linhaListaZebrada(Produtor produtor, int indice) {
     return Container(
         decoration: BoxDecoration(
             // border: Border(
@@ -79,7 +79,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
         child: ListTile(
             title: Row(children: [
           Expanded(
-              child: Text(pontoVenda.nome == null ? '' : pontoVenda.nome!,
+              child: Text(produtor.nome == null ? '' : produtor.nome!,
                   style: const TextStyle(
                       color: Colors.black,
                       fontSize: 18,
@@ -89,13 +89,13 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
               onPressed: () async {
                 //Ação do botão Editar
                 //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
-                _controle.carregarDados(pontoVenda).then((value) {
+                _controle.carregarDados(produtor).then((value) {
                   _controle.objetoCadastroEmEdicao = value;
                   Navigator.push(
                       context,
                       MaterialPageRoute(
                           builder: (context) =>
-                              TelaCadastroPontoVenda(_controle, onSaved: () {
+                              TelaCadastroProdutor(_controle, onSaved: () {
                                 setState(() {
                                   _controle.atualizarPesquisa(filtros: {
                                     'filtro': _controladorCampoPesquisa.text
@@ -125,7 +125,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
                               onPressed: () {
                                 //Ação do botão SIM
                                 _controle
-                                    .carregarDados(pontoVenda)
+                                    .carregarDados(produtor)
                                     .then((value) {
                                   _controle.objetoCadastroEmEdicao = value;
                                   _controle
@@ -134,7 +134,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
                                     Navigator.of(context).pop();
                                     setState(() {
                                       _controle.listaObjetosPesquisados
-                                          ?.remove(pontoVenda);
+                                          ?.remove(produtor);
                                     });
                                   });
                                 });
@@ -167,12 +167,12 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
       floatingActionButton: FloatingActionButton.extended(
           icon: const Icon(Icons.add),
           onPressed: () {
-            _controle.objetoCadastroEmEdicao = PontoVenda();
+            _controle.objetoCadastroEmEdicao = Produtor();
             Navigator.push(
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        TelaCadastroPontoVenda(_controle, onSaved: () {
+                        TelaCadastroProdutor(_controle, onSaved: () {
                           setState(() {
                             _controle.atualizarPesquisa(filtros: {
                               'filtro': _controladorCampoPesquisa.text
@@ -193,7 +193,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisProdutor> {
             }
 
             _controle.listaObjetosPesquisados = snapshot.data as List<
-                PontoVenda>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+                Produtor>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
 
             return ListView.builder(
               itemCount: _controle.listaObjetosPesquisados!.length,
