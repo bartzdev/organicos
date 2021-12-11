@@ -7,9 +7,11 @@ import 'package:organicos/modelo/unidade.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_cadastro_grupoprodutor.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
+import 'package:organicos/visao/pesquisageral/pesquisa_geral.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
+import 'package:organicos/visao/sobre/sobre.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_principal.dart';
 import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
@@ -31,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Orgânicos',
       theme: temaGeralApp,
-      home: Login(),
+      home: TelaPesquisaGeral(),
     );
     //TelaCadastroUnidade(ControleCadastros<Unidade>(Unidade()))
   }
