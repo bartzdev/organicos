@@ -4,7 +4,6 @@ import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
-import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
 class TelaCadastroProdutor extends StatefulWidget {
@@ -59,7 +58,7 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                             Expanded(
                                 child: Center(
                                     child: Text(
-                              'Dados do proprietário',
+                              'Dados do produtor',
                               textAlign: TextAlign.center,
                             ))),
                           ],
@@ -139,21 +138,24 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Nome do proprietário',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Nome do produtor',
+                            border: OutlineInputBorder()),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao?.nome),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'CPF/CNPJ', border: OutlineInputBorder()),
+                      initialValue:
+                          widget.controle.objetoCadastroEmEdicao!.cpfCnpj,
                     ),
                     SizedBox(
                       height: 30,
@@ -203,22 +205,24 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Endereço do proprietário',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Endereço do produtor',
+                            border: OutlineInputBorder()),
+                        initialValue: widget.controle.objetoCadastroEmEdicao!
+                            .endereco!.logradouro),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'CEP', border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'CEP', border: OutlineInputBorder()),
+                        initialValue: widget.controle.objetoCadastroEmEdicao!
+                            .endereco!.logradouro),
                     SizedBox(
                       height: 30,
                     ),
@@ -227,37 +231,41 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: TextField(
-                            onChanged: (text) {},
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                labelText: 'Número',
-                                border: OutlineInputBorder()),
-                          ),
+                          child: TextFormField(
+                              onChanged: (text) {},
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  labelText: 'Número',
+                                  border: OutlineInputBorder()),
+                              initialValue:
+                                  '${widget.controle.objetoCadastroEmEdicao!.endereco!.numero}'),
                         ),
                         SizedBox(
                           width: 30,
                         ),
                         Expanded(
-                          child: TextField(
-                            onChanged: (text) {},
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                labelText: 'Bairro',
-                                border: OutlineInputBorder()),
-                          ),
+                          child: TextFormField(
+                              onChanged: (text) {},
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  labelText: 'Bairro',
+                                  border: OutlineInputBorder()),
+                              initialValue: widget.controle
+                                  .objetoCadastroEmEdicao!.endereco!.bairro),
                         )
                       ],
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Telefone', border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Telefone',
+                            border: OutlineInputBorder()),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.telefone),
                     SizedBox(
                       height: 30,
                     ),
@@ -325,13 +333,14 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Nome da propriedade',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Nome da propriedade',
+                            border: OutlineInputBorder()),
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao!.nomePropriedade),
                     SizedBox(
                       height: 30,
                     ),
@@ -346,27 +355,29 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Latitude',
-                        border: OutlineInputBorder(),
-                        enabled: false,
-                      ),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Latitude',
+                          border: OutlineInputBorder(),
+                          enabled: false,
+                        ),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.latitude),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Longitude',
-                        border: OutlineInputBorder(),
-                        enabled: false,
-                      ),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Longitude',
+                          border: OutlineInputBorder(),
+                          enabled: false,
+                        ),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.longitude),
                     SizedBox(
                       height: 30,
                     ),
@@ -454,42 +465,54 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'Certificadora',
                           border: OutlineInputBorder()),
+                          initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao!.certificadora!.nome
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'Grupo de produtores',
                           border: OutlineInputBorder()),
+                          initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao!.grupo!.nome
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'Nome da propriedade',
                           border: OutlineInputBorder()),
+                          initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao!.nomePropriedade
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'Certificação orgânica',
                           border: OutlineInputBorder()),
+                          initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao!.certificacaoOrganicos
                     ),
                     SizedBox(
                       height: 30,
