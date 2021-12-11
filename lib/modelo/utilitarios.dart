@@ -48,7 +48,7 @@ String? formataTelefone(String? telefone){
   if(telefone == null){
     return null;
   }
-  MaskedInputFormatter mascara =  MaskedInputFormatter(telefone.length == 10 ?'(##) ####-####' : '(##) ##### ####');
+  MaskedInputFormatter mascara =  MaskedInputFormatter(telefone.length == 10 ?'(##)####-####' : '(##)#####-####');
   FormattedValue retorno = mascara.applyMask(telefone);
   return retorno.text;
 }
