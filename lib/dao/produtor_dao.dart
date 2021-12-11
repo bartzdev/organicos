@@ -2,7 +2,6 @@ import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
-import 'package:organicos/modelo/ponto_venda.dart';
 import 'package:organicos/modelo/produtor.dart';
 
 import 'dao.dart';
@@ -84,7 +83,7 @@ class ProdutorDAO extends DAO<Produtor> {
     var resultadoConsulta = await conexao.prepared('''select 
     p.id, p.nome, p.endereco, p.numero, p.bairro, p.registro_ativo, p.cidade_id, 
     c.nome, e.id, e.nome
-    from pontovenda p
+    from produtor p
     join cidade c on c.id = p.cidade_id
     join estado e on e.id = c.estado_id
     where p.id = ?''', [produtor.id]);
@@ -105,18 +104,18 @@ class ProdutorDAO extends DAO<Produtor> {
 
   @override
   Future<List<Produtor>> listar({Map<String, dynamic>? filtros}) async {
-    List<Produtor> pontos = [];
+    List<Produtor> produtores = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    p.id, p.nome from pontovenda p where p.registro_ativo = 1
+    p.id, p.nome from produtor p where p.registro_ativo = 1
     order by lower(p.nome)''', []);
     await resultadoConsulta.forEach((linhaConsulta) {
       var produtor = Produtor();
       produtor.id = linhaConsulta[0];
       produtor.nome = linhaConsulta[1];
-      pontos.add(produtor);
+      produtores.add(produtor);
     });
-    return pontos;
+    return produtores;
   }
 
   @override
@@ -125,7 +124,7 @@ class ProdutorDAO extends DAO<Produtor> {
         ? filtros['filtro']
         : '';
 
-    List<Produtor> pontos = [];
+    List<Produtor> produtores = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     p.id, p.nome from produtor p where p.registro_ativo = 1 and lower(p.nome) like ?
@@ -134,8 +133,8 @@ class ProdutorDAO extends DAO<Produtor> {
       var produtor = Produtor();
       produtor.id = linhaConsulta[0];
       produtor.nome = linhaConsulta[1];
-      pontos.add(produtor);
+      produtores.add(produtor);
     });
-    return pontos;
+    return produtores;
   }
 }
