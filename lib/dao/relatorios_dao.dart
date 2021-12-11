@@ -15,8 +15,11 @@ class RelatorioDAO {
     from produtor p
     join cidade c on c.id = p.cidade_id
     join estado e on e.id = c.estado_id
-    where c.id = ?''', [
-      filtros?['Cidade']
+    where p.registro_ativo = 1 and
+    case when ? > 0 then c.id = ?
+    else true end''', [
+      filtros?['Cidade'] == null ? 0 : filtros?['Cidade'],
+      filtros?['Cidade'] == null ? 0 : filtros?['Cidade']
     ]);
     await resultadoConsulta.forEach((linhaConsulta) {
       Produtor produtor = Produtor();

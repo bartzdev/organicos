@@ -54,7 +54,7 @@ String? formataTelefone(String? telefone) {
     return null;
   }
   MaskedInputFormatter mascara = MaskedInputFormatter(
-      telefone.length == 10 ? '(##) ####-####' : '(##) ##### ####');
+      telefone.length == 10 ? '(##)####-####' : '(##)#####-####');
   FormattedValue retorno = mascara.applyMask(telefone);
   return retorno.text;
 }

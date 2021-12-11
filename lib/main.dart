@@ -11,6 +11,7 @@ import 'package:organicos/visao/pesquisageral/pesquisa_geral.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
+import 'package:organicos/visao/sobre/sobre.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_principal.dart';
 import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
