@@ -25,15 +25,33 @@ class UsuarioDAO extends DAO<Usuario> {
         ]);
         usuario.id = resultadoInsert.insertId;
       } else {
-        await transacao.prepared('''update usuario set
+        await transacao.prepared(
+            '''update usuario set
           grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
-            [usuario.id, usuario.grupo?.id, usuario.nome, usuario.login, usuario.senha, usuario.ativo]);
+            [
+              usuario.grupo?.id,
+              usuario.nome,
+              usuario.login,
+              usuario.senha,
+              usuario.ativo,
+              usuario.id
+            ]);
+      }
+      for (PermissaoUsuario permissaoUsuario in usuario.permissoes) {
+        var resultadoInsert = await transacao.prepared(
+            '''replace into Permissao_usuario (permissao_id, usuario_id, permitido) values (?, ?, ?)''',
+            [
+              permissaoUsuario.permissao?.id,
+              usuario.id,
+              permissaoUsuario.permitido
+            ]);
       }
     });
   }
 
   @override
-  Future<Usuario> carregarDados(Usuario usuario, {Map<String, dynamic>? filtros}) async {
+  Future<Usuario> carregarDados(Usuario usuario,
+      {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
@@ -43,7 +61,11 @@ class UsuarioDAO extends DAO<Usuario> {
     await resultadoConsulta.forEach((linhaConsulta) {
       usuario.id = linhaConsulta[0];
 
-      usuario.grupo?.id = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
@@ -63,11 +85,13 @@ class UsuarioDAO extends DAO<Usuario> {
       permissaoUsuario.permissao = new Permissao();
       permissaoUsuario.permissao?.id = linhaConsulta[0];
       permissaoUsuario.permissao?.nome = linhaConsulta[1];
-      permissaoUsuario.permitido = linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
+      permissaoUsuario.permitido =
+          linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
       usuario.permissoes.add(permissaoUsuario);
     });
-    GrupoUsuario grupoUsuario = GrupoUsuario();
-    var resultadoPermissaoGrupo = await conexao.prepared('''select 
+
+    if (usuario.grupo != null) {
+      var resultadoPermissaoGrupo = await conexao.prepared('''select 
 	PU.Permissao_id, PER.nome, PU.Permitido, GU.ID, GU.nome
     from 
 		Permissao_GrupoUsuario as PU
@@ -76,20 +100,21 @@ class UsuarioDAO extends DAO<Usuario> {
         inner join GrupoUsuario as GU
         on GU.id = PU.grupousuario_id
 	where 
-		PU.grupousuario_id =  ?''', [usuario.id]);
-    await resultadoPermissaoGrupo.forEach((linhaConsulta) {
-      grupoUsuario.id = linhaConsulta[3];
-      grupoUsuario.nome = linhaConsulta[4];
-      PermissaoGrupo permissaoGrupo = PermissaoGrupo();
-      permissaoGrupo.permissao = new Permissao();
+		PU.grupousuario_id =  ?''', [usuario.grupo?.id]);
+      await resultadoPermissaoGrupo.forEach((linhaConsulta) {
+        
+        usuario.grupo?.nome = linhaConsulta[4];
+        PermissaoGrupo permissaoGrupo = PermissaoGrupo();
+        permissaoGrupo.permissao = new Permissao();
 
-      permissaoGrupo.permissao?.id = linhaConsulta[0];
-      permissaoGrupo.permissao?.nome = linhaConsulta[1];
-      permissaoGrupo.permitido = linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
+        permissaoGrupo.permissao?.id = linhaConsulta[0];
+        permissaoGrupo.permissao?.nome = linhaConsulta[1];
+        permissaoGrupo.permitido =
+            linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
 
-      grupoUsuario.permissoes.add(permissaoGrupo);
-    });
-    usuario.grupo = grupoUsuario;
+        usuario.grupo?..permissoes.add(permissaoGrupo);
+      });
+    }
 
     return usuario;
   }
@@ -112,7 +137,11 @@ class UsuarioDAO extends DAO<Usuario> {
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
@@ -123,9 +152,15 @@ class UsuarioDAO extends DAO<Usuario> {
 
   @override
   Future<List<Usuario>> pesquisar({Map<String, dynamic>? filtros}) async {
-    String filtro = filtros != null && filtros.containsKey('filtro') ? filtros['filtro'] : '';
-    String? filtroLogin = filtros != null && filtros.containsKey('login') ? filtros['login'] : null;
-    String? filtroSenha = filtros != null && filtros.containsKey('senha') ? filtros['senha'] : null;
+    String filtro = filtros != null && filtros.containsKey('filtro')
+        ? filtros['filtro']
+        : '';
+    String? filtroLogin = filtros != null && filtros.containsKey('login')
+        ? filtros['login']
+        : null;
+    String? filtroSenha = filtros != null && filtros.containsKey('senha')
+        ? filtros['senha']
+        : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
@@ -134,11 +169,16 @@ class UsuarioDAO extends DAO<Usuario> {
     where usuario.registro_ativo = 1 and
       case when ? is not null then usuario.login = ? and usuario.senha = ? else  
      lower(nome) like ? end
-    order by lower(nome)''', [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
+    order by lower(nome)''',
+        [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo?.id = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
       usuario.senha = linhaConsulta[4];
