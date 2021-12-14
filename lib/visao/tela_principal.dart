@@ -1,11 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
+import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
+import 'package:organicos/visao/grupousuario/tela_pesquisa_grupousuario.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
 import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
 import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
+import 'package:organicos/visao/relatorios/tela_relatorio_apres.dart';
+import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_selecao_mapa.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
+import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
 import 'package:organicos/visao/unidade/tela_pesquisa_unidade.dart';
 import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
@@ -71,19 +77,22 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              botaoMenu("assets/imagens/imgProdutores.png", 'Produtores', () {
+              botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
+                  () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProdutor()));
               }),
-              botaoMenu("assets/imagens/imgCliente.png", 'Clientes', () {
+              botaoMenu(
+                  "assets/imagens/imgGrupoProdutores.png", 'Grupo\nProdutores',
+                  () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => TelaPesquisaUsuario()));
+                        builder: (context) => TelaPesquisaGrupoProdutor()));
               }),
-              botaoMenu("assets/imagens/imgSacola.png", 'Pontos\nVendas', () {
+              botaoMenu("assets/imagens/imgPontoVendas.png", 'Pontos\nVendas', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -95,11 +104,49 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProduto()));
               }),
-              botaoMenu("assets/imagens/imgProdutores.png", 'Unidades', () {
+              botaoMenu(
+                  "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
+                  () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPesquisaTipoProduto()));
+              }),
+              botaoMenu("assets/imagens/imgGrupoProdutores.png", 'Unidades',
+                  () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUnidade()));
+              }),
+              botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPesquisaUsuario()));
+              }),
+              botaoMenu(
+                  "assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários',
+                  () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPesquisaGrupousuario()));
+              }),
+              botaoMenu(
+                  "assets/imagens/imgCertificadora.png", 'Certificadoras',
+                  () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPesquisaCertificadora()));
+              }),
+              botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
+                  () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaGerarRelatorio()));
               }),
             ],
           )),
@@ -116,7 +163,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         spacing: 40.0,
         runSpacing: 40.0,
         children: [
-          botaoMenu("assets/imagens/imgProdutores.png", 'Permissões', () {}),
+          botaoMenu(
+              "assets/imagens/imgGrupoProdutores.png", 'Permissões', () {}),
         ],
       ),
     )));
@@ -124,27 +172,39 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
 
   Widget abaSobre() {
     return Scaffold(
-        // appBar: AppBar(
-        //   title: Text('Sobre'),
-        //   centerTitle: true,
-        // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: ListView(children: [
-           Container(
+          Container(
+              decoration: new BoxDecoration(
+                  color: Color(0xFF61b255),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: const Radius.circular(50),
+                    bottomRight: const Radius.circular(50),
+                  )),
               width: MediaQuery.of(context).size.width,
-              height: 300,
-              color: Color(0xFF61b255),
+              height: 265,
+              //color: Color(0xFF61b255),
               child: Image.asset('assets/imagens/logoOrganico.jpeg')),
           Padding(
-            padding: EdgeInsets.all(30),
-          child: Text(
-           'Este aplicativo foi desenvolvido com o objetivo de aproximar os produtores da agricultura familiar de seus consumidores. ' +
-                    '\nAtualmente o aplicativo faz parte de um projeto de extensão coordenado pela professora Sonia Mandotti, que faz o acompanhamento técnico dos produtores de Assis Chateaubriand.' +
-                    '\nO projeto foi desenvolvido pelos estudantes: Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros, Rafael Shono' +
-                    ' do Instituto Federal do Paraná campus Assis Chateaubriand, para a disciplina de programação para dispositivos móveis ministrada pelo professor doutor Rafael Luis Bartz.',
-            textAlign: TextAlign.justify,
-            textWidthBasis: TextWidthBasis.longestLine,
-           ))
+              padding: EdgeInsets.all(30),
+              child: Column(
+                children: [
+                  Text(
+                    'Este aplicativo foi desenvolvido com o objetivo de aproximar os produtores da agricultura familiar de seus consumidores. ',
+                    textAlign: TextAlign.justify,
+                    textWidthBasis: TextWidthBasis.longestLine,
+                  ),
+                  SizedBox(height: 20),
+                  Text(
+                      'Atualmente o aplicativo faz parte de um projeto de extensão coordenado pela professora Sonia Mandotti, que faz o acompanhamento técnico dos produtores de Assis Chateaubriand.',
+                      textAlign: TextAlign.justify),
+                  SizedBox(height: 20),
+                  Text(
+                      'O projeto foi desenvolvido pelos estudantes: Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros e Rafael Shono,'
+                      ' do Instituto Federal do Paraná campus Assis Chateaubriand, para a disciplina de programação para dispositivos móveis ministrada pelo professor doutor Rafael Luis Bartz.',
+                      textAlign: TextAlign.justify)
+                ],
+              ))
         ]));
   }
 

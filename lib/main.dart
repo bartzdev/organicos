@@ -33,7 +33,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Orgânicos',
       theme: temaGeralApp,
-      home: TelaPesquisaGeral(),
+      home: Login(),
     );
     //TelaCadastroUnidade(ControleCadastros<Unidade>(Unidade()))
   }
