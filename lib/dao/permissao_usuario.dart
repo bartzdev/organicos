@@ -34,12 +34,8 @@ class PermissaoUsuarioDAO extends DAO<PermissaoUsuario>{
           permissaoUsuario.usuario?.id,
           permissaoUsuario.permitido          
         ]); 
-         
-          
     });
-    
-
-  }
+ }
 
   @override
   Future<List<PermissaoUsuario>> listar({Map<String, dynamic>? filtros}) {

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/usuario.dart';
+import 'package:organicos/visao/permissaoGrupo/permissao_grupo.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
-import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
-import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
+import 'package:organicos/visao/produtor_teste/tela_produtor.dart';
 import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/tela_selecao_mapa.dart';
 import 'package:flutter_neumorphic/flutter_neumorphic.dart';
@@ -11,12 +14,14 @@ import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({Key? key}) : super(key: key);
+   ControleCadastros<Usuario> _controle = ControleCadastros<Usuario>(Usuario());
 
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
+  ControleCadastros<GrupoUsuario> _controle = ControleCadastros<GrupoUsuario>(GrupoUsuario());
   Widget botaoMenu(
       String caminhoIcone, String textoBotao, Function()? onButtonClick) {
     return InkWell(
@@ -29,6 +34,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Neumorphic(
                 style: NeumorphicStyle(
                   shape: NeumorphicShape.convex,
+                  border: NeumorphicBorder(
+                    color: Color(0x10000000),
+                    width: 0.1,
+                  ),
                   boxShape:
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
                   depth: -8,
@@ -72,10 +81,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             runSpacing: 30.0,
             children: [
               botaoMenu("assets/imagens/imgProdutores.png", 'Produtores', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaProdutor()));
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TelaProdutor()));
               }),
               botaoMenu("assets/imagens/imgCliente.png", 'Clientes', () {
                 Navigator.push(
@@ -83,17 +90,13 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUsuario()));
               }),
-              botaoMenu("assets/imagens/imgSacola.png", 'Pontos\nVendas', () {
+              
+
+              botaoMenu("assets/imagens/imgSacola.png", 'Pontos\nVendas',() {
                 Navigator.push(
-                    context,
+                   context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaPontoVenda()));
-              }),
-              botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaProduto()));
               }),
               botaoMenu("assets/imagens/imgProdutores.png", 'Unidades', () {
                 Navigator.push(
@@ -101,7 +104,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUnidade()));
               }),
-            ],
+            ]
           )),
     )));
   }
@@ -116,7 +119,19 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         spacing: 40.0,
         runSpacing: 40.0,
         children: [
-          botaoMenu("assets/imagens/imgProdutores.png", 'Permissões', () {}),
+          botaoMenu("assets/imagens/imgProdutores.png", 'Permissões', () {
+            _controle.objetoCadastroEmEdicao = GrupoUsuario();
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPermissaoGrupo(_controle, onSaved: () {
+                          setState(() {
+                            _controle.atualizarPesquisa(filtros: {
+                              'filtro': ''
+                            });
+                          });
+                        })));
+                        }),
         ],
       ),
     )));

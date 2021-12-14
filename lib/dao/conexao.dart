@@ -4,7 +4,7 @@ class Conexao {
   static MySqlConnection? _conexao;
 
   static Future<MySqlConnection> getConexao() async {
-    String databaseName = 'organicos_local';
+    String databaseName = 'organico_local';
     var _settings = ConnectionSettings(
         useSSL: false,
         host: 'localhost',
