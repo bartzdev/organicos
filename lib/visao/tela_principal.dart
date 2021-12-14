@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
 import 'package:organicos/visao/grupousuario/tela_pesquisa_grupousuario.dart';
@@ -17,12 +20,14 @@ import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({Key? key}) : super(key: key);
+   ControleCadastros<Usuario> _controle = ControleCadastros<Usuario>(Usuario());
 
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
+  ControleCadastros<GrupoUsuario> _controle = ControleCadastros<GrupoUsuario>(GrupoUsuario());
   Widget botaoMenu(
       String caminhoIcone, String textoBotao, Function()? onButtonClick) {
     return InkWell(
@@ -35,6 +40,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             Neumorphic(
                 style: NeumorphicStyle(
                   shape: NeumorphicShape.convex,
+                  border: NeumorphicBorder(
+                    color: Color(0x10000000),
+                    width: 0.1,
+                  ),
                   boxShape:
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
                   depth: -8,
@@ -94,7 +103,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               }),
               botaoMenu("assets/imagens/imgPontoVendas.png", 'Pontos\nVendas', () {
                 Navigator.push(
-                    context,
+                   context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaPontoVenda()));
               }),
