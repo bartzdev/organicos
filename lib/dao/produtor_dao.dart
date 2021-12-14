@@ -1,8 +1,9 @@
 import 'package:organicos/dao/conexao.dart';
+import 'package:organicos/modelo/certificadora.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
-import 'package:organicos/modelo/ponto_venda.dart';
+import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/modelo/produtor.dart';
 
 import 'dao.dart';
@@ -82,41 +83,57 @@ class ProdutorDAO extends DAO<Produtor> {
       {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    p.id, p.nome, p.endereco, p.numero, p.bairro, p.registro_ativo, p.cidade_id, 
-    c.nome, e.id, e.nome
-    from pontovenda p
+    p.id, p.nome, p.cpf_cnpj, p.endereco, p.numero, p.bairro, p.registro_ativo, p.nome_propriedade, p.latitude, p.longitude, p.certificacao_organicos, p.telefone,
+    c.id as cid, c.nome as cnome,
+    e.id, e.nome as esnome,
+    cer.id as cer_id, cer.nome as cer_nome,
+    gp.id as gp_id, gp.nome as gp_nome
+    from produtor p
     join cidade c on c.id = p.cidade_id
     join estado e on e.id = c.estado_id
+    join certificadora cer on cer.id = p.certificadora_id
+    join grupoprodutores gp on gp.id = p.grupoprodutores_id
     where p.id = ?''', [produtor.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       produtor.id = linhaConsulta[0];
       produtor.nome = linhaConsulta[1];
-      produtor.endereco = Endereco()..logradouro = linhaConsulta[2];
-      produtor.endereco?.numero = linhaConsulta[3];
-      produtor.endereco?.bairro = linhaConsulta[4];
-      produtor.ativo = linhaConsulta[5] == 1;
-      produtor.endereco?.cidade = Cidade()..id = linhaConsulta[6];
-      produtor.endereco?.cidade?.nome = linhaConsulta[7];
-      produtor.endereco?.cidade?.estado = Estado()..id = linhaConsulta[8];
-      produtor.endereco?.cidade?.estado?.nome = linhaConsulta[9];
+      produtor.cpfCnpj = linhaConsulta[2];
+      produtor.endereco = Endereco()..logradouro = linhaConsulta[3];
+      produtor.endereco!.numero = linhaConsulta[4];
+      produtor.endereco!.bairro = linhaConsulta[5];
+      produtor.ativo = linhaConsulta[6] == 1;
+      produtor.nomePropriedade = linhaConsulta[7];
+      produtor.latitude = linhaConsulta[8].toString();
+      produtor.longitude = linhaConsulta[9].toString();
+      produtor.certificacaoOrganicos = linhaConsulta[10];
+      produtor.telefone = linhaConsulta[11];
+      produtor.endereco!.cidade = Cidade()..id = linhaConsulta[12];
+      produtor.endereco!.cidade!.nome = linhaConsulta[13];
+      produtor.endereco!.cidade!.estado = Estado()..id = linhaConsulta[14];
+      produtor.endereco!.cidade!.estado!.nome = linhaConsulta[15];
+      produtor.certificadora = Certificadora()..id = linhaConsulta[16];
+      produtor.certificadora!.nome = linhaConsulta[17];
+      produtor.grupo = GrupoProdutor()..id = linhaConsulta[18];
+      produtor.grupo!.nome = linhaConsulta[19];
+
     });
     return produtor;
   }
 
   @override
   Future<List<Produtor>> listar({Map<String, dynamic>? filtros}) async {
-    List<Produtor> pontos = [];
+    List<Produtor> produtores = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    p.id, p.nome from pontovenda p where p.registro_ativo = 1
+    p.id, p.nome from produtor p where p.registro_ativo = 1
     order by lower(p.nome)''', []);
     await resultadoConsulta.forEach((linhaConsulta) {
       var produtor = Produtor();
       produtor.id = linhaConsulta[0];
       produtor.nome = linhaConsulta[1];
-      pontos.add(produtor);
+      produtores.add(produtor);
     });
-    return pontos;
+    return produtores;
   }
 
   @override
@@ -125,7 +142,7 @@ class ProdutorDAO extends DAO<Produtor> {
         ? filtros['filtro']
         : '';
 
-    List<Produtor> pontos = [];
+    List<Produtor> produtores = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
     p.id, p.nome from produtor p where p.registro_ativo = 1 and lower(p.nome) like ?
@@ -134,8 +151,8 @@ class ProdutorDAO extends DAO<Produtor> {
       var produtor = Produtor();
       produtor.id = linhaConsulta[0];
       produtor.nome = linhaConsulta[1];
-      pontos.add(produtor);
+      produtores.add(produtor);
     });
-    return pontos;
+    return produtores;
   }
 }

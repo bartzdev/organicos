@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/usuario.dart';
+import 'package:organicos/visao/permissaoGrupo/permissao_grupo.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
 import 'package:organicos/visao/produtor_teste/tela_produtor.dart';
@@ -10,12 +14,14 @@ import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({Key? key}) : super(key: key);
+   ControleCadastros<Usuario> _controle = ControleCadastros<Usuario>(Usuario());
 
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
+  ControleCadastros<GrupoUsuario> _controle = ControleCadastros<GrupoUsuario>(GrupoUsuario());
   Widget botaoMenu(
       String caminhoIcone, String textoBotao, Function()? onButtonClick) {
     return InkWell(
@@ -113,7 +119,19 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         spacing: 40.0,
         runSpacing: 40.0,
         children: [
-          botaoMenu("assets/imagens/imgProdutores.png", 'Permissões', () {}),
+          botaoMenu("assets/imagens/imgProdutores.png", 'Permissões', () {
+            _controle.objetoCadastroEmEdicao = GrupoUsuario();
+            Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => TelaPermissaoGrupo(_controle, onSaved: () {
+                          setState(() {
+                            _controle.atualizarPesquisa(filtros: {
+                              'filtro': ''
+                            });
+                          });
+                        })));
+                        }),
         ],
       ),
     )));
@@ -127,16 +145,21 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         // ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         body: ListView(children: [
-          Padding(padding: EdgeInsets.all(30)),
-          Text(
-            '''Este aplicativo foi desenvolvido com o objetivo de aproximar os produtores da agricultura familiar dos seus consumidores.
-           O projeto foi desenvolvido pelos estudantes a, Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros, Rafael Shono
-           do Instituto Federal do Paraná campus Assis Chateaubriand, \na disciplina de programação para dispositivos móveis ministrada pelo professor doutor Rafael Luis Bartz. 
-          Atualmente o aplicativo faz parte de um projeto de extensão coordenado pela professora Sonia Mandotti, que faz o acompanhamento técnico dos produtores de Assis Chateaubriand 
-''',
+           Container(
+              width: MediaQuery.of(context).size.width,
+              height: 300,
+              color: Color(0xFF61b255),
+              child: Image.asset('assets/imagens/logoOrganico.jpeg')),
+          Padding(
+            padding: EdgeInsets.all(30),
+          child: Text(
+           'Este aplicativo foi desenvolvido com o objetivo de aproximar os produtores da agricultura familiar de seus consumidores. ' +
+                    '\nAtualmente o aplicativo faz parte de um projeto de extensão coordenado pela professora Sonia Mandotti, que faz o acompanhamento técnico dos produtores de Assis Chateaubriand.' +
+                    '\nO projeto foi desenvolvido pelos estudantes: Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros, Rafael Shono' +
+                    ' do Instituto Federal do Paraná campus Assis Chateaubriand, para a disciplina de programação para dispositivos móveis ministrada pelo professor doutor Rafael Luis Bartz.',
             textAlign: TextAlign.justify,
             textWidthBasis: TextWidthBasis.longestLine,
-          )
+           ))
         ]));
   }
 

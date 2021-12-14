@@ -1,10 +1,16 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/modelo/certificadora.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/estado.dart';
+import 'package:organicos/modelo/grupo_produtor.dart';
 import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
-import 'package:organicos/visao/login/loginControle.dart';
+import 'package:organicos/visao/produtor/tela_pesquisa_certificadora_aqui.dart';
+import 'package:organicos/visao/produtor/tela_pesquisa_grupoprodutor_aqui.dart';
+import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 
 class TelaCadastroProdutor extends StatefulWidget {
@@ -37,6 +43,7 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   @override
   Widget build(BuildContext context) {
     _context = context;
+    int val = -1;
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -59,7 +66,7 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                             Expanded(
                                 child: Center(
                                     child: Text(
-                              'Dados do proprietário',
+                              'Dados do produtor',
                               textAlign: TextAlign.center,
                             ))),
                           ],
@@ -139,21 +146,24 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Nome do proprietário',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Nome do produtor',
+                            border: OutlineInputBorder()),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao?.nome),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
+                    TextFormField(
                       onChanged: (text) {},
                       keyboardType: TextInputType.emailAddress,
                       decoration: InputDecoration(
                           labelText: 'CPF/CNPJ', border: OutlineInputBorder()),
+                      initialValue:
+                          widget.controle.objetoCadastroEmEdicao!.cpfCnpj,
                     ),
                     SizedBox(
                       height: 30,
@@ -203,22 +213,18 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Endereço do proprietário',
-                          border: OutlineInputBorder()),
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'CEP', border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Endereço do produtor',
+                            border: OutlineInputBorder()),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.endereco ==
+                                    null
+                                ? ''
+                                : widget.controle.objetoCadastroEmEdicao!
+                                    .endereco!.logradouro),
                     SizedBox(
                       height: 30,
                     ),
@@ -227,37 +233,45 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Expanded(
-                          child: TextField(
-                            onChanged: (text) {},
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                labelText: 'Número',
-                                border: OutlineInputBorder()),
-                          ),
+                          child: TextFormField(
+                              onChanged: (text) {},
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  labelText: 'Número',
+                                  border: OutlineInputBorder()),
+                              initialValue:
+                                  '${widget.controle.objetoCadastroEmEdicao!.endereco == null ? '' : widget.controle.objetoCadastroEmEdicao!.endereco!.numero}'),
                         ),
                         SizedBox(
                           width: 30,
                         ),
                         Expanded(
-                          child: TextField(
-                            onChanged: (text) {},
-                            keyboardType: TextInputType.emailAddress,
-                            decoration: InputDecoration(
-                                labelText: 'Bairro',
-                                border: OutlineInputBorder()),
-                          ),
+                          child: TextFormField(
+                              onChanged: (text) {},
+                              keyboardType: TextInputType.emailAddress,
+                              decoration: InputDecoration(
+                                  labelText: 'Bairro',
+                                  border: OutlineInputBorder()),
+                              initialValue: widget.controle
+                                          .objetoCadastroEmEdicao!.endereco ==
+                                      null
+                                  ? ''
+                                  : widget.controle.objetoCadastroEmEdicao!
+                                      .endereco!.bairro),
                         )
                       ],
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Telefone', border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Telefone',
+                            border: OutlineInputBorder()),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.telefone),
                     SizedBox(
                       height: 30,
                     ),
@@ -325,13 +339,14 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Nome da propriedade',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Nome da propriedade',
+                            border: OutlineInputBorder()),
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao!.nomePropriedade),
                     SizedBox(
                       height: 30,
                     ),
@@ -346,27 +361,29 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Latitude',
-                        border: OutlineInputBorder(),
-                        enabled: false,
-                      ),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Latitude',
+                          border: OutlineInputBorder(),
+                          enabled: false,
+                        ),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.latitude),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                        labelText: 'Longitude',
-                        border: OutlineInputBorder(),
-                        enabled: false,
-                      ),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                          labelText: 'Longitude',
+                          border: OutlineInputBorder(),
+                          enabled: false,
+                        ),
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao!.longitude),
                     SizedBox(
                       height: 30,
                     ),
@@ -439,6 +456,8 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   }
 
   Widget abaDadosDaPropriedade() {
+    int result = 1;
+
     return Scaffold(
         body: Center(
       child: SingleChildScrollView(
@@ -454,45 +473,166 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                 padding: const EdgeInsets.all(8.0),
                 child: Column(
                   children: [
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Certificadora',
-                          border: OutlineInputBorder()),
-                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TelaPesquisaCertificadoraAqui(
+                                        onItemSelected:
+                                            (Certificadora certificadora) {
+                                          Navigator.of(context).pop();
+                                          setState(() {
+                                            widget
+                                                .controle
+                                                .objetoCadastroEmEdicao
+                                                ?.certificadora = certificadora;
+                                          });
+                                        },
+                                      )));
+                        },
+                        child: AbsorbPointer(
+                            child: TextFormField(
+                                key: Key((widget.controle.objetoCadastroEmEdicao
+                                            ?.endereco?.cidade?.nome ==
+                                        null
+                                    ? ' '
+                                    : widget.controle.objetoCadastroEmEdicao!
+                                        .endereco!.cidade!.nome!)),
+                                readOnly: true,
+                                decoration: decorationCampoTexto(
+                                    hintText: "Certificadoras",
+                                    labelText: "Certificadoras"),
+                                keyboardType: TextInputType.text,
+                                initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao
+                                    ?.endereco
+                                    ?.cidade
+                                    ?.nome,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return "Este campo é obrigatório!";
+                                  }
+                                  return null;
+                                }))),
+                    // TextFormField(
+                    //     onChanged: (text) {},
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //         labelText: 'Certificadora',
+                    //         border: OutlineInputBorder()),
+                    //     initialValue: widget.controle.objetoCadastroEmEdicao!
+                    //                 .certificadora ==
+                    //             null
+                    //         ? ''
+                    //         : widget.controle.objetoCadastroEmEdicao!
+                    //             .certificadora!.nome),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Grupo de produtores',
-                          border: OutlineInputBorder()),
-                    ),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      TelaPesquisaGrupoProdutorAqui(
+                                        onItemSelected:
+                                            (GrupoProdutor grupoProdutor) {
+                                          Navigator.of(context).pop();
+                                          setState(() {
+                                            widget
+                                                .controle
+                                                .objetoCadastroEmEdicao
+                                                ?.grupo = grupoProdutor;
+                                          });
+                                        },
+                                      )));
+                        },
+                        child: AbsorbPointer(
+                            child: TextFormField(
+                                key: Key((widget.controle.objetoCadastroEmEdicao
+                                            ?.endereco?.cidade?.nome ==
+                                        null
+                                    ? ' '
+                                    : widget.controle.objetoCadastroEmEdicao!
+                                        .endereco!.cidade!.nome!)),
+                                readOnly: true,
+                                decoration: decorationCampoTexto(
+                                    hintText: "Grupo de produtores",
+                                    labelText: "Grupo de produtores"),
+                                keyboardType: TextInputType.text,
+                                initialValue: widget
+                                    .controle
+                                    .objetoCadastroEmEdicao
+                                    ?.endereco
+                                    ?.cidade
+                                    ?.nome,
+                                validator: (value) {
+                                  if (value == null || value.trim().isEmpty) {
+                                    return "Este campo é obrigatório!";
+                                  }
+                                  return null;
+                                }))),
+                    // TextFormField(
+                    //     onChanged: (text) {},
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //         labelText: 'Grupo de produtores',
+                    //         border: OutlineInputBorder()),
+                    //     initialValue:
+                    //         widget.controle.objetoCadastroEmEdicao!.grupo ==
+                    //                 null
+                    //             ? ''
+                    //             : widget.controle.objetoCadastroEmEdicao!.grupo!
+                    //                 .nome),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Nome da propriedade',
-                          border: OutlineInputBorder()),
-                    ),
+                    TextFormField(
+                        onChanged: (text) {},
+                        keyboardType: TextInputType.emailAddress,
+                        decoration: InputDecoration(
+                            labelText: 'Nome da propriedade',
+                            border: OutlineInputBorder()),
+                        initialValue: widget
+                            .controle.objetoCadastroEmEdicao!.nomePropriedade),
                     SizedBox(
                       height: 30,
                     ),
-                    TextField(
-                      onChanged: (text) {},
-                      keyboardType: TextInputType.emailAddress,
-                      decoration: InputDecoration(
-                          labelText: 'Certificação orgânica',
-                          border: OutlineInputBorder()),
+                    // TextFormField(
+                    //     onChanged: (text) {},
+                    //     keyboardType: TextInputType.emailAddress,
+                    //     decoration: InputDecoration(
+                    //         labelText: 'Certificação orgânica',
+                    //         border: OutlineInputBorder()),
+                    //     initialValue: widget.controle.objetoCadastroEmEdicao!
+                    //         .certificacaoOrganicos),
+                    ListTile(
+                      title: Text("Sim"),
+                      leading: Radio(
+                        value: 1,
+                        groupValue: 'grupo1',
+                        onChanged: (value) {
+                          setState(() {});
+                        },
+                        activeColor: Colors.green,
+                      ),
                     ),
-                    SizedBox(
-                      height: 30,
+                    ListTile(
+                      title: Text("Não"),
+                      leading: Radio(
+                        value: 2,
+                        groupValue: 'grupo1',
+                        onChanged: (value) {
+                          setState(() {
+                            result;
+                          });
+                        },
+                        activeColor: Colors.green,
+                      ),
                     ),
                     SizedBox(
                       height: 30,
@@ -530,7 +670,9 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                                             ? 15
                                             : 20,
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                Salvar(context);
+                              },
                               child: Text('Finalizar cadastro')),
                         ),
                       ],
@@ -563,5 +705,18 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
         ),
       ),
     ));
+  }
+
+  Future<void> Salvar(BuildContext context) async {
+    if (_chaveFormulario.currentState != null &&
+        _chaveFormulario.currentState!.validate()) {
+      _chaveFormulario.currentState!.save();
+      widget.controle.salvarObjetoCadastroEmEdicao().then((value) {
+        if (widget.onSaved != null) widget.onSaved!();
+        Navigator.of(context).pop();
+      }).catchError((error) {
+        mensagemConexao(context);
+      });
+    }
   }
 }

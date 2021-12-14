@@ -97,24 +97,28 @@ class _LoginState extends State<Login> {
                                   }
                               }
                             },
-                      child: Container(height: 50,
-                       child: Card(
-                       
-                        shape: new RoundedRectangleBorder(
-                            borderRadius: new BorderRadius.circular(30.0)),
-                        child: Center(child:  Text(
-                          "ENTRAR",
-                          style: TextStyle(color: Colors.white, fontSize: 20),
-                        )),
-                        //color: Colors.red,
-                        color: Color(0xFF2e8228),
-                      )
-                      ),
-                    ),
-                    )
-                    ],
-                )),
-          ),
-        )],)));
+                            child: Container(
+                                height: 50,
+                                child: Card(
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(30.0)),
+                                  child: Center(
+                                      child: Text(
+                                    "ENTRAR",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
+                                  )),
+                                  //color: Colors.red,
+                                  color: Color(0xFF2e8228),
+                                )),
+                          ),
+                        )
+                      ],
+                    )),
+              ),
+            )
+          ],
+        )));
   }
 }
