@@ -28,6 +28,10 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   ControleCadastros<Cidade> controleCidade = ControleCadastros(Cidade());
   var _chaveFormulario = GlobalKey<FormState>();
   Estado? _estadoSelecionado;
+  int grupo = 1;
+  ScrollController _scroolControllerAba1 = ScrollController();
+  ScrollController _scroolControllerAba2 = ScrollController();
+  ScrollController _scroolControllerAba3 = ScrollController();
 
   Future<void> salvar(BuildContext context) async {
     if (_chaveFormulario.currentState != null &&
@@ -44,6 +48,8 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   Widget build(BuildContext context) {
     _context = context;
     int val = -1;
+    TabController _controller;
+
     return Scaffold(
       body: DefaultTabController(
         length: 3,
@@ -134,6 +140,8 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
     return Scaffold(
         body: Center(
       child: SingleChildScrollView(
+        key: Key("scrool1"),
+        controller: _scroolControllerAba1,
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Wrap(
@@ -308,7 +316,9 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                                             ? 15
                                             : 20,
                                   )),
-                              onPressed: () {},
+                              onPressed: () {
+                                setState(() {});
+                              },
                               child: Text('Continuar →')),
                         ),
                       ],
@@ -327,6 +337,8 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
     return Scaffold(
         body: Center(
       child: SingleChildScrollView(
+        key: Key("scrool2"),
+        controller: _scroolControllerAba2,
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Wrap(
@@ -390,59 +402,63 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisSize: MainAxisSize.max,
                       children: [
                         Expanded(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  primary: Colors.green[300],
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 20),
-                                  textStyle: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width < 400
-                                            ? 15
-                                            : 20,
-                                  )),
-                              onPressed: () {},
-                              child: Text('← Voltar')),
+                          child: Container(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      primary: Colors.green[300],
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 20),
+                                      textStyle: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width <
+                                                    400
+                                                ? 15
+                                                : 20,
+                                      )),
+                                  onPressed: () {},
+                                  child: Text('← Voltar'))),
                         ),
                         SizedBox(
                           width: 30,
                         ),
                         Expanded(
-                          child: ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 20),
-                                  textStyle: TextStyle(
-                                    fontSize:
-                                        MediaQuery.of(context).size.width < 400
-                                            ? 15
-                                            : 20,
-                                  )),
-                              onPressed: () {},
-                              child: Text('Continuar →')),
+                          child: Container(
+                              child: ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 5, vertical: 20),
+                                      textStyle: TextStyle(
+                                        fontSize:
+                                            MediaQuery.of(context).size.width <
+                                                    400
+                                                ? 15
+                                                : 20,
+                                      )),
+                                  onPressed: () {},
+                                  child: Text('Continuar →'))),
                         ),
                       ],
                     ),
                     SizedBox(
                       height: 30,
                     ),
-                    Center(
-                      child: Expanded(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.red[400],
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 20),
-                                textStyle: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width < 400
-                                          ? 15
-                                          : 20,
-                                )),
-                            onPressed: () {},
-                            child: Text('Cancelar')),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            primary: Colors.red[400],
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 50, vertical: 20),
+                            textStyle: TextStyle(
+                              fontSize: MediaQuery.of(context).size.width < 400
+                                  ? 15
+                                  : 20,
+                            )),
+                        onPressed: () {},
+                        child: Text('Cancelar'),
                       ),
                     ),
                   ],
@@ -456,11 +472,17 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
   }
 
   Widget abaDadosDaPropriedade() {
-    int result = 1;
+    _handleRadioValueChange1(int? value) {
+      setState(() {
+        grupo = value == null ? 0 : value;
+      });
+    }
 
     return Scaffold(
         body: Center(
       child: SingleChildScrollView(
+        controller: _scroolControllerAba3,
+        key: Key("scrool3"),
         child: Padding(
           padding: EdgeInsets.only(left: 20, right: 20),
           child: Wrap(
@@ -610,29 +632,30 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     //         border: OutlineInputBorder()),
                     //     initialValue: widget.controle.objetoCadastroEmEdicao!
                     //         .certificacaoOrganicos),
-                    ListTile(
-                      title: Text("Sim"),
-                      leading: Radio(
-                        value: 1,
-                        groupValue: 'grupo1',
-                        onChanged: (value) {
-                          setState(() {});
-                        },
-                        activeColor: Colors.green,
-                      ),
-                    ),
-                    ListTile(
-                      title: Text("Não"),
-                      leading: Radio(
-                        value: 2,
-                        groupValue: 'grupo1',
-                        onChanged: (value) {
-                          setState(() {
-                            result;
-                          });
-                        },
-                        activeColor: Colors.green,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Radio<int>(
+                          value: 1,
+                          groupValue: grupo,
+                          onChanged: _handleRadioValueChange1,
+                        ),
+                        Text(
+                          'Sim',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                        Radio<int>(
+                          value: 0,
+                          groupValue: grupo,
+                          onChanged: _handleRadioValueChange1,
+                        ),
+                        Text(
+                          'Não',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+                      ],
                     ),
                     SizedBox(
                       height: 30,
@@ -680,22 +703,21 @@ class _TelaCadastroProdutor extends State<TelaCadastroProdutor> {
                     SizedBox(
                       height: 30,
                     ),
-                    Center(
-                      child: Expanded(
-                        child: ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                primary: Colors.red[400],
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 50, vertical: 20),
-                                textStyle: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width < 400
-                                          ? 15
-                                          : 20,
-                                )),
-                            onPressed: () {},
-                            child: Text('Cancelar')),
-                      ),
+                    Container(
+                      width: MediaQuery.of(context).size.width,
+                      child: ElevatedButton(
+                          style: ElevatedButton.styleFrom(
+                              primary: Colors.red[400],
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 50, vertical: 20),
+                              textStyle: TextStyle(
+                                fontSize:
+                                    MediaQuery.of(context).size.width < 400
+                                        ? 15
+                                        : 20,
+                              )),
+                          onPressed: () {},
+                          child: Text('Cancelar')),
                     ),
                   ],
                 ),
