@@ -17,8 +17,7 @@ class TelaPermissaoGrupo extends StatefulWidget {
 
   Function()? onSaved;
 
-  TelaPermissaoGrupo(this.controle, {Key? key, this.onSaved})
-     : super(key: key);
+  TelaPermissaoGrupo(this.controle, {Key? key, this.onSaved}) : super(key: key);
 
   @override
   _TelaPermissaoGrupoState createState() => _TelaPermissaoGrupoState();
@@ -57,7 +56,6 @@ class _TelaPermissaoGrupoState extends State<TelaPermissaoGrupo> {
         children: widget.controle.objetoCadastroEmEdicao!.permissoes
             .map((PermissaoGrupo perGrupo) {
           return new CheckboxListTile(
-         
             title: new Text(perGrupo.permissao?.nome == null
                 ? ''
                 : perGrupo.permissao!.nome!),
@@ -105,40 +103,36 @@ class _TelaPermissaoGrupoState extends State<TelaPermissaoGrupo> {
                           return null;
                         }),
                     espacoEntreCampos,
-                    
-                        
-                        Container(
-                                height: 30,
-                                width: double.infinity,
-                                alignment: Alignment.center,
-                                child: Text("PERMISSÕES", 
-                                style: TextStyle(
-                                  fontSize: 20,
-                                  
-                                  color: Colors.black54
-                                
-                                 )),
-                              ),
+                    Container(
+                      height: 30,
+                      width: double.infinity,
+                      alignment: Alignment.center,
+                      child: Text("PERMISSÕES",
+                          style:
+                              TextStyle(fontSize: 20, color: Colors.black54)),
+                    ),
                     espacoEntreCampos,
                     FutureBuilder<List<Permissao>>(
                         future: controlePermissao.listar(),
                         builder: (BuildContext context,
                             AsyncSnapshot<List<Permissao>> snapshot) {
                           if (snapshot.hasData) {
-                            listaPermissao = snapshot.data;
-                            for (Permissao permissao in listaPermissao!) {
-                                                           
-                              PermissaoGrupo permissaoGrupo =
+                            if (listaPermissao == null ||
+                                listaPermissao!.length == 0) {
+                              listaPermissao = snapshot.data;
+                              for (Permissao permissao in listaPermissao!) {
+                                PermissaoGrupo permissaoGrupo =
                                     PermissaoGrupo();
                                 permissaoGrupo.permissao = permissao;
                                 widget
-                                    .controle.objetoCadastroEmEdicao?.permissoes.add(permissaoGrupo);
-                                    
+                                    .controle.objetoCadastroEmEdicao?.permissoes
+                                    .add(permissaoGrupo);
+                              }
                             }
-                            
+
                             return checkListaPermissao();
                           }
-                          
+
                           return SizedBox();
                         }),
                     espacoEntreCampos,
