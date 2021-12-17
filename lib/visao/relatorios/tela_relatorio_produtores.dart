@@ -82,12 +82,14 @@ class GerarPDF {
           return produtor.endereco!.cidade!.estado!.sigla!;
         case 3:
           return formataTelefone(produtor.telefone)!;
+        case 4:
+          return produtor.certificadora == null ? '' : produtor.certificadora!.nome!;
       }
       return '';
     }
 
     pw.Widget _contentTable(pw.Context context) {
-      const tableHeaders = ['Nome Produtor', 'Cidade', 'Estado', 'Telefone'];
+      const tableHeaders = ['Nome Produtor', 'Cidade', 'Estado', 'Telefone', 'Certificadora'];
       return pw.Table.fromTextArray(
           cellAlignment: pw.Alignment.centerLeft,
           headerDecoration: pw.BoxDecoration(
@@ -99,7 +101,8 @@ class GerarPDF {
             0: pw.Alignment.centerLeft,
             1: pw.Alignment.centerLeft,
             2: pw.Alignment.centerLeft,
-            3: pw.Alignment.centerLeft
+            3: pw.Alignment.centerLeft,
+            4: pw.Alignment.centerLeft 
           },
           headerStyle: pw.TextStyle(
               fontSize: 10,
@@ -142,6 +145,7 @@ class TelaGerarRelatorio extends StatefulWidget {
 class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
   Uint8List? bites;
   Cidade? CidadeFiltro;
+  String certificado = 's';
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
@@ -155,7 +159,7 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
             RelatorioDAO dao = RelatorioDAO();
             print(CidadeFiltro?.id);
             produtores = await dao
-                .pesquisarProdutoCidade(filtros: {'Cidade': CidadeFiltro?.id});
+                .pesquisarProdutoCidade(filtros: {'Cidade': CidadeFiltro?.id, 'Certificado': certificado});
             GerarPDF gerarPDF = GerarPDF(produtores: produtores);
             bites = await gerarPDF.gerearPDFProdutores();
             Navigator.push(
