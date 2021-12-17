@@ -38,7 +38,7 @@ class Sobre extends StatelessWidget {
                       textAlign: TextAlign.justify),
                   SizedBox(height: 20),
                   Text(
-                      'O projeto foi desenvolvido pelos estudantes: Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros, Rafael Shono'
+                      'O projeto foi desenvolvido pelos estudantes: Gabriel Gaban de Lima, Gabriel Leopoldo Locks, Italo Rodrigues dos Santos, Karollyne de Paulo Marcola, Lucas  Wesolowski Medeiros e Rafael Shono,'
                       ' do Instituto Federal do Paraná campus Assis Chateaubriand, para a disciplina de programação para dispositivos móveis ministrada pelo professor doutor Rafael Luis Bartz.',
                       textAlign: TextAlign.justify)
                 ],
