@@ -46,7 +46,7 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
     await resultadoConsulta.forEach((linhaConsulta) {
       grupoUsuario.id = linhaConsulta[0];
       grupoUsuario.nome = linhaConsulta[1];
-      grupoUsuario.ativo = linhaConsulta[2];
+      grupoUsuario.ativo = linhaConsulta[2] == 1;
     });
     return grupoUsuario;
   }
