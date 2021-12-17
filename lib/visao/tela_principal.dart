@@ -20,14 +20,15 @@ import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({Key? key}) : super(key: key);
-   ControleCadastros<Usuario> _controle = ControleCadastros<Usuario>(Usuario());
+  ControleCadastros<Usuario> _controle = ControleCadastros<Usuario>(Usuario());
 
   @override
   _TelaPrincipalState createState() => _TelaPrincipalState();
 }
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
-  ControleCadastros<GrupoUsuario> _controle = ControleCadastros<GrupoUsuario>(GrupoUsuario());
+  ControleCadastros<GrupoUsuario> _controle =
+      ControleCadastros<GrupoUsuario>(GrupoUsuario());
   Widget botaoMenu(
       String caminhoIcone, String textoBotao, Function()? onButtonClick) {
     return InkWell(
@@ -86,8 +87,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
-                  () {
+              botaoMenu("assets/imagens/imgProdutor.png", 'Produtores', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -101,9 +101,10 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaGrupoProdutor()));
               }),
-              botaoMenu("assets/imagens/imgPontoVendas.png", 'Pontos\nVendas', () {
+              botaoMenu("assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
+                  () {
                 Navigator.push(
-                   context,
+                    context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaPontoVenda()));
               }),
@@ -113,45 +114,28 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaProduto()));
               }),
-              botaoMenu(
-                  "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
+              botaoMenu("assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
                   () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaTipoProduto()));
               }),
-              botaoMenu("assets/imagens/imgGrupoProdutores.png", 'Unidades',
+              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades',
                   () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaUnidade()));
               }),
-              botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaUsuario()));
-              }),
-              botaoMenu(
-                  "assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários',
-                  () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaGrupousuario()));
-              }),
-              botaoMenu(
-                  "assets/imagens/imgCertificadora.png", 'Certificadoras',
+              botaoMenu("assets/imagens/imgCertificadora.png", 'Certificadoras',
                   () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaCertificadora()));
               }),
-              botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
-                  () {
+              botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -172,8 +156,17 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         spacing: 40.0,
         runSpacing: 40.0,
         children: [
-          botaoMenu(
-              "assets/imagens/imgGrupoProdutores.png", 'Permissões', () {}),
+          botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => TelaPesquisaUsuario()));
+          }),
+          botaoMenu("assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários',
+              () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => TelaPesquisaGrupousuario()));
+          }),
         ],
       ),
     )));

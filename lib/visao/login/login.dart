@@ -24,12 +24,17 @@ class _LoginState extends State<Login> {
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
         body: SingleChildScrollView(child: Column (children: [Container( 
+           decoration: new BoxDecoration(
+                  color: Color(0xFF61b255),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: const Radius.circular(50),
+                    bottomRight: const Radius.circular(50),
+                  )),
           width: MediaQuery.of(context).size.width,
-          height: 300,
-          color: Color(0xFF61b255),
+          height: 265,
           child: Image.asset('assets/imagens/logoOrganico.jpeg')
           
-          
+        
           ),
           SizedBox(height: 50),
            Padding(
