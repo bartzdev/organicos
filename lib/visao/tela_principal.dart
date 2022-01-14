@@ -121,8 +121,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaTipoProduto()));
               }),
-              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades',
-                  () {
+              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -213,7 +212,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: temaGeralApp,
+      theme: temaGeralAppEscuro,
       home: DefaultTabController(
         length: 3,
         child: Scaffold(
