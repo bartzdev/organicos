@@ -145,10 +145,14 @@ class TelaGerarRelatorio extends StatefulWidget {
 class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
   Uint8List? bites;
   Cidade? CidadeFiltro;
-  String certificado = 's';
+  String certificado = 't';
+  int grupo = 1;
+
+  
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+    
     return Scaffold(
         appBar: AppBar(
           title: Text('GerarPdf'),
@@ -171,7 +175,7 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
           },
           child: Icon(Icons.print),
         ),
-        body: Row(
+        body:Column(children: [ Row(
           children: [
 
            Padding(
@@ -222,9 +226,62 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
                });
               }, child: Image.asset('assets/imagens/clean.png', height: 50, width: 50),
              ),
-          ],)
+          ],),
         )
         ],
-        ));
+        ),
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+        child: Row(
+          children: <Widget>[
+             Radio<int>(
+                          value: 1,
+                          groupValue: grupo,
+                          onChanged: (int? value){
+                            setState(() {
+                            grupo = 1;
+                            });
+                            certificado = 'c';
+                          },
+                        ),
+                        Text(
+                          'Com certificado',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+              Radio<int>(
+                          value: 2,
+                          groupValue: grupo,
+                          onChanged: (int? value){
+                            setState(() {
+                            grupo = 2;
+                            });
+                            certificado = 's';}
+                        ),
+                        Text(
+                          'Sem certificado',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+               Radio<int>(
+                          value: 3,
+                          groupValue: grupo,
+                          onChanged: (int? value){
+                            setState(() {
+                            grupo = 3;
+                            });
+                            certificado = 't';}
+                        ),
+                        Text(
+                          'Todos',
+                          style: TextStyle(
+                            fontSize: 16.0,
+                          ),
+                        ),
+          ],  
+            )
+          )
+        ],)
+        );
   }
 }
