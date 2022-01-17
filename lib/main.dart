@@ -32,12 +32,12 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Orgânicos',
-      theme: temaGeralApp,
+      theme: temaGeralAppEscuro,
       // theme: ThemeData(
       //   primarySwatch: Colors.green,
-      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
-      home: Login(), 
-     //home: CheckboxWidget(),
+      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)
+      home: Login(),
+      //home: CheckboxWidget(),
 /*
       home: Scaffold(
         appBar: AppBar(
