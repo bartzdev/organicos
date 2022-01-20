@@ -21,7 +21,8 @@ class _LoginState extends State<Login> {
   late Future<Usuario> userValidate;
   Widget build(BuildContext context) {
     senhaEnt = ValidaLogin().geraHora();
-    loginEnt = 'admin';
+    loginEnt = "admin";
+    // senhaEnt = Usuario().senha.toString();
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
