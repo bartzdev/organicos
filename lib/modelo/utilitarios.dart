@@ -58,3 +58,28 @@ String? formataTelefone(String? telefone) {
   FormattedValue retorno = mascara.applyMask(telefone);
   return retorno.text;
 }
+
+/**
+ * Para utilização desta função, segue uma condição como eemplo
+ * 
+ *  if (!await launch(geraLinkURL('-24.7367379','-53.7408717'))) throw 'Não foi possivel acessar o link';
+ * 
+ */
+
+String geraLinkURL(String parametroOne, String parametroTwo) {
+  if (parametroOne.isEmpty == false && parametroTwo.isEmpty == false) {
+    String urlMaps ='https://www.google.com/maps/dir/?api=1&saddr=My+Location&destination=${parametroOne}%2C${parametroTwo}&travelmode=car';
+         
+    return urlMaps;
+  } else {
+    parametroOne.length > 10
+        ? parametroOne
+            .replaceAll('(', '')
+            .replaceAll(')', '')
+            .replaceAll('-', '')
+        : parametroOne = parametroOne;
+    String urlWhats = 'https://api.whatsapp.com/send?phone=+55${parametroOne}';
+   
+    return urlWhats;
+  }
+}
