@@ -5711,27 +5711,27 @@ create table permissao(
   id integer primary key AUTO_INCREMENT,
   nome varchar(100)
 );
-delete from permissao where id = 1;
+delete from permissao where id = 0;
 select * from permissao;
 insert into permissao (id, nome) values(1, "Consultar Produtores");
-insert into permissao (nome) values("Cadastrar Produtores");
-insert into permissao (nome) values("Consultar Grupo de Produtores");
-insert into permissao (nome) values("Cadastrar Grupo de Produtores");
-insert into permissao (nome) values("Consultar Pontos de Vendas");
-insert into permissao (nome) values("Cadastrar Pontos de Vendas");
-insert into permissao (nome) values("Consultar Produtos");
-insert into permissao (nome) values("Cadastrar Produtos");
-insert into permissao (nome) values("Consultar Tipos de Produtos");
-insert into permissao (nome) values("Cadastrar Tipos de Produtos");
-insert into permissao (nome) values("Consultar Unidades");
-insert into permissao (nome) values("Cadastrar Unidades");
-insert into permissao (nome) values("Consultar Certificadoras");
-insert into permissao (nome) values("Cadastrar Certificadoras");
-insert into permissao (nome) values("Consultar Relatórios");
-insert into permissao (nome) values("Consultar Usuários");
-insert into permissao (nome) values("Cadastrar Usuários");
-insert into permissao (nome) values("Consultar Grupo de Usuários");
-insert into permissao (nome) values("Cadastrar Grupo de Usuários");
+insert into permissao (id, nome) values(2, "Cadastrar Produtores");
+insert into permissao (id, nome) values(3, "Consultar Grupo de Produtores");
+insert into permissao (id, nome) values(4, "Cadastrar Grupo de Produtores");
+insert into permissao (id, nome) values(5, "Consultar Pontos de Vendas");
+insert into permissao (id, nome) values(6, "Cadastrar Pontos de Vendas");
+insert into permissao (id, nome) values(7, "Consultar Produtos");
+insert into permissao (id, nome) values(8, "Cadastrar Produtos");
+insert into permissao (id, nome) values(9, "Consultar Tipos de Produtos");
+insert into permissao (id, nome) values(10, "Cadastrar Tipos de Produtos");
+insert into permissao (id, nome) values(11, "Consultar Unidades");
+insert into permissao (id, nome) values(12, "Cadastrar Unidades");
+insert into permissao (id, nome) values(13, "Consultar Certificadoras");
+insert into permissao (id, nome) values(14, "Cadastrar Certificadoras");
+insert into permissao (id, nome) values(15, "Consultar Relatórios");
+insert into permissao (id, nome) values(16, "Consultar Usuários");
+insert into permissao (id, nome) values(17, "Cadastrar Usuários");
+insert into permissao (id, nome) values(18, "Consultar Grupo de Usuários");
+insert into permissao (id, nome) values(19, "Cadastrar Grupo de Usuários");
  
 create table grupousuario(
   id integer primary key AUTO_INCREMENT,
@@ -5770,11 +5770,9 @@ create table permissao_grupousuario(
 ALTER TABLE Usuario
 MODIFY COLUMN Senha Varchar(300);
 
-alter table produtor_produto add column pausado boolean default false;
 
 
-alter table pontovenda add column  latitude numeric(14,7),
- add column longitude numeric(14,7);
+
 
 
 
