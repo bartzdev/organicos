@@ -5770,9 +5770,11 @@ create table permissao_grupousuario(
 ALTER TABLE Usuario
 MODIFY COLUMN Senha Varchar(300);
 
+alter table produtor_produto add column pausado boolean default false;
 
 
-
+alter table pontovenda add column  latitude numeric(14,7),
+ add column longitude numeric(14,7);
 
 
 
