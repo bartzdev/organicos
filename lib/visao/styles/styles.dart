@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 ThemeData temaGeralAppClaro = ThemeData(
   fontFamily: 'Open Sans',
   primarySwatch: Colors.green,
-  primaryColor: Colors.lightGreen[900],
+  //primaryColor: Colors.lightGreen[900],
 
   // brightness: Brightness.dark,
 );
