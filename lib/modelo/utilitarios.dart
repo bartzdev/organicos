@@ -5,6 +5,7 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart';
 import 'chaves.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 String? formatDate(DateTime? dateTime, {mask = "dd/MM/yyyy"}) {
   if (dateTime != null) return DateFormat(mask).format(dateTime);
@@ -66,11 +67,13 @@ String? formataTelefone(String? telefone) {
  * 
  */
 
-String geraLinkURL(String parametroOne, String parametroTwo) {
+geraLinkURL(String parametroOne, String parametroTwo) {
   if (parametroOne.isEmpty == false && parametroTwo.isEmpty == false) {
-    String urlMaps ='https://www.google.com/maps/dir/?api=1&saddr=My+Location&destination=${parametroOne}%2C${parametroTwo}&travelmode=car';
-         
-    return urlMaps;
+    String urlMaps =
+        'https://www.google.com/maps/dir/?api=1&saddr=My+Location&destination=${parametroOne}%2C${parametroTwo}&travelmode=car';
+     launch (urlMaps);   
+    
+  
   } else {
     parametroOne.length > 10
         ? parametroOne
@@ -79,7 +82,41 @@ String geraLinkURL(String parametroOne, String parametroTwo) {
             .replaceAll('-', '')
         : parametroOne = parametroOne;
     String urlWhats = 'https://api.whatsapp.com/send?phone=+55${parametroOne}';
-   
-    return urlWhats;
+    launch (urlWhats);   
+  
   }
+}
+
+/**
+ * Método responsavel para fazer a formatação de documento
+ * CNPJ tira pontos e adiciona pontos
+ * o valor actio deve ser utilizado da seguinte forma:
+ *      1 - REMOVER PONTUAÇÃO CNPJ
+ *      2 - ADICIONAR PONTUAÇÃO CNPJ
+ */
+String documentformater(String documento, int action) {
+  switch (action) {
+    case 1:
+      documento =
+          documento.replaceAll('.', '').replaceAll('-', '').replaceAll('/', '');
+      break;
+    case 2:
+      String acm = '';
+      for (int i = 0; i < documento.length; i++) {
+        if (i == 2 || i == 5) {
+          acm += '.' + documento[i];
+        } else if (i == 8) {
+          acm += '/' + documento[i];
+        } else if (i == 12) {
+          acm += '-' + documento[i];
+        } else {
+          acm += documento[i];
+        }
+      }
+      documento = acm;
+      break;
+    default:
+  }
+
+  return documento;
 }

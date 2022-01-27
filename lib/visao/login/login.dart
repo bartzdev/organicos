@@ -5,7 +5,7 @@ import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
-import 'package:url_launcher/url_launcher.dart';
+
 
 import '../tela_principal.dart';
 

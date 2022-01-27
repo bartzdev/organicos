@@ -5,6 +5,7 @@ import 'package:organicos/modelo/ponto_venda.dart';
 import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/modelo/tipo_produto.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/styles/styles.dart';
 
 class TelaPesquisaGeral extends StatefulWidget {
@@ -32,7 +33,9 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
     Produto rucula = Produto()..nome = "Rucula da boa";
 
     Produtor joao = Produtor()..nome = "João de Paula";
+    joao.telefone = '44998762665';
     Produtor manuel = Produtor()..nome = "Manuel de Souza Andrade";
+    manuel.telefone = '44998762665';
 
     List<PontoVenda> pontos = [
       PontoVenda()..nome = "Feira principal",
@@ -100,6 +103,18 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                               fontSize: 13,
                               fontWeight: FontWeight.normal),
                           textAlign: TextAlign.left),
+                          itemPesquisaGeral.produtor?.telefone == null ? SizedBox(): 
+                        IconButton(iconSize: 35, icon: Image.asset(
+                    'assets/imagens/WhatsAppIcon48.png',
+                                        
+                  ), onPressed: (
+                  
+                  ) { 
+                     geraLinkURL(itemPesquisaGeral.produtor!.telefone!, '');
+
+                   },
+
+                        )
                     ],
                   )),
                   SizedBox(
@@ -120,8 +135,14 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                                     ? ''
                                     : itemPesquisaGeral
                                         .pontosVenda[indice].nome!,
-                                style: TextStyle(fontSize: 14),
-                              ));
+                                      
+                                style: TextStyle(fontSize: 14,                         
+                                
+                                ),
+                              ),
+                                                    
+                              
+                              );
                             },
                             separatorBuilder:
                                 (BuildContext context, int indice) {
