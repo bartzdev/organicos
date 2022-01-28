@@ -36,13 +36,26 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
     joao.telefone = '44998762665';
     Produtor manuel = Produtor()..nome = "Manuel de Souza Andrade";
     manuel.telefone = '44998762665';
+    PontoVenda p1 = PontoVenda();
+    p1.latitude = "-24.4030653";
+      p1.longitude = "-53.5073557";
+      p1.nome = "Feira principal";
+      PontoVenda p2 = PontoVenda();
+    p2.nome = "Feira da praça";
+      p2.latitude = "-24.409763";
+      p2.longitude = "-53.528315";
+      PontoVenda p3= PontoVenda();
+       p3.nome = "Casa do produtor";
+      p3.latitude = "-24.4151515";
+      p3.longitude = "-53.5193555";
 
     List<PontoVenda> pontos = [
-      PontoVenda()..nome = "Feira principal",
-      PontoVenda()..nome = "Feira da praça",
-      PontoVenda()..nome = "Casa do produtor"
+      p1,p2,p3
+      
+      
+     
     ];
-
+  
     List<PontoVenda> pontos2 = [PontoVenda()..nome = "Feira principal"];
 
     List<ItemPesquisaGeral> itensPesquisa = [
@@ -103,18 +116,18 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                               fontSize: 13,
                               fontWeight: FontWeight.normal),
                           textAlign: TextAlign.left),
-                          itemPesquisaGeral.produtor?.telefone == null ? SizedBox(): 
-                        IconButton(iconSize: 35, icon: Image.asset(
-                    'assets/imagens/WhatsAppIcon48.png',
-                                        
-                  ), onPressed: (
-                  
-                  ) { 
-                     geraLinkURL(itemPesquisaGeral.produtor!.telefone!, '');
-
-                   },
-
-                        )
+                      itemPesquisaGeral.produtor?.telefone == null
+                          ? SizedBox()
+                          : IconButton(
+                              iconSize: 35,
+                              icon: Image.asset(
+                                'assets/imagens/WhatsAppIcon48.png',
+                              ),
+                              onPressed: () {
+                                geraLinkURL(
+                                    itemPesquisaGeral.produtor!.telefone!, '');
+                              },
+                            )
                     ],
                   )),
                   SizedBox(
@@ -128,26 +141,39 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                             shrinkWrap: true,
                             itemCount: itemPesquisaGeral.pontosVenda.length,
                             itemBuilder: (BuildContext context, int indice) {
-                              return Center(
-                                  child: Text(
-                                itemPesquisaGeral.pontosVenda[indice].nome ==
-                                        null
-                                    ? ''
-                                    : itemPesquisaGeral
-                                        .pontosVenda[indice].nome!,
-                                      
-                                style: TextStyle(fontSize: 14,                         
-                                
-                                ),
-                              ),
-                                                    
+                              return 
+                                Row(
+                                  children: [
+                                    Text(
+                                      itemPesquisaGeral
+                                                  .pontosVenda[indice].nome ==
+                                              null
+                                          ? ''
+                                          : itemPesquisaGeral
+                                              .pontosVenda[indice].nome!,
+                                      style: TextStyle(fontSize: 14),
+                                    ),
+                                    IconButton(
+                                      iconSize: 8,
+                                      icon: Image.asset(
+                                        'assets/imagens/alfinete.png',
+                                      ),
+                                      onPressed: () {
+                                        geraLinkURL(
+                                            itemPesquisaGeral
+                                              .pontosVenda[indice].latitude!,
+                                            itemPesquisaGeral
+                                              .pontosVenda[indice].longitude!);
+                                      },
+                                    )
+                                  ],
+                                );
                               
-                              );
                             },
                             separatorBuilder:
                                 (BuildContext context, int indice) {
                               return Divider(
-                                thickness: 2,
+                                thickness: 0,
                               );
                             },
                           )))

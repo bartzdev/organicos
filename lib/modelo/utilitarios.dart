@@ -71,6 +71,7 @@ geraLinkURL(String parametroOne, String parametroTwo) {
   if (parametroOne.isEmpty == false && parametroTwo.isEmpty == false) {
     String urlMaps =
         'https://www.google.com/maps/dir/?api=1&saddr=My+Location&destination=${parametroOne}%2C${parametroTwo}&travelmode=car';
+        
      launch (urlMaps);   
     
   

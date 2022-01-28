@@ -5669,6 +5669,8 @@ create table pontovenda(
   numero integer,
   bairro varchar(50),
   cidade_id integer,
+  latitude numeric(14,7),
+  longitude numeric(14,7),
   registro_ativo boolean default true,
   foreign key (cidade_id) references cidade(id)
 );
