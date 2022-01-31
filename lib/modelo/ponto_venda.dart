@@ -4,6 +4,8 @@ class PontoVenda {
   int? id;
   String? nome;
   Endereco? endereco = Endereco();
+  String? latitude;
+  String? longitude;
   bool ativo = true;
 
   bool operator ==(other) {

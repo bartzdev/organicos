@@ -13,13 +13,12 @@ class UsuarioDAO extends DAO<Usuario> {
     await conexao.transaction((transacao) async {
       if (usuario.id == null || usuario.id == 0) {
         var resultadoInsert = await transacao.prepared('''insert into usuario 
-          (id, grupousuario_id, nome, email, login, senha, registro_ativo) 
+          (id, grupousuario_id, nome, login, senha, registro_ativo) 
           values 
-          (?, ?, ?, ?, ?, ?, ?)''', [
+          (?, ?, ?, ?, ?, ?)''', [
           usuario.id,
           usuario.grupo?.id,
           usuario.nome,
-          usuario.email,
           usuario.login,
           generateSignature(usuario.senha),
           usuario.ativo
@@ -28,15 +27,23 @@ class UsuarioDAO extends DAO<Usuario> {
       } else {
         await transacao.prepared(
             '''update usuario set
-          grupousuario_id = ?, nome = ?, email = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
+          grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
             [
-              usuario.id,
               usuario.grupo?.id,
               usuario.nome,
-              usuario.email,
               usuario.login,
               usuario.senha,
-              usuario.ativo
+              usuario.ativo,
+              usuario.id
+            ]);
+      }
+      for (PermissaoUsuario permissaoUsuario in usuario.permissoes) {
+        var resultadoInsert = await transacao.prepared(
+            '''replace into Permissao_usuario (permissao_id, usuario_id, permitido) values (?, ?, ?)''',
+            [
+              permissaoUsuario.permissao?.id,
+              usuario.id,
+              permissaoUsuario.permitido
             ]);
       }
     });
@@ -47,19 +54,22 @@ class UsuarioDAO extends DAO<Usuario> {
       {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.email, usuario.login, usuario.senha, usuario.registro_ativo 
+    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
     from usuario 
     join grupousuario on grupousuario.id = usuario.grupousuario_id 
     where usuario.id = ?''', [usuario.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       usuario.id = linhaConsulta[0];
 
-      usuario.grupo?.id = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
-      usuario.email = linhaConsulta[3];
-      usuario.login = linhaConsulta[4];
-      usuario.senha = linhaConsulta[5];
-      usuario.ativo = linhaConsulta[6] == 1;
+      usuario.login = linhaConsulta[3];
+      usuario.senha = linhaConsulta[4];
+      usuario.ativo = linhaConsulta[5] == 1;
     });
 
     var resultadoPermissaoUsuario = await conexao.prepared('''select 
@@ -79,8 +89,9 @@ class UsuarioDAO extends DAO<Usuario> {
           linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
       usuario.permissoes.add(permissaoUsuario);
     });
-    GrupoUsuario grupoUsuario = GrupoUsuario();
-    var resultadoPermissaoGrupo = await conexao.prepared('''select 
+
+    if (usuario.grupo != null) {
+      var resultadoPermissaoGrupo = await conexao.prepared('''select 
 	PU.Permissao_id, PER.nome, PU.Permitido, GU.ID, GU.nome
     from 
 		Permissao_GrupoUsuario as PU
@@ -89,21 +100,21 @@ class UsuarioDAO extends DAO<Usuario> {
         inner join GrupoUsuario as GU
         on GU.id = PU.grupousuario_id
 	where 
-		PU.grupousuario_id =  ?''', [usuario.id]);
-    await resultadoPermissaoGrupo.forEach((linhaConsulta) {
-      grupoUsuario.id = linhaConsulta[3];
-      grupoUsuario.nome = linhaConsulta[4];
-      PermissaoGrupo permissaoGrupo = PermissaoGrupo();
-      permissaoGrupo.permissao = new Permissao();
+		PU.grupousuario_id =  ?''', [usuario.grupo?.id]);
+      await resultadoPermissaoGrupo.forEach((linhaConsulta) {
+        
+        usuario.grupo?.nome = linhaConsulta[4];
+        PermissaoGrupo permissaoGrupo = PermissaoGrupo();
+        permissaoGrupo.permissao = new Permissao();
 
-      permissaoGrupo.permissao?.id = linhaConsulta[0];
-      permissaoGrupo.permissao?.nome = linhaConsulta[1];
-      permissaoGrupo.permitido =
-          linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
+        permissaoGrupo.permissao?.id = linhaConsulta[0];
+        permissaoGrupo.permissao?.nome = linhaConsulta[1];
+        permissaoGrupo.permitido =
+            linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
 
-      grupoUsuario.permissoes.add(permissaoGrupo);
-    });
-    usuario.grupo = grupoUsuario;
+        usuario.grupo?..permissoes.add(permissaoGrupo);
+      });
+    }
 
     return usuario;
   }
@@ -119,18 +130,21 @@ class UsuarioDAO extends DAO<Usuario> {
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    id, grupousuario_id, nome, email, login, senha
+    id, grupousuario_id, nome, login, senha
     from usuario 
     where usuario.registro_ativo = 1
     order by lower(nome)''', []);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
-      usuario.email = linhaConsulta[3];
-      usuario.login = linhaConsulta[4];
-      usuario.senha = linhaConsulta[5];
+      usuario.login = linhaConsulta[3];
+      usuario.senha = linhaConsulta[4];
       usuarios.add(usuario);
     });
     return usuarios;
@@ -150,7 +164,7 @@ class UsuarioDAO extends DAO<Usuario> {
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    id, grupousuario_id, nome, email, login, senha 
+    id, grupousuario_id, nome, login, senha 
     from usuario 
     where usuario.registro_ativo = 1 and
       case when ? is not null then usuario.login = ? and usuario.senha = ? else  
@@ -160,11 +174,14 @@ class UsuarioDAO extends DAO<Usuario> {
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
-      usuario.grupo?.id = linhaConsulta[1];
+      if (linhaConsulta[1] != null) {
+        usuario.grupo = GrupoUsuario()..id = linhaConsulta[1];
+      } else {
+        usuario.grupo = null;
+      }
       usuario.nome = linhaConsulta[2];
-      usuario.email = linhaConsulta[3];
-      usuario.login = linhaConsulta[4];
-      usuario.senha = linhaConsulta[5];
+      usuario.login = linhaConsulta[3];
+      usuario.senha = linhaConsulta[4];
       usuarios.add(usuario);
     });
     return usuarios;

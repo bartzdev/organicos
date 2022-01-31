@@ -16,13 +16,16 @@ class _TelaRelatorioStarte extends State<TelaRelatorio>{
     // TODO: implement build
     return Scaffold(
       appBar: AppBar(
-        title: Text('Relatorio'),
+        title: Text('Relatório'),
         centerTitle: true,
       ),
       body: 
       widget.bites == null ? SizedBox() : 
        PdfPreview(
-  build: (format) => widget.bites!,
+         canDebug: false,
+         canChangeOrientation: false,
+         canChangePageFormat: false,
+         build: (format) => widget.bites!,
     ));
   }
 }

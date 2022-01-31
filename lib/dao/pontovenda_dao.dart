@@ -21,7 +21,7 @@ class PontoVendaDAO extends DAO<PontoVenda> {
     await conexao.transaction((transacao) async {
       if (pontoVenda.id == null || pontoVenda.id == 0) {
         var resultadoInsert = await transacao.prepared('''insert into pontovenda 
-          (nome, endereco, numero, bairro, cidade_id, registro_ativo) 
+          (nome, endereco, numero, bairro, cidade_id, registro_ativo, latitude, longitude) 
           values 
           (?, ?, ?, ?, ?, ?)''', [
           pontoVenda.nome,
@@ -29,13 +29,15 @@ class PontoVendaDAO extends DAO<PontoVenda> {
           pontoVenda.endereco?.numero,
           pontoVenda.endereco?.bairro,
           pontoVenda.endereco?.cidade?.id,
-          pontoVenda.ativo
+          pontoVenda.ativo,
+          pontoVenda.latitude,
+          pontoVenda.longitude,
         ]);
         pontoVenda.id = resultadoInsert.insertId;
       } else {
         await transacao.prepared('''update pontovenda set
           nome = ?, endereco = ?, numero = ?, bairro = ?, cidade_id = ?, 
-          registro_ativo = ? where id = ?''', [
+          registro_ativo = ?, latitude = ?, longitude = ? where id = ?''', [
           pontoVenda.nome,
           pontoVenda.endereco?.logradouro,
           pontoVenda.endereco?.numero,

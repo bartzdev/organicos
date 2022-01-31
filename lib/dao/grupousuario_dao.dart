@@ -1,6 +1,7 @@
 import 'package:organicos/dao/conexao.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/permissoes.dart';
 
 class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
   @override
@@ -21,6 +22,16 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
           nome = ?, registro_ativo = ? where id = ?''',
             [grupoUsuario.id, grupoUsuario.nome, grupoUsuario.ativo]);
       }
+      for (PermissaoGrupo permissaoGrupo in grupoUsuario.permissoes) {
+        var resultadoInsert = await transacao.prepared(
+            '''REPLACE into permissao_grupousuario(permissao_id, grupousuario_id, permitido) values (?, ?, ?)''',
+            [
+              permissaoGrupo.permissao?.id,
+              grupoUsuario.id,
+              permissaoGrupo.permitido
+            ]);
+      }
+      
     });
   }
 
@@ -35,7 +46,7 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
     await resultadoConsulta.forEach((linhaConsulta) {
       grupoUsuario.id = linhaConsulta[0];
       grupoUsuario.nome = linhaConsulta[1];
-      grupoUsuario.ativo = linhaConsulta[2];
+      grupoUsuario.ativo = linhaConsulta[2] == 1;
     });
     return grupoUsuario;
   }

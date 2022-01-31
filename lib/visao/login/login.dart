@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organicos/modelo/usuario.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
+
 
 import '../tela_principal.dart';
 
@@ -19,7 +21,8 @@ class _LoginState extends State<Login> {
   late Future<Usuario> userValidate;
   Widget build(BuildContext context) {
     senhaEnt = ValidaLogin().geraHora();
-    loginEnt = 'admin';
+    loginEnt = "admin";
+    // senhaEnt = Usuario().senha.toString();
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
@@ -27,9 +30,14 @@ class _LoginState extends State<Login> {
             child: Column(
           children: [
             Container(
+                decoration: new BoxDecoration(
+                    color: Color(0xFF61b255),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: const Radius.circular(50),
+                      bottomRight: const Radius.circular(50),
+                    )),
                 width: MediaQuery.of(context).size.width,
-                height: 300,
-                color: Color(0xFF61b255),
+                height: 265,
                 child: Image.asset('assets/imagens/logoOrganico.jpeg')),
             SizedBox(height: 50),
             Padding(
@@ -82,16 +90,25 @@ class _LoginState extends State<Login> {
                           height: 60.0,
                           child: InkWell(
                             onTap: () async {
-                              Usuario? usuario = await ValidaLogin()
-                                  .validacaoUser(loginEnt, senhaEnt);
-                              if (usuario != null) {
-                                Navigator.push(
+                              if (loginEnt.trim().isEmpty ||
+                                  senhaEnt.trim().isEmpty) {
+                                mensagemAutenticacao(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) => TelaPrincipal()));
+                                    'PREENCHA TODOS OS DADOS CORRETAMENTE',
+                                    'ATENÇÃO');
                               } else {
-                                mensagemAutenticacao(context,
-                                    'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                                Usuario? usuario = await ValidaLogin()
+                                    .validacaoUser(loginEnt, senhaEnt);
+                                if (usuario != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TelaPrincipal()));
+                                } else {
+                                  mensagemAutenticacao(context,
+                                      'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                                }
                               }
                             },
                             child: Container(
@@ -103,59 +120,6 @@ class _LoginState extends State<Login> {
                                   child: Center(
                                       child: Text(
                                     "ENTRAR",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
-                                  )),
-                                  //color: Colors.red,
-                                  color: Color(0xFF2e8228),
-                                )),
-                          ),
-                        ),
-                        ButtonTheme(
-                          height: 60.0,
-                          child: InkWell(
-                            onTap: () async {
-                              showDialog(
-                                  context: context,
-                                  builder: (BuildContext builder) {
-                                    return AlertDialog(
-                                        shape: const RoundedRectangleBorder(
-                                            borderRadius: BorderRadius.all(
-                                                Radius.circular(20.0))),
-                                        title: const Text('RECUPERAR A SENHA'),
-                                        content: TextFormField(
-                                          decoration: decorationCampoTexto(
-                                              hintText:
-                                                  "Digite o seu email aqui",
-                                              labelText:
-                                                  "Digite o seu email aqui"),
-                                          keyboardType: TextInputType.text,
-                                        ),
-                                        actionsAlignment:
-                                            MainAxisAlignment.center,
-                                        actions: <Widget>[
-                                          TextButton(
-                                              onPressed: () {
-                                                //Ação do botão NÃO
-                                                Navigator.of(context).pop();
-                                              },
-                                              child: const Text("OK")),
-                                          const SizedBox(
-                                            width: 300,
-                                            height: 20,
-                                          )
-                                        ]);
-                                  });
-                            },
-                            child: Container(
-                                height: 50,
-                                child: Card(
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(30.0)),
-                                  child: Center(
-                                      child: Text(
-                                    "Esqueceu a senha?",
                                     style: TextStyle(
                                         color: Colors.white, fontSize: 20),
                                   )),

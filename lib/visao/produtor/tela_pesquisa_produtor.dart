@@ -174,6 +174,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisaProdutor> {
                     builder: (context) =>
                         TelaCadastroProdutor(_controle, onSaved: () {
                           setState(() {
+                            print('Entrou aqui');
                             _controle.atualizarPesquisa(filtros: {
                               'filtro': _controladorCampoPesquisa.text
                             });

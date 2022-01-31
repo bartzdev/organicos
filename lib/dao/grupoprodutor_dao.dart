@@ -4,12 +4,15 @@ import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
+import 'package:organicos/modelo/utilitarios.dart';
+
 
 class GrupoProdutorDAO extends DAO<GrupoProdutor> {
   @override
   Future<void> gravar(GrupoProdutor grupo) async {
     // TODO: implement gravar
     var conexao = await Conexao.getConexao();
+    
     await conexao.transaction((transaction) async {
       if (grupo.id == null || grupo.id == 0) {
         var resultInsert = await transaction.prepared(
@@ -21,7 +24,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
               grupo.endereco?.numero,
               grupo.endereco?.bairro,
               grupo.endereco?.cidade?.id,
-              grupo.cnpj,
+              documentformater(grupo.cnpj! , 1),              
               grupo.inscricaoEstadual,
               grupo.distribuidor,
               grupo.ativo
@@ -37,7 +40,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
           grupo.endereco?.numero,
           grupo.endereco?.bairro,
           grupo.endereco?.cidade?.id,
-          grupo.cnpj,
+          documentformater(grupo.cnpj! , 1),
           grupo.inscricaoEstadual,
           grupo.distribuidor,
           grupo.ativo,
@@ -57,6 +60,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
   Future<GrupoProdutor> carregarDados(GrupoProdutor grupo, {Map<String, dynamic>? filtros}) async {
     // TODO: implement carregarDados
     var conexao = await Conexao.getConexao();
+    
      var resultadoConsulta = await conexao.prepared('''select 
     p.id, p.nome, p.cnpj, p.inscricao_estadual, p.distribuidor_produtos, p.endereco, p.numero, p.bairro, p.registro_ativo, p.cidade_id, 
     c.nome, e.id, e.nome
@@ -67,7 +71,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
     await resultadoConsulta.forEach((linhaConsulta) {
       grupo.id = linhaConsulta[0];
       grupo.nome = linhaConsulta[1];
-      grupo.cnpj = linhaConsulta[2];
+      grupo.cnpj = documentformater(linhaConsulta[2] , 2);
       grupo.inscricaoEstadual = linhaConsulta[3];
       grupo.distribuidor= linhaConsulta[4] == 1;
       grupo.endereco = Endereco()..logradouro = linhaConsulta[5];
@@ -79,6 +83,7 @@ class GrupoProdutorDAO extends DAO<GrupoProdutor> {
       grupo.endereco?.cidade?.estado = Estado()..id = linhaConsulta[11];
       grupo.endereco?.cidade?.estado?.nome = linhaConsulta[12];
     });
+
     return grupo;
   }
 
