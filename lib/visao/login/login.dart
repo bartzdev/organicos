@@ -1,9 +1,11 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organicos/modelo/usuario.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
+
 
 import '../tela_principal.dart';
 
@@ -19,87 +21,94 @@ class _LoginState extends State<Login> {
   late Future<Usuario> userValidate;
   Widget build(BuildContext context) {
     senhaEnt = ValidaLogin().geraHora();
-    loginEnt = 'admin';
+    loginEnt = "admin";
+    // senhaEnt = Usuario().senha.toString();
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
-        body: SingleChildScrollView(child: Column (children: [Container( 
-           decoration: new BoxDecoration(
-                  color: Color(0xFF61b255),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: const Radius.circular(50),
-                    bottomRight: const Radius.circular(50),
-                  )),
-          width: MediaQuery.of(context).size.width,
-          height: 265,
-          child: Image.asset('assets/imagens/logoOrganico.jpeg')
-          
-        
-          ),
-          SizedBox(height: 50),
-           Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: Center(
-            child: Container(
-                width: MediaQuery.of(context).size.width < 400
-                    ? double.infinity
-                    : 400,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    TextField(
-                      controller: TextEditingController(text: "admin"),
-                      autofocus: true,
-                      keyboardType: TextInputType.name,
-                      style: TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
-                      decoration: decorationCampoTexto(
-                        labelText: "LOGIN",
-                        //labelStyle: TextStyle(color: Colors.white),
-                      ),
-                      cursorColor: Color(0xFF2e8228),
-                      onChanged: (textLogin) {
-                        loginEnt = textLogin;
-                      },
-                    ),
-                    Divider(),
-                    TextField(
-                       controller: TextEditingController(text: ValidaLogin().geraHora()),
-                      autofocus: true,
-                      obscureText: true,
-                      keyboardType: TextInputType.text,
-                      style: TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
-                      decoration: decorationCampoTexto(
-                        labelText: "SENHA",
-                        
-                        //labelStyle: TextStyle(color: Colors.white),
-                      ),
-                      cursorColor: Color(0xFF2e8228),
-                      onChanged: (senhaLogin) {
-                        senhaEnt = senhaLogin;
-                      },
-                    ),
-                    Divider(),
-                    ButtonTheme(
-                      height: 60.0,
-                      child: InkWell(
-                        onTap:  () async
-                            {
-                              if (loginEnt.trim().isEmpty || senhaEnt.trim().isEmpty){
-                                mensagemAutenticacao(context, 'PREENCHA TODOS OS DADOS CORRETAMENTE', 'ATENÇÃO');
+        body: SingleChildScrollView(
+            child: Column(
+          children: [
+            Container(
+                decoration: new BoxDecoration(
+                    color: Color(0xFF61b255),
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: const Radius.circular(50),
+                      bottomRight: const Radius.circular(50),
+                    )),
+                width: MediaQuery.of(context).size.width,
+                height: 265,
+                child: Image.asset('assets/imagens/logoOrganico.jpeg')),
+            SizedBox(height: 50),
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: Center(
+                child: Container(
+                    width: MediaQuery.of(context).size.width < 400
+                        ? double.infinity
+                        : 400,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        TextField(
+                          controller: TextEditingController(text: "admin"),
+                          autofocus: true,
+                          keyboardType: TextInputType.name,
+                          style:
+                              TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
+                          decoration: decorationCampoTexto(
+                            labelText: "LOGIN",
+                            //labelStyle: TextStyle(color: Colors.white),
+                          ),
+                          cursorColor: Color(0xFF2e8228),
+                          onChanged: (textLogin) {
+                            loginEnt = textLogin;
+                          },
+                        ),
+                        Divider(),
+                        TextField(
+                          controller: TextEditingController(
+                              text: ValidaLogin().geraHora()),
+                          autofocus: true,
+                          obscureText: true,
+                          keyboardType: TextInputType.text,
+                          style:
+                              TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
+                          decoration: decorationCampoTexto(
+                            labelText: "SENHA",
 
-                              }else{                              
-                                Usuario ?usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
-                                  if(usuario != null){
-                                    Navigator.push(
+                            //labelStyle: TextStyle(color: Colors.white),
+                          ),
+                          cursorColor: Color(0xFF2e8228),
+                          onChanged: (senhaLogin) {
+                            senhaEnt = senhaLogin;
+                          },
+                        ),
+                        Divider(),
+                        ButtonTheme(
+                          height: 60.0,
+                          child: InkWell(
+                            onTap: () async {
+                              if (loginEnt.trim().isEmpty ||
+                                  senhaEnt.trim().isEmpty) {
+                                mensagemAutenticacao(
                                     context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            TelaPrincipal()
-                                  ));
-                                  }else{
-                                    mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
-                                  }
+                                    'PREENCHA TODOS OS DADOS CORRETAMENTE',
+                                    'ATENÇÃO');
+                              } else {
+                                Usuario? usuario = await ValidaLogin()
+                                    .validacaoUser(loginEnt, senhaEnt);
+                                if (usuario != null) {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              TelaPrincipal()));
+                                } else {
+                                  mensagemAutenticacao(context,
+                                      'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                                }
                               }
                             },
                             child: Container(

@@ -5,15 +5,18 @@ import 'dart:typed_data';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/dao/dao.dart';
 import 'package:organicos/dao/relatorios_dao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/produtor.dart';
+import 'package:organicos/modelo/tipo_produto.dart';
 import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/cidades/tela_pesquisa_cidades.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_apres.dart';
+import 'package:organicos/visao/styles/styles.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
@@ -83,13 +86,21 @@ class GerarPDF {
         case 3:
           return formataTelefone(produtor.telefone)!;
         case 4:
-          return produtor.certificadora == null ? '' : produtor.certificadora!.nome!;
+          return produtor.certificadora == null
+              ? ''
+              : produtor.certificadora!.nome!;
       }
       return '';
     }
 
     pw.Widget _contentTable(pw.Context context) {
-      const tableHeaders = ['Nome Produtor', 'Cidade', 'Estado', 'Telefone', 'Certificadora'];
+      const tableHeaders = [
+        'Nome Produtor',
+        'Cidade',
+        'Estado',
+        'Telefone',
+        'Certificadora'
+      ];
       return pw.Table.fromTextArray(
           cellAlignment: pw.Alignment.centerLeft,
           headerDecoration: pw.BoxDecoration(
@@ -102,7 +113,7 @@ class GerarPDF {
             1: pw.Alignment.centerLeft,
             2: pw.Alignment.centerLeft,
             3: pw.Alignment.centerLeft,
-            4: pw.Alignment.centerLeft 
+            4: pw.Alignment.centerLeft
           },
           headerStyle: pw.TextStyle(
               fontSize: 10,
@@ -145,10 +156,17 @@ class TelaGerarRelatorio extends StatefulWidget {
 class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
   Uint8List? bites;
   Cidade? CidadeFiltro;
-  String certificado = 's';
+  String certificado = 't';
+  int grupo = 1;
+  TipoProduto? filtroTipo;
+  
+  ControleCadastros<TipoProduto> controleTipoProduto =
+      ControleCadastros(TipoProduto());
+
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
+
     return Scaffold(
         appBar: AppBar(
           title: Text('GerarPdf'),
@@ -158,8 +176,11 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
             List<Produtor> produtores = [];
             RelatorioDAO dao = RelatorioDAO();
             print(CidadeFiltro?.id);
-            produtores = await dao
-                .pesquisarProdutoCidade(filtros: {'Cidade': CidadeFiltro?.id, 'Certificado': certificado});
+            produtores = await dao.pesquisarProdutoCidade(filtros: {
+              'Cidade': CidadeFiltro?.id,
+              'Certificado': certificado,
+              'Tipo' : filtroTipo
+            });
             GerarPDF gerarPDF = GerarPDF(produtores: produtores);
             bites = await gerarPDF.gerearPDFProdutores();
             Navigator.push(
@@ -171,60 +192,175 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
           },
           child: Icon(Icons.print),
         ),
-        body: Row(
+        body: Column(
           children: [
-
-           Padding(
-          padding: EdgeInsets.only(left: 8, top: 15),
-          child: Row(mainAxisSize: MainAxisSize.max,
-            children: [
-            Container( width: MediaQuery.of(context).size.width-80,
-              child: 
-          GestureDetector(
-              onTap: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaCidades(
-                              onItemSelected: (Cidade cidade) {
-                                Navigator.of(context).pop();
-                                setState(() {
-                                  CidadeFiltro = cidade;
-                                });
-                              },
-                            )));
-              },
-              child: AbsorbPointer(
-                  child: TextFormField(
-                                key: Key((CidadeFiltro ==
-                                        null
-                                    ? ' '
-                                    : CidadeFiltro!.nome!)),
-                                readOnly: true,
-                                decoration: decorationCampoTexto(
-                                    hintText: "Cidade", labelText: "Cidade"),
-                                keyboardType: TextInputType.text,
-                                initialValue: CidadeFiltro?.nome,
-                                validator: (value) {
-                                  if (value == null || value.trim().isEmpty) {
-                                    return "Este campo é obrigatório!";
-                                  }
-                                  return null;
-                                }))),
-            ),
-            
+            Row(
+              children: [
+                Padding(
+                  padding: EdgeInsets.only(left: 8, top: 15),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.max,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width - 80,
+                        child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => TelaPesquisaCidades(
+                                            onItemSelected: (Cidade cidade) {
+                                              Navigator.of(context).pop();
+                                              setState(() {
+                                                CidadeFiltro = cidade;
+                                              });
+                                            },
+                                          )));
+                            },
+                            child: AbsorbPointer(
+                                child: TextFormField(
+                                    key: Key((CidadeFiltro == null
+                                        ? ' '
+                                        : CidadeFiltro!.nome!)),
+                                    readOnly: true,
+                                    decoration: decorationCampoTexto(
+                                        hintText: "Cidade",
+                                        labelText: "Cidade"),
+                                    keyboardType: TextInputType.text,
+                                    initialValue: CidadeFiltro?.nome,
+                                    validator: (value) {
+                                      if (value == null ||
+                                          value.trim().isEmpty) {
+                                        return "Este campo é obrigatório!";
+                                      }
+                                      return null;
+                                    }))),
+                      ),
                       SizedBox(width: 5),
                       GestureDetector(
-              onTap: () {
-               setState(() {
-               CidadeFiltro = null;
-                 
-               });
-              }, child: Image.asset('assets/imagens/clean.png', height: 50, width: 50),
-             ),
-          ],)
-        )
-        ],
+                        onTap: () {
+                          setState(() {
+                            CidadeFiltro = null;
+                          });
+                        },
+                        child: Image.asset('assets/imagens/clean.png',
+                            height: 50, width: 50),
+                      ),
+                    ],
+                  ),
+                )
+              ],
+            ),
+            espacoEntreCampos,
+            Padding(
+              padding: EdgeInsets.only(left: 8),
+              child: Row(
+                children: <Widget>[
+                  Radio<int>(
+                    value: 1,
+                    groupValue: grupo,
+                    onChanged: (int? value) {
+                      setState(() {
+                        grupo = 1;
+                      });
+                      certificado = 'c';
+                    },
+                  ),
+                  Text(
+                    'Com certificado',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  Radio<int>(
+                      value: 2,
+                      groupValue: grupo,
+                      onChanged: (int? value) {
+                        setState(() {
+                          grupo = 2;
+                        });
+                        certificado = 's';
+                      }),
+                  Text(
+                    'Sem certificado',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                  Radio<int>(
+                      value: 3,
+                      groupValue: grupo,
+                      onChanged: (int? value) {
+                        setState(() {
+                          grupo = 3;
+                        });
+                        certificado = 't';
+                      }),
+                  Text(
+                    'Todos',
+                    style: TextStyle(
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            espacoEntreCampos,
+            Expanded(child: 
+            Padding(
+              padding: EdgeInsets.only(left: 8, right: 8),
+            child: 
+              FutureBuilder(
+                          future: controleTipoProduto.listar(),
+                          builder: (BuildContext context,
+                              AsyncSnapshot<List> snapshot) {
+                            String labelCampo = "Tipo";
+                            if (!snapshot.hasData) {
+                              labelCampo = "Carregando tipo do produto...";
+                            } else {
+                              controleTipoProduto.listaObjetosPesquisados =
+                                  snapshot.data as List<TipoProduto>;
+                            }
+               return DropdownButtonFormField<TipoProduto>(
+                              decoration: InputDecoration(
+                                  border: OutlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.teal)),
+                                  filled: true,
+                                  isDense: true,
+                                  hintText: labelCampo,
+                                  labelText: labelCampo),
+                              isExpanded: true,
+                              items: controleTipoProduto
+                                          .listaObjetosPesquisados ==
+                                      null
+                                  ? []
+                                  : controleTipoProduto.listaObjetosPesquisados!
+                                      .map<DropdownMenuItem<TipoProduto>>(
+                                          (TipoProduto tipoProduto) {
+                                      return DropdownMenuItem<TipoProduto>(
+                                        value: tipoProduto,
+                                        child: Text(tipoProduto.nome!,
+                                            textAlign: TextAlign.center),
+                                      );
+                                    }).toList(),
+                              value:
+                                  filtroTipo,
+                              validator: (value) {
+                                if (value == null) {
+                                  return "Campo Obrigatório!";
+                                }
+                                return null;
+                              },
+                              onChanged: (TipoProduto? value) {
+                                setState(() {
+                                  filtroTipo = value;
+                                });
+                              },
+                            );
+                          }),
+            ),
+            ),
+            espacoEntreCampos,
+          ],
         ));
   }
 }

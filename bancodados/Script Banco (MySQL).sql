@@ -5669,6 +5669,8 @@ create table pontovenda(
   numero integer,
   bairro varchar(50),
   cidade_id integer,
+  latitude numeric(14,7),
+  longitude numeric(14,7),
   registro_ativo boolean default true,
   foreign key (cidade_id) references cidade(id)
 );
@@ -5711,17 +5713,41 @@ create table permissao(
   id integer primary key AUTO_INCREMENT,
   nome varchar(100)
 );
-
+delete from permissao where id = 0;
+select * from permissao;
+insert into permissao (id, nome) values(1, "Consultar Produtores");
+insert into permissao (id, nome) values(2, "Cadastrar Produtores");
+insert into permissao (id, nome) values(3, "Consultar Grupo de Produtores");
+insert into permissao (id, nome) values(4, "Cadastrar Grupo de Produtores");
+insert into permissao (id, nome) values(5, "Consultar Pontos de Vendas");
+insert into permissao (id, nome) values(6, "Cadastrar Pontos de Vendas");
+insert into permissao (id, nome) values(7, "Consultar Produtos");
+insert into permissao (id, nome) values(8, "Cadastrar Produtos");
+insert into permissao (id, nome) values(9, "Consultar Tipos de Produtos");
+insert into permissao (id, nome) values(10, "Cadastrar Tipos de Produtos");
+insert into permissao (id, nome) values(11, "Consultar Unidades");
+insert into permissao (id, nome) values(12, "Cadastrar Unidades");
+insert into permissao (id, nome) values(13, "Consultar Certificadoras");
+insert into permissao (id, nome) values(14, "Cadastrar Certificadoras");
+insert into permissao (id, nome) values(15, "Consultar Relatórios");
+insert into permissao (id, nome) values(16, "Consultar Usuários");
+insert into permissao (id, nome) values(17, "Cadastrar Usuários");
+insert into permissao (id, nome) values(18, "Consultar Grupo de Usuários");
+insert into permissao (id, nome) values(19, "Cadastrar Grupo de Usuários");
+ 
 create table grupousuario(
   id integer primary key AUTO_INCREMENT,
   nome varchar(50),
   registro_ativo boolean default true  
 );
 
+insert into grupousuario (nome) values ("grupo teste");
+
 create table usuario(
   id integer primary key AUTO_INCREMENT,
   grupousuario_id integer,
   nome varchar(50),
+  email varchar(50),
   login varchar(50),
   senha text,
   registro_ativo boolean default true,

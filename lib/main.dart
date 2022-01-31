@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/dao/login_permissao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
@@ -32,12 +33,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Orgânicos',
-      theme: temaGeralApp,
-      // theme: ThemeData(
-      //   primarySwatch: Colors.green,
-      //   primaryColor: Color.fromRGBO(76, 175, 80, 1)      
-      home: Login(), 
-     //home: CheckboxWidget(),
+      theme: temaGeralAppClaro,
+      home: Login(),
+      //home: CheckboxWidget(),
 /*
       home: Scaffold(
         appBar: AppBar(

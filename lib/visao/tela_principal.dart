@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
+import 'package:organicos/modelo/permissoes.dart';
 import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
@@ -42,28 +44,28 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 style: NeumorphicStyle(
                   shape: NeumorphicShape.convex,
                   border: NeumorphicBorder(
-                    color: Color(0x10000000),
-                    width: 0.1,
+                    color: Color(0xff000000),
+                    width: 0,
                   ),
                   boxShape:
                       NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
-                  depth: -8,
-                  intensity: 0.8,
-                  lightSource: LightSource.bottomRight,
-                  color: Colors.green[50],
+                  depth: 0,
+                  intensity: 0.7,
+                  lightSource: LightSource.right,
+                  color: Color(0xffCEFFC7),
                 ),
                 child: Container(
                   width: 100,
                   height: 100,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [Text(textoBotao)],
                   ),
                 ))
           ]),
           Positioned(
-              top: -14,
-              left: 5,
+              top: -12,
+              left: 25,
               child: SizedBox(
                   height: 85,
                   width: 50,
@@ -87,12 +89,73 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              botaoMenu("assets/imagens/imgProdutor.png", 'Produtores', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaProdutor()));
-              }),
+              ControleSistema().usuarioLogado!.possuiPermissao(1)
+                  ? ControleSistema().usuarioLogado!.possuiPermissao(2)
+                      ? ControleSistema().usuarioLogado!.possuiPermissao(3)
+                          ? ControleSistema().usuarioLogado!.possuiPermissao(4)
+                              ? ControleSistema()
+                                      .usuarioLogado!
+                                      .possuiPermissao(5)
+                                  ? ControleSistema()
+                                          .usuarioLogado!
+                                          .possuiPermissao(6)
+                                      ? ControleSistema()
+                                              .usuarioLogado!
+                                              .possuiPermissao(7)
+                                          ? ControleSistema()
+                                                  .usuarioLogado!
+                                                  .possuiPermissao(8)
+                                              ? ControleSistema()
+                                                      .usuarioLogado!
+                                                      .possuiPermissao(9)
+                                                  ? ControleSistema()
+                                                          .usuarioLogado!
+                                                          .possuiPermissao(10)
+                                                      ? ControleSistema()
+                                                              .usuarioLogado!
+                                                              .possuiPermissao(
+                                                                  11)
+                                                          ? ControleSistema()
+                                                                  .usuarioLogado!
+                                                                  .possuiPermissao(
+                                                                      12)
+                                                              ? ControleSistema()
+                                                                      .usuarioLogado!
+                                                                      .possuiPermissao(
+                                                                          13)
+                                                                  ? ControleSistema()
+                                                                          .usuarioLogado!
+                                                                          .possuiPermissao(
+                                                                              14)
+                                                                      ? ControleSistema()
+                                                                              .usuarioLogado!
+                                                                              .possuiPermissao(15)
+                                                                          ? ControleSistema().usuarioLogado!.possuiPermissao(16)
+                                                                              ? ControleSistema().usuarioLogado!.possuiPermissao(17)
+                                                                                  ? ControleSistema().usuarioLogado!.possuiPermissao(18)
+                                                                                      ? ControleSistema().usuarioLogado!.possuiPermissao(19)
+                                                                                          ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores', () {
+                                                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaPesquisaProdutor()));
+                                                                                            })
+                                                                                          : SizedBox()
+                                                                                      : SizedBox()
+                                                                                  : SizedBox()
+                                                                              : SizedBox()
+                                                                          : SizedBox()
+                                                                      : SizedBox()
+                                                                  : SizedBox()
+                                                              : SizedBox()
+                                                          : SizedBox()
+                                                      : SizedBox()
+                                                  : SizedBox()
+                                              : SizedBox()
+                                          : SizedBox()
+                                      : SizedBox()
+                                  : SizedBox()
+                              : SizedBox()
+                          : SizedBox()
+                      : SizedBox()
+                  : SizedBox(),
               botaoMenu(
                   "assets/imagens/imgGrupoProdutores.png", 'Grupo\nProdutores',
                   () {
@@ -121,8 +184,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     MaterialPageRoute(
                         builder: (context) => TelaPesquisaTipoProduto()));
               }),
-              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades',
-                  () {
+              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
@@ -213,7 +275,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: temaGeralApp,
+      theme: temaGeralAppClaro,
       home: DefaultTabController(
         length: 3,
         child: Scaffold(

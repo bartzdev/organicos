@@ -25,6 +25,7 @@ mensagemConexao(context) {
             ]);
       });
 }
+
 mensagemAutenticacao(context, String messagem, String acao) {
   showDialog(
       context: context,
@@ -33,8 +34,7 @@ mensagemAutenticacao(context, String messagem, String acao) {
             shape: const RoundedRectangleBorder(
                 borderRadius: BorderRadius.all(Radius.circular(20.0))),
             title: Text(acao),
-            content: Text(messagem,
-                textAlign: TextAlign.center),
+            content: Text(messagem, textAlign: TextAlign.center),
             actionsAlignment: MainAxisAlignment.center,
             actions: <Widget>[
               TextButton(
@@ -50,4 +50,3 @@ mensagemAutenticacao(context, String messagem, String acao) {
             ]);
       });
 }
-

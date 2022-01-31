@@ -4,6 +4,7 @@ import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/produtor.dart';
+import 'package:organicos/modelo/tipo_produto.dart';
 
 class RelatorioDAO {
   Future<List<Produtor>> pesquisarProdutoCidade(
@@ -17,7 +18,11 @@ class RelatorioDAO {
     join cidade c on c.id = p.cidade_id
     join estado e on e.id = c.estado_id
     left join certificadora ce on ce.id = p.certificadora_id
+    left join produtor_produto pp on pp.produtor_id = p.id
+    left join produto prod on prod.id = pp.produto_id
+
     where p.registro_ativo = 1 and
+
     case when ? > 0 then c.id = ?
     else true end and
 
@@ -25,12 +30,17 @@ class RelatorioDAO {
     p.certificadora_id > 0
     when ? = "s" then 
     p.certificadora_id is null
-    else true end ''', [
+    else true end and
+    
+    case when ? > 0 then prod.tipoproduto_id = ?
+    else true end
+    ''', [
       filtros?['Cidade'] == null ? 0 : filtros?['Cidade'],
       filtros?['Cidade'] == null ? 0 : filtros?['Cidade'],
       filtros?['Certificado'],
-      filtros?['Certificado']
-
+      filtros?['Certificado'],
+      filtros?['Tipo'] != null && filtros?['Tipo'] is TipoProduto ? filtros!['Tipo'].id : 0,
+      filtros?['Tipo'] != null && filtros?['Tipo'] is TipoProduto ? filtros!['Tipo'].id : 0,
     ]);
     await resultadoConsulta.forEach((linhaConsulta) {
       Produtor produtor = Produtor();
