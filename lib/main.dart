@@ -15,6 +15,7 @@ import 'package:organicos/visao/tela_principal.dart';
 import 'package:organicos/visao/tipoProdutos/tela_pesquisa_tipoProduto.dart';
 import 'package:organicos/visao/unidade/tela_cadastro_unidade.dart';
 import 'package:organicos/visao/unidade/tela_pesquisa_unidade.dart';
+import 'package:organicos/visao/usuario/tela_pesquisa_usuario.dart';
 
 import 'dao/produto_dao.dart';
 import 'modelo/produto.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Orgânicos',
       theme: temaGeralApp,
-      home: TelaGerarRelatorio(),
+      home: Login(),
     );
     //TelaCadastroUnidade(ControleCadastros<Unidade>(Unidade()))
   }
