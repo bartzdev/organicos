@@ -79,6 +79,22 @@ class _TelaCadastroUsuarioState extends State<TelaCadastroUsuario> {
                     espacoEntreCampos,
                     TextFormField(
                         decoration: decorationCampoTexto(
+                            hintText: "Email", labelText: "Email"),
+                        keyboardType: TextInputType.text,
+                        initialValue:
+                            widget.controle.objetoCadastroEmEdicao?.email,
+                        onSaved: (String? value) {
+                          widget.controle.objetoCadastroEmEdicao?.email = value;
+                        },
+                        validator: (value) {
+                          if (value == null || value.trim().isEmpty) {
+                            return "Este campo é obrigatório!";
+                          }
+                          return null;
+                        }),
+                    espacoEntreCampos,
+                    TextFormField(
+                        decoration: decorationCampoTexto(
                             hintText: "Login", labelText: "Login"),
                         keyboardType: TextInputType.text,
                         initialValue:

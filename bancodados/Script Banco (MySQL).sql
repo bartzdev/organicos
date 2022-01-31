@@ -5718,10 +5718,13 @@ create table grupousuario(
   registro_ativo boolean default true  
 );
 
+insert into grupousuario (nome) values ("grupo teste");
+
 create table usuario(
   id integer primary key AUTO_INCREMENT,
   grupousuario_id integer,
   nome varchar(50),
+  email varchar(50),
   login varchar(50),
   senha text,
   registro_ativo boolean default true,

@@ -13,30 +13,41 @@ class UsuarioDAO extends DAO<Usuario> {
     await conexao.transaction((transacao) async {
       if (usuario.id == null || usuario.id == 0) {
         var resultadoInsert = await transacao.prepared('''insert into usuario 
-          (id, grupousuario_id, nome, login, senha, registro_ativo) 
+          (id, grupousuario_id, nome, email, login, senha, registro_ativo) 
           values 
-          (?, ?, ?, ?, ?, ?)''', [
+          (?, ?, ?, ?, ?, ?, ?)''', [
           usuario.id,
           usuario.grupo?.id,
           usuario.nome,
+          usuario.email,
           usuario.login,
           generateSignature(usuario.senha),
           usuario.ativo
         ]);
         usuario.id = resultadoInsert.insertId;
       } else {
-        await transacao.prepared('''update usuario set
-          grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
-            [usuario.id, usuario.grupo?.id, usuario.nome, usuario.login, usuario.senha, usuario.ativo]);
+        await transacao.prepared(
+            '''update usuario set
+          grupousuario_id = ?, nome = ?, email = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
+            [
+              usuario.id,
+              usuario.grupo?.id,
+              usuario.nome,
+              usuario.email,
+              usuario.login,
+              usuario.senha,
+              usuario.ativo
+            ]);
       }
     });
   }
 
   @override
-  Future<Usuario> carregarDados(Usuario usuario, {Map<String, dynamic>? filtros}) async {
+  Future<Usuario> carregarDados(Usuario usuario,
+      {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
+    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.email, usuario.login, usuario.senha, usuario.registro_ativo 
     from usuario 
     join grupousuario on grupousuario.id = usuario.grupousuario_id 
     where usuario.id = ?''', [usuario.id]);
@@ -45,9 +56,10 @@ class UsuarioDAO extends DAO<Usuario> {
 
       usuario.grupo?.id = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
-      usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
-      usuario.ativo = linhaConsulta[5] == 1;
+      usuario.email = linhaConsulta[3];
+      usuario.login = linhaConsulta[4];
+      usuario.senha = linhaConsulta[5];
+      usuario.ativo = linhaConsulta[6] == 1;
     });
 
     var resultadoPermissaoUsuario = await conexao.prepared('''select 
@@ -63,7 +75,8 @@ class UsuarioDAO extends DAO<Usuario> {
       permissaoUsuario.permissao = new Permissao();
       permissaoUsuario.permissao?.id = linhaConsulta[0];
       permissaoUsuario.permissao?.nome = linhaConsulta[1];
-      permissaoUsuario.permitido = linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
+      permissaoUsuario.permitido =
+          linhaConsulta[2] == null ? null : linhaConsulta[2] == 1;
       usuario.permissoes.add(permissaoUsuario);
     });
     GrupoUsuario grupoUsuario = GrupoUsuario();
@@ -85,7 +98,8 @@ class UsuarioDAO extends DAO<Usuario> {
 
       permissaoGrupo.permissao?.id = linhaConsulta[0];
       permissaoGrupo.permissao?.nome = linhaConsulta[1];
-      permissaoGrupo.permitido = linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
+      permissaoGrupo.permitido =
+          linhaConsulta[2] == null ? false : linhaConsulta[2] == 1;
 
       grupoUsuario.permissoes.add(permissaoGrupo);
     });
@@ -105,7 +119,7 @@ class UsuarioDAO extends DAO<Usuario> {
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    id, grupousuario_id, nome, login, senha
+    id, grupousuario_id, nome, email, login, senha
     from usuario 
     where usuario.registro_ativo = 1
     order by lower(nome)''', []);
@@ -114,8 +128,9 @@ class UsuarioDAO extends DAO<Usuario> {
       usuario.id = linhaConsulta[0];
       usuario.grupo = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
-      usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
+      usuario.email = linhaConsulta[3];
+      usuario.login = linhaConsulta[4];
+      usuario.senha = linhaConsulta[5];
       usuarios.add(usuario);
     });
     return usuarios;
@@ -123,25 +138,33 @@ class UsuarioDAO extends DAO<Usuario> {
 
   @override
   Future<List<Usuario>> pesquisar({Map<String, dynamic>? filtros}) async {
-    String filtro = filtros != null && filtros.containsKey('filtro') ? filtros['filtro'] : '';
-    String? filtroLogin = filtros != null && filtros.containsKey('login') ? filtros['login'] : null;
-    String? filtroSenha = filtros != null && filtros.containsKey('senha') ? filtros['senha'] : null;
+    String filtro = filtros != null && filtros.containsKey('filtro')
+        ? filtros['filtro']
+        : '';
+    String? filtroLogin = filtros != null && filtros.containsKey('login')
+        ? filtros['login']
+        : null;
+    String? filtroSenha = filtros != null && filtros.containsKey('senha')
+        ? filtros['senha']
+        : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    id, grupousuario_id, nome, login, senha 
+    id, grupousuario_id, nome, email, login, senha 
     from usuario 
     where usuario.registro_ativo = 1 and
       case when ? is not null then usuario.login = ? and usuario.senha = ? else  
      lower(nome) like ? end
-    order by lower(nome)''', [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
+    order by lower(nome)''',
+        [filtroLogin, filtroLogin, filtroSenha, '%${filtro.toLowerCase()}%']);
     await resultadoConsulta.forEach((linhaConsulta) {
       var usuario = Usuario();
       usuario.id = linhaConsulta[0];
       usuario.grupo?.id = linhaConsulta[1];
       usuario.nome = linhaConsulta[2];
-      usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
+      usuario.email = linhaConsulta[3];
+      usuario.login = linhaConsulta[4];
+      usuario.senha = linhaConsulta[5];
       usuarios.add(usuario);
     });
     return usuarios;
