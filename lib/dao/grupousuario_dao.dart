@@ -20,7 +20,7 @@ class GrupoUsuarioDAO extends DAO<GrupoUsuario> {
       } else {
         await transacao.prepared('''update grupousuario set
           nome = ?, registro_ativo = ? where id = ?''',
-            [grupoUsuario.id, grupoUsuario.nome, grupoUsuario.ativo]);
+            [grupoUsuario.nome, grupoUsuario.ativo, grupoUsuario.id]);
       }
       for (PermissaoGrupo permissaoGrupo in grupoUsuario.permissoes) {
         var resultadoInsert = await transacao.prepared(
