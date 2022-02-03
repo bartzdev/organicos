@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'dart:convert';
@@ -6,6 +8,8 @@ import 'chaves.dart';
 import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart';
+import 'package:encrypt/encrypt.dart' as cript;
+
 
 String? formatDate(DateTime? dateTime, {mask = "dd/MM/yyyy"}) {
   if (dateTime != null) return DateFormat(mask).format(dateTime);
@@ -31,14 +35,30 @@ String formatInt(int? n, {int digits = 2}) {
   return "";
 }
 
-String? generateSignature(String? senha) {
+String? decript(String? senha) {
   if (senha != null) {
-    var encodedKey = utf8.encode(chaveCrypto);
-    var hmacSha512 = new Hmac(sha512, encodedKey);
-    var bytesDataIn = utf8.encode(senha);
-    var digest = sha512.convert(bytesDataIn);
-    String singedValue = digest.toString();
-    return singedValue;
+    var key = cript.Key.fromUtf8(chaveCrypto);
+  final iv = cript.IV.fromLength(16);
+
+  final encrypter = cript.Encrypter(cript.AES(key));
+
+  
+  final decrypted = encrypter.decrypt(cript.Encrypted.from64(senha), iv: iv);
+  return decrypted.toString();
+  } else {
+    return null;
+  }
+}
+
+String? encript(String? senha) {
+  if (senha != null) {
+ var key = cript.Key.fromUtf8(chaveCrypto);
+  final iv = cript.IV.fromLength(16);
+
+  final encrypter = cript.Encrypter(cript.AES(key));
+
+  final encrypted = encrypter.encrypt(senha, iv: iv);
+  return encrypted.base64;
   } else {
     return null;
   }

@@ -13,26 +13,28 @@ class UsuarioDAO extends DAO<Usuario> {
     await conexao.transaction((transacao) async {
       if (usuario.id == null || usuario.id == 0) {
         var resultadoInsert = await transacao.prepared('''insert into usuario 
-          (id, grupousuario_id, nome, login, senha, registro_ativo) 
+          (id, grupousuario_id, nome,email, login, senha, registro_ativo) 
           values 
-          (?, ?, ?, ?, ?, ?)''', [
+          (?, ?, ?, ?, ?, ?, ?)''', [
           usuario.id,
           usuario.grupo?.id,
           usuario.nome,
+          usuario.email,
           usuario.login,
-          generateSignature(usuario.senha),
+          encript(usuario.senha),
           usuario.ativo
         ]);
         usuario.id = resultadoInsert.insertId;
       } else {
         await transacao.prepared(
             '''update usuario set
-          grupousuario_id = ?, nome = ?, login = ?, senha = ?, registro_ativo = ? where id = ?''',
+          grupousuario_id = ?, nome = ?, login = ?, email = ?, senha = ?, registro_ativo = ? where id = ?''',
             [
               usuario.grupo?.id,
               usuario.nome,
               usuario.login,
-              generateSignature(usuario.senha),
+              usuario.email,
+              encript(usuario.senha),
               usuario.ativo,
               usuario.id
             ]);
@@ -54,9 +56,9 @@ class UsuarioDAO extends DAO<Usuario> {
       {Map<String, dynamic>? filtros}) async {
     var conexao = await Conexao.getConexao();
     var resultadoConsulta = await conexao.prepared('''select 
-    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo 
+    usuario.id, usuario.grupousuario_id, usuario.nome, usuario.login, usuario.senha, usuario.registro_ativo, usuario.email
     from usuario 
-    join grupousuario on grupousuario.id = usuario.grupousuario_id 
+    left join grupousuario on grupousuario.id = usuario.grupousuario_id 
     where usuario.id = ?''', [usuario.id]);
     await resultadoConsulta.forEach((linhaConsulta) {
       usuario.id = linhaConsulta[0];
@@ -68,8 +70,9 @@ class UsuarioDAO extends DAO<Usuario> {
       }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
+      usuario.senha =  decript(linhaConsulta[4]);
       usuario.ativo = linhaConsulta[5] == 1;
+      usuario.email = linhaConsulta[6];
     });
 
     var resultadoPermissaoUsuario = await conexao.prepared('''select 
@@ -143,7 +146,7 @@ class UsuarioDAO extends DAO<Usuario> {
       }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
+      usuario.senha =  decript(linhaConsulta[4]);
       usuarios.add(usuario);
     });
     return usuarios;
@@ -158,7 +161,7 @@ class UsuarioDAO extends DAO<Usuario> {
         ? filtros['login']
         : null;
     String? filtroSenha = filtros != null && filtros.containsKey('senha')
-        ? generateSignature(filtros['senha'])
+        ? encript(filtros['senha'])
         : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
@@ -180,7 +183,7 @@ class UsuarioDAO extends DAO<Usuario> {
       }
       usuario.nome = linhaConsulta[2];
       usuario.login = linhaConsulta[3];
-      usuario.senha = linhaConsulta[4];
+      usuario.senha = decript(linhaConsulta[4]);
       usuarios.add(usuario);
     });
     return usuarios;
