@@ -32,7 +32,7 @@ class UsuarioDAO extends DAO<Usuario> {
               usuario.grupo?.id,
               usuario.nome,
               usuario.login,
-              usuario.senha,
+              generateSignature(usuario.senha),
               usuario.ativo,
               usuario.id
             ]);
@@ -102,7 +102,6 @@ class UsuarioDAO extends DAO<Usuario> {
 	where 
 		PU.grupousuario_id =  ?''', [usuario.grupo?.id]);
       await resultadoPermissaoGrupo.forEach((linhaConsulta) {
-        
         usuario.grupo?.nome = linhaConsulta[4];
         PermissaoGrupo permissaoGrupo = PermissaoGrupo();
         permissaoGrupo.permissao = new Permissao();
@@ -159,7 +158,7 @@ class UsuarioDAO extends DAO<Usuario> {
         ? filtros['login']
         : null;
     String? filtroSenha = filtros != null && filtros.containsKey('senha')
-        ? filtros['senha']
+        ? generateSignature(filtros['senha'])
         : null;
     List<Usuario> usuarios = [];
     var conexao = await Conexao.getConexao();
