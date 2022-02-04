@@ -48,8 +48,9 @@ dev_dependencies:
   uuid: ^3.0.4
   location: ^4.3.0
   brasil_fields: ^1.2.0
-  cryptography: 2.0.2 
   url_launcher: ^6.0.18
+  http: ^0.13.4
+  encrypt: ^5.0.1
   
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
