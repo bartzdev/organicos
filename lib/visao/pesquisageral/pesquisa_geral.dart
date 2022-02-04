@@ -7,7 +7,9 @@ import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/modelo/tipo_produto.dart';
 import 'package:organicos/modelo/utilitarios.dart';
+import 'package:organicos/visao/login/login.dart';
 import 'package:organicos/visao/styles/styles.dart';
+import 'package:organicos/visao/tela_principal.dart';
 
 class TelaPesquisaGeral extends StatefulWidget {
   TelaPesquisaGeral({Key? key}) : super(key: key);
@@ -420,7 +422,13 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                   onPressed: () {
                     exibirDialogoFiltros();
                   },
-                  icon: Icon(Icons.filter_alt_outlined))
+                  icon: Icon(Icons.filter_alt_outlined)),
+              IconButton(
+                  onPressed: () {
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (context) => Login()));
+                  },
+                  icon: Icon(Icons.more_horiz))
             ],
             title: Text(
               'Pesquisa de produtos\ne produtores',
@@ -435,7 +443,7 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                 ),
                 Tab(
                   icon: Icon(Icons.map),
-                  text: 'Maoa',
+                  text: 'Mapa',
                 )
               ],
             ),
