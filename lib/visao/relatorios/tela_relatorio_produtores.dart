@@ -159,7 +159,7 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
   String certificado = 't';
   int grupo = 1;
   TipoProduto? filtroTipo;
-  
+
   ControleCadastros<TipoProduto> controleTipoProduto =
       ControleCadastros(TipoProduto());
 
@@ -179,7 +179,7 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
             produtores = await dao.pesquisarProdutoCidade(filtros: {
               'Cidade': CidadeFiltro?.id,
               'Certificado': certificado,
-              'Tipo' : filtroTipo
+              'Tipo': filtroTipo
             });
             GerarPDF gerarPDF = GerarPDF(produtores: produtores);
             bites = await gerarPDF.gerearPDFProdutores();
@@ -304,62 +304,73 @@ class _TelaGerarRelatorioState extends State<TelaGerarRelatorio> {
               ),
             ),
             espacoEntreCampos,
-            Expanded(child: 
-            Padding(
-              padding: EdgeInsets.only(left: 8, right: 8),
-            child: 
-              FutureBuilder(
-                          future: controleTipoProduto.listar(),
-                          builder: (BuildContext context,
-                              AsyncSnapshot<List> snapshot) {
-                            String labelCampo = "Tipo";
-                            if (!snapshot.hasData) {
-                              labelCampo = "Carregando tipo do produto...";
-                            } else {
-                              controleTipoProduto.listaObjetosPesquisados =
-                                  snapshot.data as List<TipoProduto>;
-                            }
-               return DropdownButtonFormField<TipoProduto>(
-                              decoration: InputDecoration(
-                                  border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Colors.teal)),
-                                  filled: true,
-                                  isDense: true,
-                                  hintText: labelCampo,
-                                  labelText: labelCampo),
-                              isExpanded: true,
-                              items: controleTipoProduto
-                                          .listaObjetosPesquisados ==
-                                      null
-                                  ? []
-                                  : controleTipoProduto.listaObjetosPesquisados!
-                                      .map<DropdownMenuItem<TipoProduto>>(
-                                          (TipoProduto tipoProduto) {
-                                      return DropdownMenuItem<TipoProduto>(
-                                        value: tipoProduto,
-                                        child: Text(tipoProduto.nome!,
-                                            textAlign: TextAlign.center),
-                                      );
-                                    }).toList(),
-                              value:
-                                  filtroTipo,
-                              validator: (value) {
-                                if (value == null) {
-                                  return "Campo Obrigatório!";
-                                }
-                                return null;
-                              },
-                              onChanged: (TipoProduto? value) {
-                                setState(() {
-                                  filtroTipo = value;
-                                });
-                              },
-                            );
-                          }),
-            ),
-            ),
-            espacoEntreCampos,
+            Row(
+              children: [
+                Expanded(
+                  child: Padding(
+                    padding: EdgeInsets.only(left: 8, right: 8),
+                    child: FutureBuilder(
+                        future: controleTipoProduto.listar(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<List> snapshot) {
+                          String labelCampo = "Tipo";
+                          if (!snapshot.hasData) {
+                            labelCampo = "Carregando tipo do produto...";
+                          } else {
+                            controleTipoProduto.listaObjetosPesquisados =
+                                snapshot.data as List<TipoProduto>;
+                          }
+                          return DropdownButtonFormField<TipoProduto>(
+                            decoration: InputDecoration(
+                                border: OutlineInputBorder(
+                                    borderSide: BorderSide(color: Colors.teal)),
+                                filled: true,
+                                isDense: true,
+                                hintText: labelCampo,
+                                labelText: labelCampo),
+                            isExpanded: true,
+                            items: controleTipoProduto
+                                        .listaObjetosPesquisados ==
+                                    null
+                                ? []
+                                : controleTipoProduto.listaObjetosPesquisados!
+                                    .map<DropdownMenuItem<TipoProduto>>(
+                                        (TipoProduto tipoProduto) {
+                                    return DropdownMenuItem<TipoProduto>(
+                                      value: tipoProduto,
+                                      child: Text(tipoProduto.nome!,
+                                          textAlign: TextAlign.center),
+                                    );
+                                  }).toList(),
+                            value: filtroTipo,
+                            validator: (value) {
+                              if (value == null) {
+                                return "Campo Obrigatório!";
+                              }
+                              return null;
+                            },
+                            onChanged: (TipoProduto? value) {
+                              setState(() {
+                                filtroTipo = value;
+                              });
+                            },
+                          );
+                        }),
+                  ),
+                ),
+                SizedBox(width: 5),
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      filtroTipo = null;
+                    });
+                  },
+                  child: Image.asset('assets/imagens/clean.png',
+                      height: 50, width: 50),
+                ),
+                espacoEntreCampos,
+              ],
+            )
           ],
         ));
   }
