@@ -165,7 +165,7 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
         appBar: _montarCabecalho(),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton:
-            ControleSistema().usuarioLogado!.possuiPermissao(2)
+            ControleSistema().usuarioLogado!.possuiPermissao(8)
                 ? FloatingActionButton.extended(
                     icon: const Icon(Icons.add),
                     onPressed: () {

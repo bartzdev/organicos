@@ -90,81 +90,81 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              // ControleSistema().usuarioLogado!.possuiPermissao(1)
-              //     ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
-              //         () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) => TelaPesquisaProdutor()));
-              //       })
-              //     : SizedBox(),
-              // ControleSistema().usuarioLogado!.possuiPermissao(3)
-              //     ? botaoMenu("assets/imagens/imgGrupoProdutores.png",
-              //         'Grupo\nProdutores', () {
-              //         Navigator.push(
-              //             context,
-              //             MaterialPageRoute(
-              //                 builder: (context) =>
-              //                     TelaPesquisaGrupoProdutor()));
-              //       })
-              //     : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(5)
-              //       ? botaoMenu(
-              //           "assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
-              //           () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => TelaPesquisaPontoVenda()));
-              //         })
-              //       : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(7)
-              //       ? botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => TelaPesquisaProduto()));
-              //         })
-              //       : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(9)
-              //       ? botaoMenu(
-              //           "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
-              //           () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => TelaPesquisaTipoProduto()));
-              //         })
-              //       : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(11)
-              //       ? botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => TelaPesquisaUnidade()));
-              //         })
-              //       : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(13)
-              //       ? botaoMenu(
-              //           "assets/imagens/imgCertificadora.png", 'Certificadoras',
-              //           () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) =>
-              //                       TelaPesquisaCertificadora()));
-              //         })
-              //       : SizedBox(),
-              //   ControleSistema().usuarioLogado!.possuiPermissao(15)
-              //       ? botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
-              //           () {
-              //           Navigator.push(
-              //               context,
-              //               MaterialPageRoute(
-              //                   builder: (context) => TelaGerarRelatorio()));
-              //         })
-              //       : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(1)
+                  ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
+                      () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPesquisaProdutor()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(3)
+                  ? botaoMenu("assets/imagens/imgGrupoProdutores.png",
+                      'Grupo\nProdutores', () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaPesquisaGrupoProdutor()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(5)
+                  ? botaoMenu(
+                      "assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
+                      () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPesquisaPontoVenda()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(7)
+                  ? botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPesquisaProduto()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(9)
+                  ? botaoMenu(
+                      "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
+                      () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPesquisaTipoProduto()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(11)
+                  ? botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaPesquisaUnidade()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(13)
+                  ? botaoMenu(
+                      "assets/imagens/imgCertificadora.png", 'Certificadoras',
+                      () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaPesquisaCertificadora()));
+                    })
+                  : SizedBox(),
+              ControleSistema().usuarioLogado!.possuiPermissao(15)
+                  ? botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
+                      () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => TelaGerarRelatorio()));
+                    })
+                  : SizedBox(),
             ],
           )),
     )));
@@ -180,17 +180,23 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         spacing: 40.0,
         runSpacing: 40.0,
         children: [
-          botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => TelaPesquisaUsuario()));
-          }),
-          botaoMenu("assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários',
-              () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => TelaPesquisaGrupousuario()));
-          }),
+          ControleSistema().usuarioLogado!.possuiPermissao(16)
+              ? botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaPesquisaUsuario()));
+                })
+              : SizedBox(),
+          ControleSistema().usuarioLogado!.possuiPermissao(18)
+              ? botaoMenu(
+                  "assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários', () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => TelaPesquisaGrupousuario()));
+                })
+              : SizedBox(),
         ],
       ),
     )));

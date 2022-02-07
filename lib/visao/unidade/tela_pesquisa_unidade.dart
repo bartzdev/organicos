@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/modelo/tipo_produto.dart';
 import 'package:organicos/modelo/unidade.dart';
 import 'package:organicos/visao/unidade/tela_cadastro_unidade.dart';
@@ -168,23 +169,25 @@ class _TelaPesquisaUnidadeState extends State<TelaPesquisaUnidade> {
     return Scaffold(
       appBar: _montarCabecalho(),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            _controle.objetoCadastroEmEdicao = Unidade();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TelaCadastroUnidade(_controle, onSaved: () {
-                          setState(() {
-                            _controle.atualizarPesquisa(filtros: {
-                              'filtro': _controladorCampoPesquisa.text
-                            });
-                          });
-                        })));
-          },
-          label: const Text('Adicionar')),
+      floatingActionButton: ControleSistema().usuarioLogado!.possuiPermissao(12)
+          ? FloatingActionButton.extended(
+              icon: const Icon(Icons.add),
+              onPressed: () {
+                _controle.objetoCadastroEmEdicao = Unidade();
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            TelaCadastroUnidade(_controle, onSaved: () {
+                              setState(() {
+                                _controle.atualizarPesquisa(filtros: {
+                                  'filtro': _controladorCampoPesquisa.text
+                                });
+                              });
+                            })));
+              },
+              label: const Text('Adicionar'))
+          : SizedBox(),
       body: FutureBuilder(
           future: _controle.futuraListaObjetosPesquisados,
           builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
