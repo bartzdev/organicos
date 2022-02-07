@@ -7,6 +7,7 @@ import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
 import 'package:organicos/visao/grupousuario/tela_pesquisa_grupousuario.dart';
+import 'package:organicos/visao/pesquisageral/pesquisa_geral.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
 import 'package:organicos/visao/produto/tela_pesquisa_produto.dart';
 import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
@@ -89,120 +90,81 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             spacing: 30.0,
             runSpacing: 30.0,
             children: [
-              ControleSistema().usuarioLogado!.possuiPermissao(1)
-                  ? ControleSistema().usuarioLogado!.possuiPermissao(2)
-                      ? ControleSistema().usuarioLogado!.possuiPermissao(3)
-                          ? ControleSistema().usuarioLogado!.possuiPermissao(4)
-                              ? ControleSistema()
-                                      .usuarioLogado!
-                                      .possuiPermissao(5)
-                                  ? ControleSistema()
-                                          .usuarioLogado!
-                                          .possuiPermissao(6)
-                                      ? ControleSistema()
-                                              .usuarioLogado!
-                                              .possuiPermissao(7)
-                                          ? ControleSistema()
-                                                  .usuarioLogado!
-                                                  .possuiPermissao(8)
-                                              ? ControleSistema()
-                                                      .usuarioLogado!
-                                                      .possuiPermissao(9)
-                                                  ? ControleSistema()
-                                                          .usuarioLogado!
-                                                          .possuiPermissao(10)
-                                                      ? ControleSistema()
-                                                              .usuarioLogado!
-                                                              .possuiPermissao(
-                                                                  11)
-                                                          ? ControleSistema()
-                                                                  .usuarioLogado!
-                                                                  .possuiPermissao(
-                                                                      12)
-                                                              ? ControleSistema()
-                                                                      .usuarioLogado!
-                                                                      .possuiPermissao(
-                                                                          13)
-                                                                  ? ControleSistema()
-                                                                          .usuarioLogado!
-                                                                          .possuiPermissao(
-                                                                              14)
-                                                                      ? ControleSistema()
-                                                                              .usuarioLogado!
-                                                                              .possuiPermissao(15)
-                                                                          ? ControleSistema().usuarioLogado!.possuiPermissao(16)
-                                                                              ? ControleSistema().usuarioLogado!.possuiPermissao(17)
-                                                                                  ? ControleSistema().usuarioLogado!.possuiPermissao(18)
-                                                                                      ? ControleSistema().usuarioLogado!.possuiPermissao(19)
-                                                                                          ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores', () {
-                                                                                              Navigator.push(context, MaterialPageRoute(builder: (context) => TelaPesquisaProdutor()));
-                                                                                            })
-                                                                                          : SizedBox()
-                                                                                      : SizedBox()
-                                                                                  : SizedBox()
-                                                                              : SizedBox()
-                                                                          : SizedBox()
-                                                                      : SizedBox()
-                                                                  : SizedBox()
-                                                              : SizedBox()
-                                                          : SizedBox()
-                                                      : SizedBox()
-                                                  : SizedBox()
-                                              : SizedBox()
-                                          : SizedBox()
-                                      : SizedBox()
-                                  : SizedBox()
-                              : SizedBox()
-                          : SizedBox()
-                      : SizedBox()
-                  : SizedBox(),
-              botaoMenu(
-                  "assets/imagens/imgGrupoProdutores.png", 'Grupo\nProdutores',
-                  () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaGrupoProdutor()));
-              }),
-              botaoMenu("assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
-                  () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaPontoVenda()));
-              }),
-              botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaProduto()));
-              }),
-              botaoMenu("assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
-                  () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaTipoProduto()));
-              }),
-              botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaUnidade()));
-              }),
-              botaoMenu("assets/imagens/imgCertificadora.png", 'Certificadoras',
-                  () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaPesquisaCertificadora()));
-              }),
-              botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios', () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => TelaGerarRelatorio()));
-              }),
+              // ControleSistema().usuarioLogado!.possuiPermissao(1)
+              //     ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
+              //         () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) => TelaPesquisaProdutor()));
+              //       })
+              //     : SizedBox(),
+              // ControleSistema().usuarioLogado!.possuiPermissao(3)
+              //     ? botaoMenu("assets/imagens/imgGrupoProdutores.png",
+              //         'Grupo\nProdutores', () {
+              //         Navigator.push(
+              //             context,
+              //             MaterialPageRoute(
+              //                 builder: (context) =>
+              //                     TelaPesquisaGrupoProdutor()));
+              //       })
+              //     : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(5)
+              //       ? botaoMenu(
+              //           "assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
+              //           () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => TelaPesquisaPontoVenda()));
+              //         })
+              //       : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(7)
+              //       ? botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => TelaPesquisaProduto()));
+              //         })
+              //       : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(9)
+              //       ? botaoMenu(
+              //           "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
+              //           () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => TelaPesquisaTipoProduto()));
+              //         })
+              //       : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(11)
+              //       ? botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => TelaPesquisaUnidade()));
+              //         })
+              //       : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(13)
+              //       ? botaoMenu(
+              //           "assets/imagens/imgCertificadora.png", 'Certificadoras',
+              //           () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) =>
+              //                       TelaPesquisaCertificadora()));
+              //         })
+              //       : SizedBox(),
+              //   ControleSistema().usuarioLogado!.possuiPermissao(15)
+              //       ? botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
+              //           () {
+              //           Navigator.push(
+              //               context,
+              //               MaterialPageRoute(
+              //                   builder: (context) => TelaGerarRelatorio()));
+              //         })
+              //       : SizedBox(),
             ],
           )),
     )));
@@ -283,7 +245,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             actions: [
               IconButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    //   Navigator.of(context).pop();
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => TelaPesquisaGeral()));
                   },
                   icon: Icon(Icons.logout))
             ],

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/modelo/ponto_venda.dart';
 import 'package:organicos/modelo/produtor.dart';
 import 'package:organicos/visao/pontosvenda/tela_cadastro_pontovenda.dart';
 import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
+import 'package:organicos/modelo/permissoes.dart';
 
 class TelaPesquisaProdutor extends StatefulWidget {
   @override
@@ -17,6 +19,8 @@ class _TelaPesquisProdutor extends State<TelaPesquisaProdutor> {
   late IconButton _botaoPesquisar;
   late IconButton _botaoCancelarPesquisa;
   TextEditingController _controladorCampoPesquisa = TextEditingController();
+
+  get children => null;
 
   @override
   void initState() {
@@ -124,9 +128,7 @@ class _TelaPesquisProdutor extends State<TelaPesquisaProdutor> {
                           TextButton(
                               onPressed: () {
                                 //Ação do botão SIM
-                                _controle
-                                    .carregarDados(produtor)
-                                    .then((value) {
+                                _controle.carregarDados(produtor).then((value) {
                                   _controle.objetoCadastroEmEdicao = value;
                                   _controle
                                       .excluirObjetoCadastroEmEdicao()

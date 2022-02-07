@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/visao/produto/tela_cadastro_produto.dart';
 
@@ -161,47 +162,51 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: _montarCabecalho(),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-      floatingActionButton: FloatingActionButton.extended(
-          icon: const Icon(Icons.add),
-          onPressed: () {
-            _controle.objetoCadastroEmEdicao = Produto();
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        TelaCadastroProduto(_controle, onSaved: () {
-                          setState(() {
-                            _controle.atualizarPesquisa(filtros: {
-                              'filtro': _controladorCampoPesquisa.text
-                            });
-                          });
-                        })));
-          },
-          label: const Text('Adicionar')),
-      body: FutureBuilder(
-          future: _controle.futuraListaObjetosPesquisados,
-          builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(
-                  child: const Text(
-                "A consulta não retornou dados!",
-                style: const TextStyle(fontSize: 20),
-              ));
-            }
+        appBar: _montarCabecalho(),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton:
+            ControleSistema().usuarioLogado!.possuiPermissao(2)
+                ? FloatingActionButton.extended(
+                    icon: const Icon(Icons.add),
+                    onPressed: () {
+                      _controle.objetoCadastroEmEdicao = Produto();
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaCadastroProduto(_controle, onSaved: () {
+                                    setState(() {
+                                      _controle.atualizarPesquisa(filtros: {
+                                        'filtro': _controladorCampoPesquisa.text
+                                      });
+                                    });
+                                  })));
+                    },
+                    label: const Text('Adicionar'))
+                : SizedBox(),
+        body: Column(children: [
+          FutureBuilder(
+              future: _controle.futuraListaObjetosPesquisados,
+              builder: (BuildContext context, AsyncSnapshot<List> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Center(
+                      child: const Text(
+                    "A consulta não retornou dados!",
+                    style: const TextStyle(fontSize: 20),
+                  ));
+                }
 
-            _controle.listaObjetosPesquisados = snapshot.data as List<
-                Produto>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+                _controle.listaObjetosPesquisados = snapshot.data as List<
+                    Produto>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
 
-            return ListView.builder(
-              itemCount: _controle.listaObjetosPesquisados!.length,
-              itemBuilder: (BuildContext context, int index) {
-                return _linhaListaZebrada(
-                    _controle.listaObjetosPesquisados![index], index);
-              },
-            );
-          }),
-    );
+                return ListView.builder(
+                  itemCount: _controle.listaObjetosPesquisados!.length,
+                  itemBuilder: (BuildContext context, int index) {
+                    return _linhaListaZebrada(
+                        _controle.listaObjetosPesquisados![index], index);
+                  },
+                );
+              }),
+        ]));
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/dao/login_permissao.dart';
+import 'package:organicos/dao/pesquisa_geral_dao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
@@ -9,7 +10,10 @@ import 'package:organicos/visao/certificadora/tela_pesquisa_certificadora.dart';
 import 'package:organicos/visao/grupoprodutor/tela_cadastro_grupoprodutor.dart';
 import 'package:organicos/visao/grupoprodutor/tela_pesquisa_grupoprodutos.dart';
 import 'package:organicos/visao/permissao/chekbox_permissao.dart';
+import 'package:organicos/visao/pesquisageral/pesquisa_geral.dart';
+import 'package:organicos/visao/pontosvenda/tela_cadastro_pontovenda.dart';
 import 'package:organicos/visao/pontosvenda/tela_pesquisa_pontovenda.dart';
+import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
 import 'package:organicos/visao/produtor/tela_pesquisa_produtor.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_apres.dart';
 import 'package:organicos/visao/relatorios/tela_relatorio_produtores.dart';
@@ -34,7 +38,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Orgânicos',
       theme: temaGeralAppClaro,
-      home: Login(),
+      home: TelaPesquisaGeral(),
       //home: CheckboxWidget(),
 /*
       home: Scaffold(
