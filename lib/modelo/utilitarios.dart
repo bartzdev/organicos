@@ -78,6 +78,10 @@ String? formataTelefone(String? telefone) {
   return retorno.text;
 }
 
+Future<bool> enviarEmailRecuperacao(String? endereco, String? usuario, String? senha) async {
+  return true;
+}
+
 /**
  * Para utilização desta função, segue uma condição como eemplo
  * 
