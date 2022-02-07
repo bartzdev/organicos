@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/dao/usuario_dao.dart';
 import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
-
 
 import '../tela_principal.dart';
 
@@ -18,35 +19,24 @@ class _LoginState extends State<Login> {
   @override
   String loginEnt = "";
   String senhaEnt = "";
+  String emailRecuperacao = "";
   late Future<Usuario> userValidate;
   Widget build(BuildContext context) {
     senhaEnt = ValidaLogin().geraHora();
-    loginEnt = "admin";
-    // senhaEnt = Usuario().senha.toString();
+    loginEnt = 'admin';
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
         body: SingleChildScrollView(
             child: Column(
           children: [
-            Container(
-                decoration: new BoxDecoration(
-                    color: Color(0xFF61b255),
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: const Radius.circular(50),
-                      bottomRight: const Radius.circular(50),
-                    )),
-                width: MediaQuery.of(context).size.width,
-                height: 265,
-                child: Image.asset('assets/imagens/logoOrganico.jpeg')),
+            Container(width: MediaQuery.of(context).size.width, height: 300, color: Color(0xFF61b255), child: Image.asset('assets/imagens/logoOrganico.jpeg')),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Container(
-                    width: MediaQuery.of(context).size.width < 400
-                        ? double.infinity
-                        : 400,
+                    width: MediaQuery.of(context).size.width < 400 ? double.infinity : 400,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -55,8 +45,7 @@ class _LoginState extends State<Login> {
                           controller: TextEditingController(text: "admin"),
                           autofocus: true,
                           keyboardType: TextInputType.name,
-                          style:
-                              TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
+                          style: TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
                           decoration: decorationCampoTexto(
                             labelText: "LOGIN",
                             //labelStyle: TextStyle(color: Colors.white),
@@ -68,13 +57,11 @@ class _LoginState extends State<Login> {
                         ),
                         Divider(),
                         TextField(
-                          controller: TextEditingController(
-                              text: ValidaLogin().geraHora()),
+                          controller: TextEditingController(text: ValidaLogin().geraHora()),
                           autofocus: true,
                           obscureText: true,
                           keyboardType: TextInputType.text,
-                          style:
-                              TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
+                          style: TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
                           decoration: decorationCampoTexto(
                             labelText: "SENHA",
 
@@ -90,38 +77,79 @@ class _LoginState extends State<Login> {
                           height: 60.0,
                           child: InkWell(
                             onTap: () async {
-                              if (loginEnt.trim().isEmpty ||
-                                  senhaEnt.trim().isEmpty) {
-                                mensagemAutenticacao(
-                                    context,
-                                    'PREENCHA TODOS OS DADOS CORRETAMENTE',
-                                    'ATENÇÃO');
+                              Usuario? usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
+                              if (usuario != null) {
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => TelaPrincipal()));
                               } else {
-                                Usuario? usuario = await ValidaLogin()
-                                    .validacaoUser(loginEnt, senhaEnt);
-                                if (usuario != null) {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) =>
-                                              TelaPrincipal()));
-                                } else {
-                                  mensagemAutenticacao(context,
-                                      'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
-                                }
+                                mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
                               }
                             },
                             child: Container(
                                 height: 50,
                                 child: Card(
-                                  shape: new RoundedRectangleBorder(
-                                      borderRadius:
-                                          new BorderRadius.circular(30.0)),
+                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
                                   child: Center(
                                       child: Text(
                                     "ENTRAR",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 20),
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                  )),
+                                  //color: Colors.red,
+                                  color: Color(0xFF2e8228),
+                                )),
+                          ),
+                        ),
+                        ButtonTheme(
+                          height: 60.0,
+                          child: InkWell(
+                            onTap: () async {
+                              showDialog(
+                                  context: context,
+                                  builder: (BuildContext builder) {
+                                    return AlertDialog(
+                                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                        title: const Text('RECUPERAR A SENHA'),
+                                        content: TextFormField(
+                                          decoration: decorationCampoTexto(hintText: "Digite o seu email aqui", labelText: "Digite o seu email aqui"),
+                                          onChanged: (value) {
+                                            emailRecuperacao = value;
+                                          },
+                                          keyboardType: TextInputType.text,
+                                        ),
+                                        actionsAlignment: MainAxisAlignment.center,
+                                        actions: <Widget>[
+                                          TextButton(
+                                              onPressed: () async {
+                                                ControleCadastros<Usuario> controle = new ControleCadastros(Usuario());
+                                                List<Usuario> usuarios = await controle.atualizarPesquisa(filtros: {"email": emailRecuperacao});
+                                                if (usuarios.isNotEmpty) {
+                                                  Usuario u = usuarios[0];
+                                                  enviarEmailRecuperacao(u.email, u.login, u.senha);
+                                                  AlertDialog(
+                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                                      title: const Text('EMAIL ENVIADO COM SUCESSO'));
+                                                } else {
+                                                  AlertDialog(
+                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                                      title: const Text('NENHUM EMAIL ENCONTRADO'));
+                                                }
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text("OK")),
+                                          const SizedBox(
+                                            width: 400,
+                                            height: 20,
+                                          )
+                                        ]);
+                                  });
+                            },
+                            child: Container(
+                                height: 50,
+                                child: Card(
+                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                  child: Center(
+                                      child: Text(
+                                    "Esqueceu a senha?",
+                                    style: TextStyle(color: Colors.white, fontSize: 20),
                                   )),
                                   //color: Colors.red,
                                   color: Color(0xFF2e8228),
