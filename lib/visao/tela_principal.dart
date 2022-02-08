@@ -45,30 +45,30 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                 style: NeumorphicStyle(
                   shape: NeumorphicShape.convex,
                   border: NeumorphicBorder(
-                    color: Color(0xff000000),
+                    color: Color(0xff44BD5A),
                     width: 0,
                   ),
                   boxShape:
-                      NeumorphicBoxShape.roundRect(BorderRadius.circular(20)),
-                  depth: 0,
-                  intensity: 0.7,
-                  lightSource: LightSource.right,
-                  color: Color(0xffCEFFC7),
+                      NeumorphicBoxShape.roundRect(BorderRadius.circular(15)),
+                  depth: 5,
+                  intensity: 0,
+                  lightSource: LightSource.topLeft,
+                  color: Color(0xff9FD195),
                 ),
                 child: Container(
-                  width: 100,
-                  height: 100,
+                  width: 105,
+                  height: 140,
                   child: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [Text(textoBotao)],
                   ),
                 ))
           ]),
           Positioned(
-              top: -12,
-              left: 25,
+              top: -8,
+              left: 28,
               child: SizedBox(
-                  height: 85,
+                  height: 130,
                   width: 50,
                   child: Image.asset(
                     caminhoIcone,
@@ -91,8 +91,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             runSpacing: 30.0,
             children: [
               ControleSistema().usuarioLogado!.possuiPermissao(1)
-                  ? botaoMenu("assets/imagens/imgProdutor.png", 'Produtores',
-                      () {
+                  ? botaoMenu(
+                      "assets/imagens/imgProdutor.png", '\n\nProdutores', () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -101,7 +101,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(3)
                   ? botaoMenu("assets/imagens/imgGrupoProdutores.png",
-                      'Grupo\nProdutores', () {
+                      '\n\nGrupo\nProdutores', () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -111,7 +111,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(5)
                   ? botaoMenu(
-                      "assets/imagens/imgPontoVendas.png", 'Pontos\nVendas',
+                      "assets/imagens/imgPontoVendas.png", '\n\nPontos\nVendas',
                       () {
                       Navigator.push(
                           context,
@@ -120,7 +120,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     })
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(7)
-                  ? botaoMenu("assets/imagens/imgProduto.png", 'Produtos', () {
+                  ? botaoMenu("assets/imagens/imgProduto.png", '\nProdutos',
+                      () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -129,7 +130,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(9)
                   ? botaoMenu(
-                      "assets/imagens/imgTipoProduto.png", 'Tipo\nProdutos',
+                      "assets/imagens/imgTipoProduto.png", '\n\nTipo\nProdutos',
                       () {
                       Navigator.push(
                           context,
@@ -138,7 +139,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     })
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(11)
-                  ? botaoMenu("assets/imagens/imgUnidades.png", 'Unidades', () {
+                  ? botaoMenu("assets/imagens/imgUnidades.png", '\n\nUnidades',
+                      () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -146,9 +148,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     })
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(13)
-                  ? botaoMenu(
-                      "assets/imagens/imgCertificadora.png", 'Certificadoras',
-                      () {
+                  ? botaoMenu("assets/imagens/imgCertificadora.png",
+                      '\n\nCertificadoras', () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
@@ -157,8 +158,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     })
                   : SizedBox(),
               ControleSistema().usuarioLogado!.possuiPermissao(15)
-                  ? botaoMenu("assets/imagens/imgRelatorio.png", 'Relatórios',
-                      () {
+                  ? botaoMenu(
+                      "assets/imagens/imgRelatorio.png", '\n\nRelatórios', () {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
