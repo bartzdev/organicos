@@ -216,7 +216,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     bottomRight: const Radius.circular(50),
                   )),
               width: MediaQuery.of(context).size.width,
-              height: 265,
+              height: 250,
               //color: Color(0xFF61b255),
               child: Image.asset('assets/imagens/logoOrganico.jpeg')),
           Padding(

@@ -33,7 +33,7 @@ class _LoginState extends State<Login> {
           children: [
             Container(
                 width: MediaQuery.of(context).size.width,
-                height: 300,
+                height: 250,
                 color: Color(0xFF61b255),
                 child: Image.asset('assets/imagens/logoOrganico.jpeg')),
             SizedBox(height: 50),
