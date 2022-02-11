@@ -7,7 +7,7 @@ class Conexao {
     String databaseName = 'organicos_local';
     var _settings = ConnectionSettings(
         useSSL: false,
-        host: 'localhost',
+        host: '192.168.1.10',
         port: 3306,
         user: 'root',
         password: 'mysqlserverabc123*',

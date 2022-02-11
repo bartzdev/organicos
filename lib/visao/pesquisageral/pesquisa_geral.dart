@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/dao/pesquisa_geral_dao.dart';
@@ -9,7 +11,7 @@ import 'package:organicos/modelo/tipo_produto.dart';
 import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/login.dart';
 import 'package:organicos/visao/styles/styles.dart';
-import 'package:organicos/visao/tela_principal.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class TelaPesquisaGeral extends StatefulWidget {
   TelaPesquisaGeral({Key? key}) : super(key: key);
@@ -29,6 +31,69 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
   PontoVenda? pontoVendaSelecionado;
 
   double _distanciaKM = 10;
+
+  Completer<GoogleMapController> _controller = Completer();
+  GoogleMapController? gMapController;
+  Set<Marker> markers = Set<Marker>();
+  List<ItemPesquisaGeral> resultadoPesquisa = [];
+  Future<List<ItemPesquisaGeral>>? futureItensPesquisa;
+
+  @override
+  void initState() {
+    super.initState();
+    _atualizarpesquisa();
+  }
+
+  _atualizarpesquisa(){
+
+      futureItensPesquisa = PesquisaGeralDAO()
+                        .pesquisar(filtros: {"filtro": ''});
+  }
+  _atualizarMarcadores(){
+    int tam = resultadoPesquisa.length;
+      ItemPesquisaGeral item;
+      List<PontoVenda>? pontos;
+      Produtor? produtor;
+        Future <void> _addMarkerLongPressed(LatLng latlang) async {
+        final MarkerId markerId = MarkerId(generateUniqueID());
+        Marker marker = Marker(
+          markerId: markerId,
+          draggable: true,
+          position: latlang,
+          icon: BitmapDescriptor.defaultMarker,
+        );
+        markers.add(marker);
+      
+      }
+
+      markers.clear();
+      for(int i = 0; i < tam; i++){
+        item = resultadoPesquisa[i];
+        pontos = item.pontosVenda;
+        produtor = item.produtor;
+      
+      if(pontos.isEmpty){
+        double lat = double.parse(produtor!.latitude!);
+        double long = double.parse(produtor.longitude!);
+        LatLng latlong = new LatLng(lat, long);
+        _addMarkerLongPressed(latlong);
+      } else {
+        int tam = pontos.length;
+        for(int i = 0; i < tam; i++){
+          PontoVenda ponto = pontos[i];
+          double lat = double.parse(ponto.latitude!);
+          double long = double.parse(ponto.longitude!);
+          LatLng latlong = new LatLng(lat, long);
+
+          if(markers.contains(latlong)){
+
+          } else {
+            _addMarkerLongPressed(latlong);
+          }
+        }
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -381,8 +446,7 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                 width: double.infinity,
                 height: 800,
                 child: FutureBuilder(
-                    future: new PesquisaGeralDAO()
-                        .pesquisar(filtros: {"filtro": ''}),
+                    future: futureItensPesquisa,
                     builder:
                         (BuildContext context, AsyncSnapshot<List> snapshot) {
                       if (!snapshot.hasData) {
@@ -393,9 +457,10 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                         ));
                       }
 
-                      List<ItemPesquisaGeral> resultadoPesquisa = snapshot.data
+                      resultadoPesquisa = snapshot.data
                           as List<
-                              ItemPesquisaGeral>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+                              ItemPesquisaGeral>;
+                              _atualizarMarcadores(); //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
                       return ListView.builder(
                         itemCount: resultadoPesquisa.length,
                         itemBuilder: (BuildContext context, int index) {
@@ -409,8 +474,46 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
       ));
     }
 
+    Future<CameraPosition> getCurrentLocationCameraPosition() async {
+      var locationData = await getCurrentLocation();
+      
+      return CameraPosition(
+          bearing: 0,
+          target: LatLng(locationData!.latitude!, locationData.longitude!),
+          // tilt: 59.440717697143555,
+          tilt: 90,
+          zoom: 19.151926040649414);
+    }
+
     Widget abaMapa() {
-      return SizedBox();
+      
+      return FutureBuilder<CameraPosition>(
+          future: getCurrentLocationCameraPosition(),
+          builder: (BuildContext context, AsyncSnapshot snapshot) {
+            if (snapshot.hasData) {
+              CameraPosition _myLocation = snapshot.data;
+              return GoogleMap(
+                mapType: MapType.hybrid,
+                initialCameraPosition: _myLocation,
+                onMapCreated: (GoogleMapController controller) {
+                  _controller.complete(controller);
+                  gMapController = controller;
+                },
+                rotateGesturesEnabled: true,
+                scrollGesturesEnabled: true,
+                tiltGesturesEnabled: true,
+                zoomGesturesEnabled: true,
+                mapToolbarEnabled: true,
+                compassEnabled: true,
+                myLocationEnabled: true,
+                myLocationButtonEnabled: true,
+                onLongPress: (latlang) {},
+                markers: markers,
+                // circles: circles,
+              );
+            }
+            return SizedBox();
+          });
     }
 
     return DefaultTabController(

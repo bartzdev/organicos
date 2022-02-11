@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
 import 'package:organicos/dao/login_permissao.dart';
 import 'package:organicos/dao/pesquisa_geral_dao.dart';
+import 'package:organicos/dao/pontovenda_dao.dart';
 import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/endereco.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
@@ -30,6 +31,8 @@ import 'package:organicos/visao/login/login.dart';
 
 void main() {
   runApp(MyApp());
+    PontoVendaDAO dao = PontoVendaDAO();
+    dao.listar();
 }
 
 class MyApp extends StatelessWidget {

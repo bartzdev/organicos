@@ -47,7 +47,7 @@ where
           ultimoIdProdutor != linhaConsulta[2]) {
         ultimoIdProduto = linhaConsulta[0];
         ultimoIdProdutor = linhaConsulta[2];
-        item = ItemPesquisaGeral();
+        item = ItemPesquisaGeral(); 
         item.produto = Produto();
         item.produto!.id = linhaConsulta[0];
         item.produto!.nome = linhaConsulta[1];

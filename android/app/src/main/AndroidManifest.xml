@@ -3,6 +3,8 @@
    <application
         android:label="organicos"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyDFRzd-d9g0aI8ZupfdzRMzASenY0IfFH0"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
