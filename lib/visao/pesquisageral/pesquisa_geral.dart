@@ -32,45 +32,6 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
 
   @override
   Widget build(BuildContext context) {
-    Produto alface = Produto()..nome = "Alface Crespa Orgânica";
-    Produto rucula = Produto()..nome = "Rucula da boa";
-
-    Produtor joao = Produtor()..nome = "João de Paula";
-    joao.telefone = '44998762665';
-    Produtor manuel = Produtor()..nome = "Manuel de Souza Andrade";
-    manuel.telefone = '44998762665';
-    PontoVenda p1 = PontoVenda();
-    p1.latitude = "-24.4030653";
-    p1.longitude = "-53.5073557";
-    p1.nome = "Feira principal";
-    PontoVenda p2 = PontoVenda();
-    p2.nome = "Feira da praça";
-    p2.latitude = "-24.409763";
-    p2.longitude = "-53.528315";
-    PontoVenda p3 = PontoVenda();
-    p3.nome = "Casa do produtor";
-    p3.latitude = "-24.4151515";
-    p3.longitude = "-53.5193555";
-
-    List<PontoVenda> pontos = [p1, p2, p3];
-
-    List<PontoVenda> pontos2 = [PontoVenda()..nome = "Feira principal"];
-
-    List<ItemPesquisaGeral> itensPesquisa = [
-      ItemPesquisaGeral()
-        ..produto = alface
-        ..produtor = joao
-        ..pontosVenda = pontos,
-      ItemPesquisaGeral()
-        ..produto = rucula
-        ..produtor = manuel
-        ..pontosVenda = pontos,
-      ItemPesquisaGeral()
-        ..produto = alface
-        ..produtor = manuel
-        ..pontosVenda = pontos2
-    ];
-
     Widget _linhaListaPesquisa(
         ItemPesquisaGeral itemPesquisaGeral, int indice) {
       return Container(
@@ -89,45 +50,51 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                   Expanded(
-                      child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                          itemPesquisaGeral.produto?.nome == null
-                              ? ''
-                              : itemPesquisaGeral.produto!.nome!,
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold),
-                          textAlign: TextAlign.left),
-                      SizedBox(
-                        height: 10,
-                      ),
-                      Text(
-                          'Produtor: ' +
-                              (itemPesquisaGeral.produtor?.nome == null
-                                  ? ''
-                                  : itemPesquisaGeral.produtor!.nome!),
-                          style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 13,
-                              fontWeight: FontWeight.normal),
-                          textAlign: TextAlign.left),
-                      itemPesquisaGeral.produtor?.telefone == null
-                          ? SizedBox()
-                          : IconButton(
-                              iconSize: 35,
-                              icon: Image.asset(
-                                'assets/imagens/WhatsAppIcon48.png',
-                              ),
-                              onPressed: () {
-                                geraLinkURL(
-                                    itemPesquisaGeral.produtor!.telefone!, '');
-                              },
-                            )
-                    ],
-                  )),
+                    child: Column(
+                      //mainAxisSize: MainAxisSize.max,
+
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                            itemPesquisaGeral.produto?.nome == null
+                                ? ''
+                                : itemPesquisaGeral.produto!.nome!,
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold),
+                            textAlign: TextAlign.left),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Text(
+                            'Produtor: ' +
+                                (itemPesquisaGeral.produtor?.nome == null
+                                    ? ''
+                                    : itemPesquisaGeral.produtor!.nome!),
+                            style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 13,
+                                fontWeight: FontWeight.normal),
+                            textAlign: TextAlign.left),
+                        SizedBox(
+                          height: 5,
+                        ),
+                        itemPesquisaGeral.produtor?.telefone == null
+                            ? SizedBox()
+                            : GestureDetector(
+                                child: Image.asset(
+                                  'assets/imagens/WhatsAppIcon32.png',
+                                ),
+                                onTap: () {
+                                  geraLinkURL(
+                                      itemPesquisaGeral.produtor!.telefone!,
+                                      '');
+                                },
+                              )
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     width: 20,
                   ),
@@ -150,17 +117,19 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                                             .pontosVenda[indice].nome!,
                                     style: TextStyle(fontSize: 14),
                                   ),
-                                  IconButton(
-                                    iconSize: 8,
-                                    icon: Image.asset(
+                                  SizedBox(
+                                    width: 5,
+                                  ),
+                                  GestureDetector(
+                                    child: Image.asset(
                                       'assets/imagens/alfinete.png',
+                                      width: 20,
+                                      height: 20,
                                     ),
-                                    onPressed: () {
+                                    onTap: () {
                                       geraLinkURL(
-                                          itemPesquisaGeral
-                                              .pontosVenda[indice].latitude!,
-                                          itemPesquisaGeral
-                                              .pontosVenda[indice].longitude!);
+                                          itemPesquisaGeral.produtor!.telefone!,
+                                          '');
                                     },
                                   )
                                 ],
@@ -423,12 +392,27 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                     exibirDialogoFiltros();
                   },
                   icon: Icon(Icons.filter_alt_outlined)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
-                  },
-                  icon: Icon(Icons.more_horiz))
+
+              PopupMenuButton(
+                onSelected: (value) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Login()));
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text("Acessar área restrita"),
+                    )
+                  ];
+                },
+              ),
+              // IconButton(
+              //     onPressed: () {
+              //       Navigator.push(context,
+              //           MaterialPageRoute(builder: (context) => Login()));
+              //     },
+              //     icon: Icon(Icons.more_horiz))
             ],
             title: Text(
               'Pesquisa de produtos\ne produtores',

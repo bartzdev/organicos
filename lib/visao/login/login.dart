@@ -7,6 +7,7 @@ import 'package:organicos/modelo/utilitarios.dart';
 import 'package:organicos/visao/login/loginControle.dart';
 import 'package:organicos/visao/widgets/mensagens.dart';
 import 'package:organicos/visao/widgets/textformfield.dart';
+import 'package:organicos/modelo/utilitarios.dart';
 
 import '../tela_principal.dart';
 
@@ -123,10 +124,16 @@ class _LoginState extends State<Login> {
                                                 List<Usuario> usuarios = await controle.atualizarPesquisa(filtros: {"email": emailRecuperacao});
                                                 if (usuarios.isNotEmpty) {
                                                   Usuario u = usuarios[0];
-                                                  enviarEmailRecuperacao(u.email, u.login, u.senha);
-                                                  AlertDialog(
-                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                                      title: const Text('EMAIL ENVIADO COM SUCESSO'));
+                                                  String corpo = """ Segue abaixo o login e senha do usuário conforme socilitado
+                                                  login ${u.login}
+                                                  senha ${u.senha}
+                                                      """;
+                                                  enviarEmail(
+                                                      destinatarios: [emailRecuperacao],
+                                                      assunto: "Recuperação de login/Senha app organicos",
+                                                      emailRemetente: "quitandaorganica@gmail.com",
+                                                      nomeRemetente: "Aplicativo Organicos",
+                                                      texto: corpo);
                                                 } else {
                                                   AlertDialog(
                                                       shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
