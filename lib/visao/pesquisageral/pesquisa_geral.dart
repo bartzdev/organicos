@@ -423,12 +423,27 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
                     exibirDialogoFiltros();
                   },
                   icon: Icon(Icons.filter_alt_outlined)),
-              IconButton(
-                  onPressed: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) => Login()));
-                  },
-                  icon: Icon(Icons.more_horiz))
+
+              PopupMenuButton(
+                onSelected: (value) {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Login()));
+                },
+                itemBuilder: (BuildContext context) {
+                  return [
+                    PopupMenuItem(
+                      value: 1,
+                      child: Text("Acessar área restrita"),
+                    )
+                  ];
+                },
+              ),
+              // IconButton(
+              //     onPressed: () {
+              //       Navigator.push(context,
+              //           MaterialPageRoute(builder: (context) => Login()));
+              //     },
+              //     icon: Icon(Icons.more_horiz))
             ],
             title: Text(
               'Pesquisa de produtos\ne produtores',

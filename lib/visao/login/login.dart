@@ -25,18 +25,25 @@ class _LoginState extends State<Login> {
     senhaEnt = ValidaLogin().geraHora();
     loginEnt = 'admin';
     return Scaffold(
+        appBar: AppBar(backgroundColor: Color(0xFF61b255)),
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
         body: SingleChildScrollView(
             child: Column(
           children: [
-            Container(width: MediaQuery.of(context).size.width, height: 300, color: Color(0xFF61b255), child: Image.asset('assets/imagens/logoOrganico.jpeg')),
+            Container(
+                width: MediaQuery.of(context).size.width,
+                height: 300,
+                color: Color(0xFF61b255),
+                child: Image.asset('assets/imagens/logoOrganico.jpeg')),
             SizedBox(height: 50),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Center(
                 child: Container(
-                    width: MediaQuery.of(context).size.width < 400 ? double.infinity : 400,
+                    width: MediaQuery.of(context).size.width < 400
+                        ? double.infinity
+                        : 400,
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -45,7 +52,8 @@ class _LoginState extends State<Login> {
                           controller: TextEditingController(text: "admin"),
                           autofocus: true,
                           keyboardType: TextInputType.name,
-                          style: TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
+                          style:
+                              TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
                           decoration: decorationCampoTexto(
                             labelText: "LOGIN",
                             //labelStyle: TextStyle(color: Colors.white),
@@ -57,11 +65,13 @@ class _LoginState extends State<Login> {
                         ),
                         Divider(),
                         TextField(
-                          controller: TextEditingController(text: ValidaLogin().geraHora()),
+                          controller: TextEditingController(
+                              text: ValidaLogin().geraHora()),
                           autofocus: true,
                           obscureText: true,
                           keyboardType: TextInputType.text,
-                          style: TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
+                          style:
+                              TextStyle(color: Color(0XFF1d1d1d), fontSize: 16),
                           decoration: decorationCampoTexto(
                             labelText: "SENHA",
 
@@ -77,21 +87,29 @@ class _LoginState extends State<Login> {
                           height: 60.0,
                           child: InkWell(
                             onTap: () async {
-                              Usuario? usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
+                              Usuario? usuario = await ValidaLogin()
+                                  .validacaoUser(loginEnt, senhaEnt);
                               if (usuario != null) {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) => TelaPrincipal()));
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => TelaPrincipal()));
                               } else {
-                                mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
+                                mensagemAutenticacao(context,
+                                    'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');
                               }
                             },
                             child: Container(
                                 height: 50,
                                 child: Card(
-                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(30.0)),
                                   child: Center(
                                       child: Text(
                                     "ENTRAR",
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   )),
                                   //color: Colors.red,
                                   color: Color(0xFF2e8228),
@@ -106,31 +124,59 @@ class _LoginState extends State<Login> {
                                   context: context,
                                   builder: (BuildContext builder) {
                                     return AlertDialog(
-                                        shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
+                                        shape: const RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.all(
+                                                Radius.circular(20.0))),
                                         title: const Text('RECUPERAR A SENHA'),
                                         content: TextFormField(
-                                          decoration: decorationCampoTexto(hintText: "Digite o seu email aqui", labelText: "Digite o seu email aqui"),
+                                          decoration: decorationCampoTexto(
+                                              hintText:
+                                                  "Digite o seu email aqui",
+                                              labelText:
+                                                  "Digite o seu email aqui"),
                                           onChanged: (value) {
                                             emailRecuperacao = value;
                                           },
                                           keyboardType: TextInputType.text,
                                         ),
-                                        actionsAlignment: MainAxisAlignment.center,
+                                        actionsAlignment:
+                                            MainAxisAlignment.center,
                                         actions: <Widget>[
                                           TextButton(
                                               onPressed: () async {
-                                                ControleCadastros<Usuario> controle = new ControleCadastros(Usuario());
-                                                List<Usuario> usuarios = await controle.atualizarPesquisa(filtros: {"email": emailRecuperacao});
+                                                ControleCadastros<Usuario>
+                                                    controle =
+                                                    new ControleCadastros(
+                                                        Usuario());
+                                                List<Usuario> usuarios =
+                                                    await controle
+                                                        .atualizarPesquisa(
+                                                            filtros: {
+                                                      "email": emailRecuperacao
+                                                    });
                                                 if (usuarios.isNotEmpty) {
                                                   Usuario u = usuarios[0];
-                                                  enviarEmailRecuperacao(u.email, u.login, u.senha);
+                                                  enviarEmailRecuperacao(
+                                                      u.email,
+                                                      u.login,
+                                                      u.senha);
                                                   AlertDialog(
-                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                                      title: const Text('EMAIL ENVIADO COM SUCESSO'));
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      20.0))),
+                                                      title: const Text(
+                                                          'EMAIL ENVIADO COM SUCESSO'));
                                                 } else {
                                                   AlertDialog(
-                                                      shape: const RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(20.0))),
-                                                      title: const Text('NENHUM EMAIL ENCONTRADO'));
+                                                      shape: const RoundedRectangleBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius.circular(
+                                                                      20.0))),
+                                                      title: const Text(
+                                                          'NENHUM EMAIL ENCONTRADO'));
                                                 }
                                                 Navigator.of(context).pop();
                                               },
@@ -145,11 +191,14 @@ class _LoginState extends State<Login> {
                             child: Container(
                                 height: 50,
                                 child: Card(
-                                  shape: new RoundedRectangleBorder(borderRadius: new BorderRadius.circular(30.0)),
+                                  shape: new RoundedRectangleBorder(
+                                      borderRadius:
+                                          new BorderRadius.circular(30.0)),
                                   child: Center(
                                       child: Text(
                                     "Esqueceu a senha?",
-                                    style: TextStyle(color: Colors.white, fontSize: 20),
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 20),
                                   )),
                                   //color: Colors.red,
                                   color: Color(0xFF2e8228),

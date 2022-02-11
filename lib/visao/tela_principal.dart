@@ -60,7 +60,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                   height: 140,
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [Text(textoBotao)],
+                    children: [Text(textoBotao, textAlign: TextAlign.center)],
                   ),
                 ))
           ]),
@@ -83,7 +83,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         body: Center(
             child: SingleChildScrollView(
       child: Padding(
-          padding: EdgeInsets.only(left: 20, right: 20),
+          padding: EdgeInsets.only(left: 20, right: 20, bottom: 20, top: 20),
           child: Wrap(
             direction: Axis.horizontal,
             alignment: WrapAlignment.start,
@@ -182,7 +182,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         runSpacing: 40.0,
         children: [
           ControleSistema().usuarioLogado!.possuiPermissao(16)
-              ? botaoMenu("assets/imagens/imgUsuarios.png", 'Usuários', () {
+              ? botaoMenu("assets/imagens/imgUsuarios.png", '\n\nUsuários', () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -191,7 +191,8 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               : SizedBox(),
           ControleSistema().usuarioLogado!.possuiPermissao(18)
               ? botaoMenu(
-                  "assets/imagens/imgGrupoUsuarios.png", 'Grupo\nUsuários', () {
+                  "assets/imagens/imgGrupoUsuarios.png", '\n\nGrupo\nUsuários',
+                  () {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
@@ -270,7 +271,11 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
             title: Text('Tela Inicial'),
           ),
           body: TabBarView(
-            children: [abaCadastros(), abaConfiguracoes(), abaSobre()],
+            children: [
+              abaCadastros(),
+              abaConfiguracoes(),
+              abaSobre(),
+            ],
           ),
         ),
       ),
