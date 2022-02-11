@@ -73,8 +73,8 @@ class _TelaPesquisaGeralState extends State<TelaPesquisaGeral> {
         produtor = item.produtor;
       
       if(pontos.isEmpty){
-        double lat = double.parse(produtor!.latitude!);
-        double long = double.parse(produtor.longitude!);
+        double lat = produtor!.latitude!;
+        double long = produtor.longitude!;
         LatLng latlong = new LatLng(lat, long);
         _addMarkerLongPressed(latlong);
       } else {
