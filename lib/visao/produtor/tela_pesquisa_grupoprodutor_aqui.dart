@@ -4,14 +4,18 @@ import 'package:organicos/modelo/grupo_produtor.dart';
 
 class TelaPesquisaGrupoProdutorAqui extends StatefulWidget {
   Function(GrupoProdutor cidade)? onItemSelected;
-  TelaPesquisaGrupoProdutorAqui({Key? key, this.onItemSelected}) : super(key: key);
+  TelaPesquisaGrupoProdutorAqui({Key? key, this.onItemSelected})
+      : super(key: key);
 
   @override
-  _TelaPesquisaGrupoProdutorAqui createState() => _TelaPesquisaGrupoProdutorAqui();
+  _TelaPesquisaGrupoProdutorAqui createState() =>
+      _TelaPesquisaGrupoProdutorAqui();
 }
 
-class _TelaPesquisaGrupoProdutorAqui extends State<TelaPesquisaGrupoProdutorAqui> {
-  ControleCadastros<GrupoProdutor> _controle = ControleCadastros(GrupoProdutor());
+class _TelaPesquisaGrupoProdutorAqui
+    extends State<TelaPesquisaGrupoProdutorAqui> {
+  ControleCadastros<GrupoProdutor> _controle =
+      ControleCadastros(GrupoProdutor());
 
   bool _pesquisaAtiva = false;
   late IconButton _botaoPesquisar;
@@ -69,19 +73,22 @@ class _TelaPesquisaGrupoProdutorAqui extends State<TelaPesquisaGrupoProdutorAqui
 
   Widget _linhaListaZebrada(GrupoProdutor grupoProdutor, int indice) {
     return Container(
-        decoration: BoxDecoration(color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+        decoration: BoxDecoration(
+            color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
         child: ListTile(
             onTap: () {
-              if (widget.onItemSelected != null) widget.onItemSelected!(grupoProdutor);
+              if (widget.onItemSelected != null)
+                widget.onItemSelected!(grupoProdutor);
             },
             title: Row(
               children: [
                 Expanded(
                     child: Text(
-                        grupoProdutor.nome == null
-                            ? ''
-                            : grupoProdutor.nome!,
-                        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                        grupoProdutor.nome == null ? '' : grupoProdutor.nome!,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal),
                         textAlign: TextAlign.left))
               ],
             )));
@@ -102,13 +109,14 @@ class _TelaPesquisaGrupoProdutorAqui extends State<TelaPesquisaGrupoProdutorAqui
                 style: TextStyle(fontSize: 20),
               )));
 
-            _controle.listaObjetosPesquisados = snapshot.data
-                as List<GrupoProdutor>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+            _controle.listaObjetosPesquisados = snapshot.data as List<
+                GrupoProdutor>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
 
             return ListView.builder(
               itemCount: _controle.listaObjetosPesquisados!.length,
               itemBuilder: (BuildContext context, int index) {
-                return _linhaListaZebrada(_controle.listaObjetosPesquisados![index], index);
+                return _linhaListaZebrada(
+                    _controle.listaObjetosPesquisados![index], index);
               },
             );
           }),

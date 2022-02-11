@@ -56,8 +56,8 @@ where
         item.produtor!.id = linhaConsulta[2];
         item.produtor!.nome = linhaConsulta[3];
         item.produtor!.telefone = linhaConsulta[4];
-        item.produtor!.latitude = linhaConsulta[5].toString();
-        item.produtor!.longitude = linhaConsulta[6].toString();
+        item.produtor!.latitude = linhaConsulta[5];
+        item.produtor!.longitude = linhaConsulta[6];
         item.pontosVenda = [];
         itens.add(item);
       }

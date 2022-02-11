@@ -199,13 +199,14 @@ class _TelaPesquisaProdutoState extends State<TelaPesquisaProduto> {
                 _controle.listaObjetosPesquisados = snapshot.data as List<
                     Produto>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
 
-                return ListView.builder(
+                return Expanded(
+                    child: ListView.builder(
                   itemCount: _controle.listaObjetosPesquisados!.length,
                   itemBuilder: (BuildContext context, int index) {
                     return _linhaListaZebrada(
                         _controle.listaObjetosPesquisados![index], index);
                   },
-                );
+                ));
               }),
         ]));
   }

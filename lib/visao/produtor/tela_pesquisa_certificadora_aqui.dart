@@ -4,14 +4,18 @@ import 'package:organicos/modelo/certificadora.dart';
 
 class TelaPesquisaCertificadoraAqui extends StatefulWidget {
   Function(Certificadora certificadora)? onItemSelected;
-  TelaPesquisaCertificadoraAqui({Key? key, this.onItemSelected}) : super(key: key);
+  TelaPesquisaCertificadoraAqui({Key? key, this.onItemSelected})
+      : super(key: key);
 
   @override
-  _TelaPesquisaCertificadoraAqui createState() => _TelaPesquisaCertificadoraAqui();
+  _TelaPesquisaCertificadoraAqui createState() =>
+      _TelaPesquisaCertificadoraAqui();
 }
 
-class _TelaPesquisaCertificadoraAqui extends State<TelaPesquisaCertificadoraAqui> {
-  ControleCadastros<Certificadora> _controle = ControleCadastros(Certificadora());
+class _TelaPesquisaCertificadoraAqui
+    extends State<TelaPesquisaCertificadoraAqui> {
+  ControleCadastros<Certificadora> _controle =
+      ControleCadastros(Certificadora());
 
   bool _pesquisaAtiva = false;
   late IconButton _botaoPesquisar;
@@ -69,19 +73,22 @@ class _TelaPesquisaCertificadoraAqui extends State<TelaPesquisaCertificadoraAqui
 
   Widget _linhaListaZebrada(Certificadora grupoProdutor, int indice) {
     return Container(
-        decoration: BoxDecoration(color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
+        decoration: BoxDecoration(
+            color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
         child: ListTile(
             onTap: () {
-              if (widget.onItemSelected != null) widget.onItemSelected!(grupoProdutor);
+              if (widget.onItemSelected != null)
+                widget.onItemSelected!(grupoProdutor);
             },
             title: Row(
               children: [
                 Expanded(
                     child: Text(
-                        grupoProdutor.nome == null
-                            ? ''
-                            : grupoProdutor.nome!,
-                        style: TextStyle(color: Colors.black, fontSize: 18, fontWeight: FontWeight.normal),
+                        grupoProdutor.nome == null ? '' : grupoProdutor.nome!,
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.normal),
                         textAlign: TextAlign.left))
               ],
             )));
@@ -102,13 +109,14 @@ class _TelaPesquisaCertificadoraAqui extends State<TelaPesquisaCertificadoraAqui
                 style: TextStyle(fontSize: 20),
               )));
 
-            _controle.listaObjetosPesquisados = snapshot.data
-                as List<Certificadora>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
+            _controle.listaObjetosPesquisados = snapshot.data as List<
+                Certificadora>; //Carrega os dados retornados em uma lista (não futura) para ser mostrada na listview
 
             return ListView.builder(
               itemCount: _controle.listaObjetosPesquisados!.length,
               itemBuilder: (BuildContext context, int index) {
-                return _linhaListaZebrada(_controle.listaObjetosPesquisados![index], index);
+                return _linhaListaZebrada(
+                    _controle.listaObjetosPesquisados![index], index);
               },
             );
           }),
