@@ -5,13 +5,7 @@ class Conexao {
 
   static Future<MySqlConnection> getConexao() async {
     String databaseName = 'organicos_local';
-    var _settings = ConnectionSettings(
-        useSSL: false,
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'mysqlserverabc123*',
-        db: databaseName);
+    var _settings = ConnectionSettings(useSSL: false, host: 'localhost', port: 3306, user: 'root', password: '99374414', db: databaseName);
 
     if (_conexao == null) {
       _conexao = await MySqlConnection.connect(_settings);
@@ -20,16 +14,14 @@ class Conexao {
 
     var connectionTestResult;
     try {
-      connectionTestResult = await _conexao!.execute('select 0').catchError(
-          (error, stackTrace) async {
+      connectionTestResult = await _conexao!.execute('select 0').catchError((error, stackTrace) async {
         return StreamedResults(0, 0, []);
       }, test: (Object error) => true);
     } catch (error) {
       print('A conexão com o banco de dados será reestabelecida!');
     }
 
-    if (connectionTestResult == null ||
-        connectionTestResult.fields?.length == 0) {
+    if (connectionTestResult == null || connectionTestResult.fields?.length == 0) {
       _conexao!.close();
       _conexao = await MySqlConnection.connect(_settings);
       await _conexao!.execute('use $databaseName');
