@@ -23,7 +23,7 @@ class PontoVendaDAO extends DAO<PontoVenda> {
         var resultadoInsert = await transacao.prepared('''insert into pontovenda 
           (nome, endereco, numero, bairro, cidade_id, registro_ativo, latitude, longitude) 
           values 
-          (?, ?, ?, ?, ?, ?)''', [
+          (?, ?, ?, ?, ?, ?, ?, ?)''', [
           pontoVenda.nome,
           pontoVenda.endereco?.logradouro,
           pontoVenda.endereco?.numero,

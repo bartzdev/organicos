@@ -32,8 +32,7 @@ class ControleCadastros<T> {
 
   AsyncMemoizer<List<T>> _listMemoizer = AsyncMemoizer<List<T>>();
   Future<List<T>> listar({Map<String, dynamic>? filtros}) async {
-    if (listaObjetosPesquisados == null ||
-        listaObjetosPesquisados!.length == 0) {
+    if (listaObjetosPesquisados == null || listaObjetosPesquisados!.length == 0) {
       _listMemoizer = AsyncMemoizer<List<T>>();
     }
     futuraListaObjetosPesquisados = this._listMemoizer.runOnce(() async {
