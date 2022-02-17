@@ -1,4 +1,4 @@
-package com.example.organicos
+package br.edu.ifpr.organicos
 
 import io.flutter.embedding.android.FlutterActivity
 

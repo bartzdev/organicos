@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:organicos/controle/controle_cadastros.dart';
+import 'package:organicos/controle/controle_sistema.dart';
 import 'package:organicos/dao/usuario_dao.dart';
 import 'package:organicos/modelo/usuario.dart';
 import 'package:organicos/modelo/utilitarios.dart';
@@ -17,14 +18,13 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
-  @override
-  String loginEnt = "";
-  String senhaEnt = "";
+  TextEditingController controladorCampoLogin = TextEditingController(text: "admin");
+  TextEditingController controladorCampoSenha = TextEditingController(text: "OrgAdmin10*");
   String emailRecuperacao = "";
   late Future<Usuario> userValidate;
+
+  @override
   Widget build(BuildContext context) {
-    senhaEnt = ValidaLogin().geraHora();
-    loginEnt = 'admin';
     return Scaffold(
         //backgroundColor: Color(0xFF61b255),
         backgroundColor: Color(0xFFE1E1E1),
@@ -43,7 +43,7 @@ class _LoginState extends State<Login> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
                         TextField(
-                          controller: TextEditingController(text: "admin"),
+                          controller: controladorCampoLogin,
                           autofocus: true,
                           keyboardType: TextInputType.name,
                           style: TextStyle(color: Color(0xFF1d1d1d), fontSize: 16),
@@ -52,13 +52,10 @@ class _LoginState extends State<Login> {
                             //labelStyle: TextStyle(color: Colors.white),
                           ),
                           cursorColor: Color(0xFF2e8228),
-                          onChanged: (textLogin) {
-                            loginEnt = textLogin;
-                          },
                         ),
                         Divider(),
                         TextField(
-                          controller: TextEditingController(text: ValidaLogin().geraHora()),
+                          controller: controladorCampoSenha,
                           autofocus: true,
                           obscureText: true,
                           keyboardType: TextInputType.text,
@@ -69,17 +66,15 @@ class _LoginState extends State<Login> {
                             //labelStyle: TextStyle(color: Colors.white),
                           ),
                           cursorColor: Color(0xFF2e8228),
-                          onChanged: (senhaLogin) {
-                            senhaEnt = senhaLogin;
-                          },
                         ),
                         Divider(),
                         ButtonTheme(
                           height: 60.0,
                           child: InkWell(
                             onTap: () async {
-                              Usuario? usuario = await ValidaLogin().validacaoUser(loginEnt, senhaEnt);
+                              Usuario? usuario = await ValidaLogin().validacaoUser(controladorCampoLogin.text, controladorCampoSenha.text);
                               if (usuario != null) {
+                                ControleSistema().usuarioLogado = usuario;
                                 Navigator.push(context, MaterialPageRoute(builder: (context) => TelaPrincipal()));
                               } else {
                                 mensagemAutenticacao(context, 'USUARIO NÃO ENCONTRADO', 'ATENÇÃO');

@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.organicos">
+    package="br.edu.ifpr.organicos">
    <application
         android:label="organicos"
         android:icon="@mipmap/ic_launcher">
