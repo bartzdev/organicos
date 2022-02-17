@@ -87,7 +87,8 @@ class ProdutorDAO extends DAO<Produtor> {
     c.id as cid, c.nome as cnome,
     e.id, e.nome as esnome,
     cer.id as cer_id, cer.nome as cer_nome,
-    gp.id as gp_id, gp.nome as gp_nome
+    gp.id as gp_id, gp.nome as gp_nome,
+    p.venda_consumidorfinal
     from produtor p
     join cidade c on c.id = p.cidade_id
     join estado e on e.id = c.estado_id
@@ -103,8 +104,8 @@ class ProdutorDAO extends DAO<Produtor> {
       produtor.endereco!.bairro = linhaConsulta[5];
       produtor.ativo = linhaConsulta[6] == 1;
       produtor.nomePropriedade = linhaConsulta[7];
-      produtor.latitude = linhaConsulta[8].toString();
-      produtor.longitude = linhaConsulta[9].toString();
+      produtor.latitude = linhaConsulta[8];
+      produtor.longitude = linhaConsulta[9];
       produtor.certificacaoOrganicos = linhaConsulta[10];
       produtor.telefone = linhaConsulta[11];
       produtor.endereco!.cidade = Cidade()..id = linhaConsulta[12];
@@ -115,7 +116,7 @@ class ProdutorDAO extends DAO<Produtor> {
       produtor.certificadora!.nome = linhaConsulta[17];
       produtor.grupo = GrupoProdutor()..id = linhaConsulta[18];
       produtor.grupo!.nome = linhaConsulta[19];
-
+      produtor.vendaConsumidorFinal = linhaConsulta[20] == 1;
     });
     return produtor;
   }

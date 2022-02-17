@@ -47,7 +47,7 @@ where
           ultimoIdProdutor != linhaConsulta[2]) {
         ultimoIdProduto = linhaConsulta[0];
         ultimoIdProdutor = linhaConsulta[2];
-        item = ItemPesquisaGeral();
+        item = ItemPesquisaGeral(); 
         item.produto = Produto();
         item.produto!.id = linhaConsulta[0];
         item.produto!.nome = linhaConsulta[1];
@@ -56,8 +56,8 @@ where
         item.produtor!.id = linhaConsulta[2];
         item.produtor!.nome = linhaConsulta[3];
         item.produtor!.telefone = linhaConsulta[4];
-        item.produtor!.latitude = linhaConsulta[5].toString();
-        item.produtor!.longitude = linhaConsulta[6].toString();
+        item.produtor!.latitude = linhaConsulta[5];
+        item.produtor!.longitude = linhaConsulta[6];
         item.pontosVenda = [];
         itens.add(item);
       }

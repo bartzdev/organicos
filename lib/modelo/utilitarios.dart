@@ -9,6 +9,8 @@ import 'package:flutter_multi_formatter/flutter_multi_formatter.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:http/http.dart';
 import 'package:encrypt/encrypt.dart' as cript;
+import 'package:location/location.dart';
+import 'package:uuid/uuid.dart';
 
 String? formatDate(DateTime? dateTime, {mask = "dd/MM/yyyy"}) {
   if (dateTime != null) return DateFormat(mask).format(dateTime);
@@ -165,3 +167,34 @@ Future<bool> enviarEmail({
 
   return response.statusCode == 201;
 }
+
+Future<LocationData?> getCurrentLocation() async {
+    Location location = new Location();
+
+    bool _serviceEnabled;
+    PermissionStatus _permissionGranted;
+    LocationData _locationData;
+
+    _serviceEnabled = await location.serviceEnabled();
+    if (!_serviceEnabled) {
+      _serviceEnabled = await location.requestService();
+      if (!_serviceEnabled) {
+        return null;
+      }
+    }
+
+    _permissionGranted = await location.hasPermission();
+    if (_permissionGranted == PermissionStatus.denied) {
+      _permissionGranted = await location.requestPermission();
+      if (_permissionGranted != PermissionStatus.granted) {
+        return null;
+      }
+    }
+
+    _locationData = await location.getLocation();
+    return _locationData;
+  }
+
+  String generateUniqueID() {
+    return Uuid().v4();
+  }

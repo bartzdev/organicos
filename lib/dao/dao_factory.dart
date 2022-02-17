@@ -5,7 +5,6 @@ import 'package:organicos/dao/estado_dao.dart';
 import 'package:organicos/dao/permissao_dao.dart';
 import 'package:organicos/dao/permissao_grupousuario.dart';
 import 'package:organicos/dao/permissao_usuario.dart';
-
 import 'package:organicos/dao/grupoprodutor_dao.dart';
 import 'package:organicos/dao/grupousuario_dao.dart';
 import 'package:organicos/dao/pontovenda_dao.dart';
@@ -19,24 +18,7 @@ import 'package:organicos/modelo/cidade.dart';
 import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/grupo_usuario.dart';
 import 'package:organicos/modelo/permissoes.dart';
-import 'package:organicos/dao/grupoprodutor_dao.dart';
-
-import 'package:organicos/dao/pontovenda_dao.dart';
-import 'package:organicos/dao/usuario_dao.dart';
-import 'package:organicos/modelo/cidade.dart';
-import 'package:organicos/modelo/estado.dart';
 import 'package:organicos/modelo/grupo_produtor.dart';
-import 'package:organicos/modelo/grupo_produtor.dart';
-import 'package:organicos/modelo/grupo_usuario.dart';
-
-import 'package:organicos/modelo/permissoes.dart';
-import 'package:organicos/dao/grupoprodutor_dao.dart';
-import 'package:organicos/dao/pontovenda_dao.dart';
-import 'package:organicos/modelo/cidade.dart';
-import 'package:organicos/modelo/estado.dart';
-import 'package:organicos/modelo/grupo_produtor.dart';
-import 'package:organicos/modelo/ponto_venda.dart';
-
 import 'package:organicos/modelo/ponto_venda.dart';
 import 'package:organicos/modelo/produto.dart';
 import 'package:organicos/modelo/produtor.dart';
@@ -60,7 +42,7 @@ class DAOFactory<T> {
     if (objectInstance is Produto) return ProdutoDAO() as DAO<T>;
     if (objectInstance is TipoProduto) return TipoProdutoDAO() as DAO<T>;
     if (objectInstance is Unidade) return UnidadeDAO() as DAO<T>;
-    if (objectInstance is Produtor) return ProdutorDAO( ) as DAO<T>;
+    if (objectInstance is Produtor) return ProdutorDAO() as DAO<T>;
 
     return null;
   }

@@ -5749,7 +5749,7 @@ create table usuario(
   nome varchar(50),
   email varchar(50),
   login varchar(50),
-  senha text,
+  senha varchar(300),
   registro_ativo boolean default true,
   foreign key (grupousuario_id) references grupousuario(id)  
 );
@@ -5771,10 +5771,6 @@ create table permissao_grupousuario(
   foreign key (permissao_id) references permissao(id),
   foreign key (grupousuario_id) references grupousuario(id)
 );
-
-ALTER TABLE Usuario
-MODIFY COLUMN Senha Varchar(300);
-
 
 
 

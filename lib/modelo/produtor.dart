@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:organicos/modelo/produtor_produto.dart';
 
 import 'endereco.dart';
@@ -8,13 +10,13 @@ class Produtor {
   int? id;
   Certificadora? certificadora;
   GrupoProdutor? grupo;
-  Endereco? endereco;
+  Endereco? endereco = Endereco();
   String? nome;
   String? nomePropriedade;
   String? cpfCnpj;
   String? telefone;
-  String? latitude;
-  String? longitude;
+  double? latitude;
+  double? longitude;
   String? certificacaoOrganicos;
   bool vendaConsumidorFinal = true;
   bool ativo = true;

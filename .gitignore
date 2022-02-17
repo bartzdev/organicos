@@ -155,3 +155,4 @@ app.*.symbols
 !/dev/ci/**/Gemfile.lock
 lib/dao/conexao.dart
 lib/modelo/chaves.dart
+lib/dao/log.dart
