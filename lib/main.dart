@@ -31,8 +31,8 @@ import 'package:organicos/visao/login/login.dart';
 
 void main() {
   runApp(MyApp());
-    PontoVendaDAO dao = PontoVendaDAO();
-    dao.listar();
+  PontoVendaDAO dao = PontoVendaDAO();
+  dao.listar();
 }
 
 class MyApp extends StatelessWidget {
