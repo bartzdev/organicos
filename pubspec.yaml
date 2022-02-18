@@ -39,6 +39,7 @@ dependencies:
   pdf: ^3.7.1
   printing: ^5.7.2
   flutter_multi_formatter: ^2.4.4
+  flutter_launcher_icons: ^0.9.2
 
 dev_dependencies:
   flutter_test:
@@ -75,6 +76,8 @@ flutter:
   assets:
      - assets/imagens/
 
+
+
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
@@ -97,7 +100,13 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
-  
+
+  # caso queria trocar de logo, basta alterar o caminho image_path e rodar o comando no terminal 'flutter pub run flutter_launcher_icons:main'
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/imagens/logInit.png"
+
   fonts:
   - family: Open Sans
     fonts:
