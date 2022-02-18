@@ -6,6 +6,10 @@ import 'package:organicos/visao/pontosvenda/tela_cadastro_pontovenda.dart';
 import 'package:organicos/visao/produtor/tela_cadastro_produtor.dart';
 
 class TelaPesquisaProdutor extends StatefulWidget {
+  final Function(Produtor produtor)? onItemSelected;
+
+  TelaPesquisaProdutor({this.onItemSelected});
+
   @override
   _TelaPesquisProdutor createState() => _TelaPesquisProdutor();
 }
@@ -77,84 +81,91 @@ class _TelaPesquisProdutor extends State<TelaPesquisaProdutor> {
             // )),
             color: indice % 2 == 0 ? Colors.grey.shade300 : Colors.white),
         child: ListTile(
+            onTap: () {
+              if (widget.onItemSelected != null) {
+                widget.onItemSelected!(produtor);
+              }
+            },
             title: Row(children: [
-          Expanded(
-              child: Text(produtor.nome == null ? '' : produtor.nome!,
-                  style: const TextStyle(
-                      color: Colors.black,
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal),
-                  textAlign: TextAlign.left)),
-          IconButton(
-              onPressed: () async {
-                //Ação do botão Editar
-                //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
-                _controle.carregarDados(produtor).then((value) {
-                  _controle.objetoCadastroEmEdicao = value;
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              TelaCadastroProdutor(_controle, onSaved: () {
-                                setState(() {
-                                  _controle.atualizarPesquisa(filtros: {
-                                    'filtro': _controladorCampoPesquisa.text
-                                  });
-                                });
-                              })));
-                });
-              },
-              icon: const Icon(Icons.edit),
-              color: Colors.orange.shade600),
-          IconButton(
-              onPressed: () {
-                showDialog(
-                    context: context,
-                    builder: (BuildContext builder) {
-                      return AlertDialog(
-                        shape: const RoundedRectangleBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(20.0))),
-                        title: const Text('ATENÇÃO'),
-                        content: const Text(
-                            'Deseja realmente excluir este registro?',
-                            textAlign: TextAlign.center),
-                        actionsAlignment: MainAxisAlignment.center,
-                        actions: <Widget>[
-                          TextButton(
-                              onPressed: () {
-                                //Ação do botão SIM
-                                _controle.carregarDados(produtor).then((value) {
-                                  _controle.objetoCadastroEmEdicao = value;
-                                  _controle
-                                      .excluirObjetoCadastroEmEdicao()
-                                      .then((_) {
-                                    Navigator.of(context).pop();
+              Expanded(
+                  child: Text(produtor.nome == null ? '' : produtor.nome!,
+                      style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 18,
+                          fontWeight: FontWeight.normal),
+                      textAlign: TextAlign.left)),
+              IconButton(
+                  onPressed: () async {
+                    //Ação do botão Editar
+                    //_controle.objetoCadastroEmEdicao = await _controle.carregarDados(pontoVenda);
+                    _controle.carregarDados(produtor).then((value) {
+                      _controle.objetoCadastroEmEdicao = value;
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  TelaCadastroProdutor(_controle, onSaved: () {
                                     setState(() {
-                                      _controle.listaObjetosPesquisados
-                                          ?.remove(produtor);
+                                      _controle.atualizarPesquisa(filtros: {
+                                        'filtro': _controladorCampoPesquisa.text
+                                      });
                                     });
-                                  });
-                                });
-                              },
-                              child: const Text("SIM")),
-                          const SizedBox(
-                            width: 20,
-                            height: 20,
-                          ),
-                          TextButton(
-                              onPressed: () {
-                                //Ação do botão NÃO
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("NÃO"))
-                        ],
-                      );
+                                  })));
                     });
-              },
-              icon: const Icon(Icons.delete),
-              color: Colors.red),
-        ])));
+                  },
+                  icon: const Icon(Icons.edit),
+                  color: Colors.orange.shade600),
+              IconButton(
+                  onPressed: () {
+                    showDialog(
+                        context: context,
+                        builder: (BuildContext builder) {
+                          return AlertDialog(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(20.0))),
+                            title: const Text('ATENÇÃO'),
+                            content: const Text(
+                                'Deseja realmente excluir este registro?',
+                                textAlign: TextAlign.center),
+                            actionsAlignment: MainAxisAlignment.center,
+                            actions: <Widget>[
+                              TextButton(
+                                  onPressed: () {
+                                    //Ação do botão SIM
+                                    _controle
+                                        .carregarDados(produtor)
+                                        .then((value) {
+                                      _controle.objetoCadastroEmEdicao = value;
+                                      _controle
+                                          .excluirObjetoCadastroEmEdicao()
+                                          .then((_) {
+                                        Navigator.of(context).pop();
+                                        setState(() {
+                                          _controle.listaObjetosPesquisados
+                                              ?.remove(produtor);
+                                        });
+                                      });
+                                    });
+                                  },
+                                  child: const Text("SIM")),
+                              const SizedBox(
+                                width: 20,
+                                height: 20,
+                              ),
+                              TextButton(
+                                  onPressed: () {
+                                    //Ação do botão NÃO
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text("NÃO"))
+                            ],
+                          );
+                        });
+                  },
+                  icon: const Icon(Icons.delete),
+                  color: Colors.red),
+            ])));
   }
 
   @override
